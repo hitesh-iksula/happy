@@ -1,0 +1,41 @@
+<div class="master">
+
+	<div class="harpreet-slider-wrapper">
+		<!-- Content loaded via AJAX from homepage.js -->
+	</div>
+
+	<div style="height: 50px;"></div>
+
+	<div class="category-slider-wrapper">
+		<!-- Content loaded via AJAX from homepage.js -->
+		<div class="loading_gif_white"></div>
+	</div>
+
+	<?php if($urlKey = $this->getUrlParam('p')): ?>
+		<?php // $productId = $this->getProductId($urlKey); ?>
+		<input type="hidden" name="show_modal_of_product" id="show_modal_of_product" value="<?php echo $this->getProductId($urlKey); ?>" />
+		<script type="text/javascript">
+		window.onload = function() {
+		    window.scrollTo(0, 0); // set x and y position to 0 and 0 respectively.
+		};
+		</script>
+	<?php endif; ?>
+
+	<div class="separator_line"></div>
+
+	<div class="one_category" id="homepage_grid">
+		<!-- Content loaded via AJAX from homepage.js -->
+	</div>
+
+	<input type="hidden" id="url_for_swatches" value="<?php echo $this->getBaseUrl() . "solidswatches/frontend/retrieve"; ?>" />
+	<input type="hidden" id="visible_products_per_grid" value="<?php echo Mage::getStoreConfig('explore/explore_group/explore_grid_size', Mage::app()->getStore()); ?>" />
+	<input type="hidden" id="add_cart_activity" value="0" />
+
+</div>
+
+<script type="text/javascript">
+	var harpreet_slider_block_url = "<?php echo $this->getUrl('mobile/index/getHarpreetSliderBlock') ?>";
+	var category_slider_block_url = "<?php echo $this->getUrl('mobile/index/getCategorySliderBlock') ?>";
+	var homepage_products_block_url = "<?php echo $this->getUrl('mobile/index/getHomepageProductsBlock') ?>";
+	var recently_viewed_block_url = "<?php echo $this->getUrl('mobile/index/getRecentlyViewedBlock') ?>";
+</script>

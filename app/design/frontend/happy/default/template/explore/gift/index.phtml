@@ -1,0 +1,116 @@
+<!-- <div class="find_a_gift_sprite gift_icon_large"></div> -->
+<img class="gift_icon_large" src="<?php echo $this->getSkinUrl('images/general/gift_finder_logo.png'); ?>"/>
+
+<div class="gift_finder_head">
+	<h1 class="gift_title">Happily Unmarried Gift Finder</h1>
+	<div class="gift_finder_controls">
+		<div class="attribute" id="gender_label">
+			<img class="gift_option_icons attribute_selected_image" id="gender_image" src="<?php echo $this->getSkinUrl('images/general/not_selected.png') ?>"/>
+			<div class="attribute_title">Gender</div>
+			<div class="arrow_down"></div>
+		</div>
+		<div class="attribute" id="occasion_label">
+			<img class="gift_option_icons attribute_selected_image" id="occasion_image" src="<?php echo $this->getSkinUrl('images/general/not_selected.png') ?>"/>
+			<div class="attribute_title">Occasion</div>
+			<div class="arrow_down"></div>
+		</div>
+		<div class="attribute" id="personality_label">
+			<img class="gift_option_icons attribute_selected_image" id="personality_image" src="<?php echo $this->getSkinUrl('images/general/not_selected.png') ?>"/>
+			<div class="attribute_title">Personality</div>
+			<div class="arrow_down"></div>
+		</div>
+	</div>
+
+	<div class="no-display">
+		<img id="not_selected_image" src="<?php echo $this->getSkinUrl('images/general/not_selected.png') ?>"/>
+	</div>
+
+	<div class="gift_finder_options">
+
+		<div class="gift_attribute" id="gender_options">
+			<?php $genderModel = Mage::getModel('explore/gender')->getCollection()->setOrder('gender_name', 'ASC'); ?>
+			<?php $counter = 0; ?>
+			<?php foreach($genderModel as $gender): ?>
+				<?php $counter++; ?>
+				<div class="attribute_option<?php if($counter == 1): ?> first_option<?php endif; ?><?php if($counter == 5): ?> fifth_option<?php endif; ?>" id="gen<?php echo $gender->getData('gender_id'); ?>">
+					<img
+						class="gift_option_icons yellow_option_image"
+						src="<?php echo $this->getBaseUrl() . 'media/explore/gender/' . $gender->getData('gender_logo_1'); ?>"
+						alt="<?php echo $gender->getData('gender_name'); ?>"
+					/>
+					<img
+						class="gift_option_icons white_option_image"
+						src="<?php echo $this->getBaseUrl() . 'media/explore/gender/' . $gender->getData('gender_logo_2'); ?>"
+						alt="<?php echo $gender->getData('gender_name'); ?>"
+					/>
+					<div class="attribute_option_title"><?php echo $gender->getData('gender_name'); ?></div>
+				</div>
+			<?php endforeach; ?>
+		</div>
+
+		<div class="gift_attribute" id="occasion_options">
+			<?php $occasionModel = Mage::getModel('explore/occasion')->getCollection()->setOrder('occasion_name', 'ASC'); ?>
+			<?php $counter = 0; ?>
+			<?php foreach($occasionModel as $occasion): ?>
+				<?php $counter++; ?>
+				<div class="attribute_option<?php if($counter == 1): ?> first_option<?php endif; ?><?php if($counter == 5): ?> fifth_option<?php endif; ?>" id="occ<?php echo $occasion->getData('occasion_id'); ?>">
+					<img
+						class="gift_option_icons yellow_option_image"
+						src="<?php echo $this->getBaseUrl() . 'media/explore/occasion/' . $occasion->getData('occasion_logo_1'); ?>"
+						alt="<?php echo $occasion->getData('occasion_name'); ?>"
+					/>
+					<img
+						class="gift_option_icons white_option_image"
+						src="<?php echo $this->getBaseUrl() . 'media/explore/occasion/' . $occasion->getData('occasion_logo_2'); ?>"
+						alt="<?php echo $occasion->getData('occasion_name'); ?>"
+					/>
+					<div class="attribute_option_title"><?php echo $occasion->getData('occasion_name'); ?></div>
+				</div>
+			<?php endforeach; ?>
+		</div>
+
+		<div class="gift_attribute" id="personality_options">
+			<?php $personalityModel = Mage::getModel('explore/personality')->getCollection()->setOrder('personality_name', 'ASC'); ?>
+			<?php $counter = 0; ?>
+			<?php foreach($personalityModel as $personality): ?>
+				<?php $counter++; ?>
+				<div class="attribute_option<?php if($counter == 1): ?> first_option<?php endif; ?><?php if($counter == 5): ?> fifth_option<?php endif; ?>" id="per<?php echo $personality->getData('personality_id'); ?>">
+					<img
+						class="gift_option_icons yellow_option_image"
+						src="<?php echo $this->getBaseUrl() . 'media/explore/personality/' . $personality->getData('personality_logo_1'); ?>"
+						alt="<?php echo $personality->getData('personality_name'); ?>"
+					/>
+					<img
+						class="gift_option_icons white_option_image"
+						src="<?php echo $this->getBaseUrl() . 'media/explore/personality/' . $personality->getData('personality_logo_2'); ?>"
+						alt="<?php echo $personality->getData('personality_name'); ?>"
+					/>
+					<div class="attribute_option_title"><?php echo $personality->getData('personality_name'); ?></div>
+				</div>
+			<?php endforeach; ?>
+		</div>
+
+	</div>
+
+	<p class="gift_initial_note">
+		<span class="find_a_gift_sprite mouse_image"></span>
+		<span>Select one or more categories!</span>
+	</p>
+
+	<div class="find_a_gift_sprite close_and_reset" id="close"></div>
+	<div class="find_a_gift_sprite close_and_reset" id="reset"></div>
+
+</div>
+
+<input type="hidden" id="get_product_collection_url" value="<?php echo $this->getUrl('explore/gift/index'); ?>"/>
+
+<div class="found_products"></div>
+
+<?php $urlParameters = $this->getRequest()->getParams(); ?>
+<?php if($urlParameters): ?>
+	<div class="no-display">
+		<?php foreach($urlParameters as $attribute => $option): if($attribute != 'page_id'): ?>
+			<input type="hidden" class="url_parameters" id="<?php echo $attribute; ?>" value="<?php echo $option; ?>"/>
+		<?php endif; endforeach; ?>
+	</div>
+<?php endif; ?>

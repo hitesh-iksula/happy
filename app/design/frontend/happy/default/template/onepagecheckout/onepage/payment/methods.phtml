@@ -1,0 +1,136 @@
+<?php if (!$methods = $this->getMethods()) : ?>
+
+    <p><?php echo $this->helper('checkout')->__('Sorry, no quotes are available for this order at this time.') ?></p>
+
+<?php else : ?>
+
+    <?php //if($_code = $this->getSelectedMethodCode()): echo 'bummer ' . $_code; endif; ?>
+
+    <div id="review-please-wait" style="display: none;">
+        <div>
+            <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Submitting order information...') ?>" title="<?php echo $this->__('Submitting order information...') ?>" class="v-middle" /> <?php echo $this->__('Submitting order information...') ?>
+        </div>
+    </div>
+
+    <div class="methods-left-panel">
+
+        <!-- Heading -->
+
+        <div class="methods-left-panel-option-head" >
+            <label for="p_method_payucheckout_cc">Payment Options</label>
+        </div>
+        <!-- PayU Options -->
+        <div class="payment-method-label rightImg selected-method first" id="label-7">
+            <div class="payment-arrow"></div>
+            <label for="p_method_payucheckout_cc">Credit Card /<br/>Debit Card</label>
+        </div>
+        <div class="payment-method-label" id="label-6">
+            <div class="payment-arrow"></div>
+            <label for="p_method_payucheckout_nb">Net Banking</label>
+        </div>
+
+        <?php if(Mage::helper('backdrop')->isPayzippyEnabled()): ?>
+            <!-- PayZippy Option -->
+            <div class="payment-method-label" id="label-9">
+                <div class="payment-arrow"></div>
+                <label for="p_method_payzippy">
+                    <img src="<?php //echo $this->getSkinUrl('images/onepagecheckout/payzippy_label.png'); ?>"/>
+                </label>
+            </div>
+        <?php endif; ?>
+
+        <!-- Paytm Option -->
+        <?php if(Mage::helper('backdrop')->isPaytmEnabled()): ?>
+            <div class="payment-method-label" id="label-11">
+                <div class="payment-arrow"></div>
+                <label for="p_method_paytm_cc">
+                    <img src="<?php echo $this->getSkinUrl('images/Paytm-Logo.png'); ?>"/>
+                    <br>
+                    <span class= "paytm-w"> Wallet<span>
+                </label>
+            </div>
+        <?php endif; ?>
+
+        <div class="payment-method-label" id="label-2">
+            <div class="payment-arrow"></div>
+            <label for="p_method_payucheckout_am">
+                 <img src="<?php echo $this->getSkinUrl('images/am.png'); ?>"/>
+            </label>
+        </div>
+
+
+        <div class="payment-method-label" id="label-1">
+            <div class="payment-arrow"></div>
+            <label for="p_method_payucheckout_pm">
+                  <img src="<?php echo $this->getSkinUrl('images/payumoney.png'); ?>"/>
+            </label>
+        </div>
+
+        <!-- <div class="payment-method-label" id="label-8">
+            <label for="p_method_payucheckout_dc">Debit Card</label>
+        </div> -->
+
+        <!-- MobiKwik Option -->
+        <div class="payment-method-label" id="label-5">
+            <div class="payment-arrow"></div>
+            <label for="p_method_wallet">
+                <img src="<?php echo $this->getSkinUrl('images/onepagecheckout/mobikwik_label.png'); ?>"/>
+            </label>
+        </div>
+
+        
+
+
+        <!-- COD if enabled -->
+        <?php if(Mage::helper('backdrop')->isCodEnabled()): ?>
+            <div class="no-display">
+                <input type="hidden" id="cod_enabled" value="1"/>
+                <?php if(!$this->helper('mih')->isMihInCart()): ?>
+                    <div class="payment-method-label" id="label-4">
+                        <label for="p_method_cashondelivery">Cash On Delivery</label>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php else: ?>
+            <input type="hidden" id="cod_enabled" value="0"/>
+        <?php endif; ?>
+        
+
+    </div>
+
+    <div class="methods-right-panel">
+
+        <dl class="sp-methods">
+
+
+            <?php foreach ($this->getMethods() as $_method): $_code = $_method->getCode(); ?>
+
+                <dt class="sp-method-dt">
+                <?php if( sizeof($this->getMethods()) > 1 ): ?>
+                    <input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" title="<?php echo $this->htmlEscape($_method->getTitle()) ?>" onclick="payment.switchMethod('<?php echo $_code ?>')"<?php if('tablerate_bestway'==$_code): ?> <?php endif; ?> class="radio" />
+                <?php else: ?>
+                    <span class="no-display"><input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]"  class="radio" /></span>
+                <?php endif; ?>
+                    <label for="p_method_<?php echo $_code ?>"><?php echo $this->htmlEscape($_method->getTitle()) ?> <?php echo $this->getMethodLabelAfterHtml($_method) ?></label>
+                </dt>
+
+                <?php if ($html = $this->getPaymentMethodFormHtml($_method)): ?>
+                <dd class="sp-method-dd-for-<?php echo $_code; ?>">
+                    <?php echo $html; ?>
+                </dd>
+                <?php endif; ?>
+
+            <?php endforeach; ?>
+
+        </dl>
+
+    </div>
+
+<script type="text/javascript">
+//<![CDATA[
+<?php echo $this->getChildChildHtml('scripts'); ?>
+payment.init();
+//]]>
+</script>
+<?php endif; ?>
+

@@ -1,0 +1,206 @@
+<script>
+	jQuery(document).ready(function($){
+		$(".storefilters:first").addClass("active");
+		$(".storefilters:first input").attr("checked","checked");
+		$(".storecontainer").hide();
+		$(".storecontainer:first").fadeIn();
+		$(".storefilters").click(function(){
+			var store_filter_id = ("label",$(this)).attr("rel");
+			$(".storefilters").removeClass("active");
+			$(this).addClass("active");
+			$(".storefilters input").attr("checked","");
+			$("input",$(this)).attr("checked","checked");
+			$(".storecontainer").hide();
+			$("#"+store_filter_id).show();
+		})
+		url = '<?php echo $this->getUrl("storelocator/index/getAllData"); ?>';
+		$.post(url,function(data) {
+			obj = jQuery.parseJSON(data);
+			count = Object.keys(obj).length;
+		});
+		$("#country_drop").change(function(){
+			var country_id = $("#country_drop").val();
+			if(country_id=='1'){
+				$('#state_drop').show();
+				$('#city_drop').show();
+				$("#state_drop").empty();
+				$("#state_drop").append('<option>Please Select State..</option>');
+				$.each(obj[country_id]['state'], function (index, value) {
+					$("#state_drop").append('<option value="'+index+'">'+obj[country_id]['state'][index]['s_name']+'</option>');
+				})
+			}else{
+				$('#state_drop').hide();
+				$('#city_drop').hide();
+			}
+		});
+		$("#state_drop").change(function(){
+			var state_id = $("#state_drop").val();
+			var country_id = $("#country_drop").val();
+			$("#city_drop").empty();
+			$("#city_drop").append('<option>Please Select City..</option>');
+			$.each(obj[country_id]['state'][state_id]['city'], function (index, value) {
+				$("#city_drop").append('<option value="'+index+'">'+value+'</option>');
+			})
+		});
+
+		$('#submit').click(function(){
+			var country = $('#country_drop').val();
+			var state = $('#state_drop').val();
+			var city = $('#city_drop').val();
+			var country_name = $('#country_drop').find(":selected").text().toLowerCase();
+
+			if(country_name == 'india' ){
+				var div = '#'+country+'_'+state+'_'+city;
+			}else{
+				var div = '#'+country+'only';
+			}
+			if($(div).offset()){
+				$('html,body').animate({scrollTop: $(div).offset().top-100},2000);
+			}else{
+				if(state == 'Please Select State') {
+					alert('Please Select State');
+				} else if(city == 'Please Select City..') {
+					alert('Please Select City');
+				} else {
+					alert('Oops!! Sorry We are not available in this city!!')
+				}
+			}
+			return false;
+		})
+		$('#reset').click(function(){
+			$('#country_drop').prop('selectedIndex',1);
+			$('#state_drop').show();
+			$('#city_drop').show();
+			$('#state_drop').prop('selectedIndex',0);
+			$("#city_drop").empty();
+			$("#city_drop").append('<option>Please Select City..</option>');
+			$('html,body').animate({scrollTop: $('.main').offset().top - 100},2000);
+			return false;
+		})
+	});
+</script>
+
+<div class="cms-subcategory-area store-subcategory-area">
+	<div class="storefiltersarea">
+		<div class="storefilters"  rel="huStore">
+
+			<input type="radio" name="stores" value="hubrandstore"/>
+			<span>
+				HU BRAND STORE
+			</span>
+		</div>
+		<div class="storefilters" rel="huOutlet">
+
+			<input type="radio"  name="stores" value="hustoreoutlets"/>
+			<span>
+				M.B.O<br/>
+				<span>(Multi Brand Outlets)</span>
+			</span>
+			<div class="filter-form">
+				<select id="country_drop">
+					<option>Please Select Country</option>
+					<?php foreach($this->getCountries() as $country):
+							if(!strcmp(trim(strtolower($country['country'])),'india')): ?>
+						<option value="<?php echo $country_id = $country['country_id']?>" selected="selected"><?php echo $country['country']; ?></option>
+					<?php else: ?>
+						<option value="<?php echo $country['country_id']?>"><?php echo $country['country']; ?></option>
+					<?php endif;endforeach; ?>
+				</select>
+				<select id="state_drop">
+					<option>Please Select State</option>
+					<?php foreach($this->getStates($country_id) as $state): ?>
+						<option value="<?php echo $state_id = $state['state_id']; ?>"><?php echo $state['state']; ?></option>
+					<?php endforeach; ?>
+				</select>
+				<select id="city_drop">
+					<option>Please Select City</option>
+				</select>
+				<button type="button" title="Checkout" class="button btnsubmit" id="submit"><span><span>Submit</span></span></button>
+				<button type="reset" title="Checkout" class="button btnsubmit" id="reset"><span><span>Clear</span></span></button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="cms-inner-page-content-area store-inner-page-content-area">
+	<div class="storecontainer" id="huStore">
+		<div class="countryheader">India</div>
+		<div class="storearea">
+			<?php $stores = $this->getBrandStores();
+			foreach ($stores as $store): ?>
+				<div class="storethumb">
+					<h3><?php echo $store->getName(); ?></h3>
+					<div class="address">
+						<p><?php echo $store->getAddress(); ?></p>
+					</div>
+					<div class="contact">
+						<span>Contact</span><br/><?php if($store->getPerson()):echo $store->getPerson().':'.$store->getContact(); else: echo $store->getContact(); endif; ?>
+					</div>
+				</div>
+			<?php endforeach; ?>
+		</div>
+	</div>
+<div class="storecontainer" id="huOutlet">
+		<?php $countries = $this->getCountries();
+			  $cities = $this->getCities();
+			  $states = $this->getStates();
+			  foreach($countries as $country){
+				if($country['country']&&$country['country_id']==1){
+					$count = 1;
+					foreach($states as $state){
+						if($state['country_id']==$country['country_id']){
+							$stat = 1;
+							foreach($cities as $city){
+								if($city['state_id']==$state['state_id']){
+									$stores = $this->getMboStores($city['city_id']);
+									if($stores->getData()){
+									?>
+									<?php if($count==1): ?>
+										<div class="countryheader"><?php echo $country['country']; ?></div>
+									<?php endif; $count++; ?>
+									<?php if($stat==1): ?><div class="stateheader"><?php echo $state['state']?></div><?php endif;$stat++; ?>
+										<div class="cityheader" id="<?php echo $country['country_id'].'_'.$state['state_id'].'_'.$city['city_id']; ?>"><?php echo $city['city']?></div>
+										<div class="storearea">
+											<?php foreach ($stores as $store): ?>
+												<div class="storethumb">
+												<h3><?php echo $store->getName(); ?></h3>
+												<div class="address">
+												<p><?php echo $store->getAddress(); ?></p>
+												</div>
+												<div class="contact">
+												<span>Contact</span><br/><?php if($store->getPerson()):echo $store->getPerson().':'.$store->getContact(); else: echo $store->getContact(); endif; ?>
+												</div>
+												</div>
+											<?php endforeach; ?>
+										</div>
+									<?php }
+								}
+							}
+						}
+					}
+				} else {
+					if($country['country_id']) { ?>
+						<?php $stores = $this->getMboStores(null, $country['country_id']);
+						if($stores->getData()) { ?>
+							<div class="countryheader" id="<?php echo $country['country_id'].'only'?>"><?php echo $country['country']; ?></div>
+							<div class="storearea">
+								<?php foreach ($stores as $store): ?>
+									<div class="storethumb">
+									<h3><?php echo $store->getName(); ?></h3>
+									<div class="address">
+									<p><?php echo $store->getAddress(); ?></p>
+									</div>
+									<div class="contact">
+									<span>Contact</span><br/><?php if($store->getPerson()):echo $store->getPerson().':'.$store->getContact(); else: echo $store->getContact(); endif; ?>
+									</div>
+									</div>
+								<?php endforeach; ?>
+							</div>
+						<?php }
+					}
+				}
+			}
+		?>
+
+</div>

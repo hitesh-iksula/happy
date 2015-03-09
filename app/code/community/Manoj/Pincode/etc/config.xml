@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Manoj_Pincode>
+      <version>0.1.0</version>
+    </Manoj_Pincode>
+  </modules>
+  <frontend>
+    <routers>
+      <pincode>
+        <use>standard</use>
+        <args>
+          <module>Manoj_Pincode</module>
+          <frontName>pincode</frontName>
+        </args>
+      </pincode>
+    </routers>
+    <layout>
+      <updates>
+       <pincode>
+         <file>pincode.xml</file>
+       </pincode>
+     </updates>
+   </layout>
+ </frontend>
+ <global>
+  <helpers>
+    <pincode>
+      <class>Manoj_Pincode_Helper</class>
+    </pincode>
+  </helpers>
+  <blocks>
+   <pincode>
+    <class>Manoj_Pincode_Block</class>
+  </pincode>
+</blocks>
+<models>
+  <pincode>
+    <class>Manoj_Pincode_Model</class>
+    <resourceModel>pincode_mysql4</resourceModel>
+  </pincode>
+  <pincode_mysql4>
+    <class>Manoj_Pincode_Model_Mysql4</class>
+    <entities>      
+      <pincode>
+        <table>pincode</table>
+      </pincode>
+    </entities>
+  </pincode_mysql4>
+</models>
+<resources>
+ <pincode_setup>
+  <setup>
+    <module>Manoj_Pincode</module>
+  </setup>
+  <connection>
+    <use>core_setup</use>
+  </connection>
+</pincode_setup>
+<pincode_write>
+  <connection>
+    <use>core_write</use>
+  </connection>
+</pincode_write>
+<pincode_read>
+  <connection>
+    <use>core_read</use>
+  </connection>
+</pincode_read>
+</resources>
+<events>
+ <payment_method_is_active> <!-- identifier of the event we want to catch -->
+  <observers>
+    <payment_method_is_active_handler> <!-- identifier of the event handler -->
+      <type>singleton</type> <!-- class method call type; valid are model, object and singleton -->
+      <class>pincode/observer</class> <!-- observers class alias -->
+      <method>paymentMethods</method>  <!-- observer's method to be called -->
+      <args></args> <!-- additional arguments passed to observer -->
+    </payment_method_is_active_handler>
+  </observers>
+</payment_method_is_active>
+</events>
+</global>
+<admin>
+  <routers>
+    <pincode>
+      <use>admin</use>
+      <args>
+        <module>Manoj_Pincode</module>
+        <frontName>pincode</frontName>
+      </args>
+    </pincode>
+  </routers>
+</admin>
+<adminhtml>
+  <menu>
+    <pincode module="pincode">
+      <title>Pincode</title>
+      <sort_order>100</sort_order>
+      <children>
+        <pincode module="pincode">
+          <title>Manage Pincode</title>
+          <sort_order>0</sort_order>
+          <action>pincode/adminhtml_pincode</action>
+        </pincode>
+     <!--    <tracking translate="title">
+         <title>Bulk Tracking Import</title>
+         <sort_order>1</sort_order>
+         <action>pincode/adminhtml_tracking/importtracking</action>
+       </tracking> -->
+     </children>
+    </pincode>
+
+  </menu>
+  <acl>
+    <resources>
+      <all>
+        <title>Allow Everything</title>
+      </all>
+      <admin>
+        <children>
+
+          <pincode translate="title" module="pincode">
+            <title>Pincode</title>
+            <sort_order>1000</sort_order>
+            <children>
+              <pincode translate="title">
+                <title>Manage Pincode</title>
+                <sort_order>0</sort_order>
+              </pincode>
+            </children>
+          </pincode>
+      <!--     <tracking translate="title" module="pincode">
+            <title>Pincode</title>
+            <sort_order>1000</sort_order>
+            <children>
+              <tracking translate="title">
+               <title>Bulk Tracking Import</title>
+               <sort_order>0</sort_order>
+             </tracking>
+           </children>
+         </tracking>  -->      
+
+       </children>
+     </admin>
+   </resources>
+ </acl>
+ <layout>
+  <updates>
+    <pincode>
+      <file>pincode.xml</file>
+    </pincode>
+  </updates>
+</layout>
+</adminhtml>
+</config> 

@@ -1,0 +1,15 @@
+<config>
+    <modules>
+<!-- declare CompanyName_NewModule module -->
+        <Iksula_Vendorcheckout>
+<!-- this is an active module -->
+            <active>true</active>
+<!-- this module will be located in app/code/local code pool -->
+            <codePool>local</codePool>
+<!-- specify dependencies for correct module loading order -->
+            <depends>
+                <Mage_Payment />
+            </depends>
+        </Iksula_Vendorcheckout>
+    </modules>
+</config>

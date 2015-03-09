@@ -1,0 +1,67 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<form id="discount-coupon-form" action="<?php echo $this->getUrl('checkout/cart/couponPost') ?>" method="post">
+    <div class="discount">
+        <div class="discount-form">
+            <?php if(strlen($this->getCouponCode())): ?>
+                <div class="label-reveal read-only">
+                    <div class="checkbox_status checked"></div>
+                    <div class="door">
+                        <div class="label">Congratulations! Coupon applied.</div>
+                        <div class="coupan-tick"></div>
+                        <button class="bare">Cancel</button>
+                        <input type="hidden" name="remove" id="coupon_remove" value="1"/>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="label-reveal">
+                    <div class="checkbox_status unchecked"></div>
+                    <div class="label door">
+                        <label for="coupon_code" class="checkbox">I have a discount coupon!</label>
+                    </div>
+                    <div class="reveal">
+                        <input class="input-text required-entry" id="coupon_code" name="coupon_code" value="<?php echo $this->htmlEscape($this->getCouponCode()) ?>" placeholder="Enter Code" />
+                        <button class="happy_button green">Apply</button>
+                    </div>
+                    <div class="result" id="valid-coupon">
+                        <div class="label">Congratulations! Coupon applied.</div>
+                        <div class="coupan-tick"></div>
+                        <button class="bare">Cancel</button>
+                    </div>
+
+                     <div class="result" id="not-valid">
+                        <div class="label">Coupon code is not valid</div>
+                    </div>
+                <input type="hidden" name="remove" id="coupon_remove" value="0"/>
+            <?php endif; ?>
+
+            <input type="hidden" name="isAjax" value="1"/>
+        </div>
+    </div>
+</form>
+
+<!-- couponCode-explore->modals->cart->cart_scripts.phtml -->

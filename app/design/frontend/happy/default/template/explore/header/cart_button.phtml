@@ -1,0 +1,28 @@
+<?php $_cartQty = $this->helper('checkout/cart')->getItemsCount(); ?>
+<a href="#" class="cart_page_trigger"<?php if($_cartQty > 0): ?> title="Click to view your shopping cart"<?php endif; ?>>
+    <span></span>
+    <p>Cart</p>
+    <?php if($_cartQty > 0): ?>
+        <div class="count-circle cart-count-circle"><?php echo $_cartQty; ?></div>
+    <?php endif; ?>
+</a>
+
+<?php if($_cartQty == 0): ?>
+    <div class="cart-drop header-drop">
+        <div class="arrow"></div>
+        <div class="ghost"></div>
+        <table>
+            <tr>
+                <td class="smiley">
+                    <div></div>
+                </td>
+                <td class="note">
+                    <div>
+                        <p class="first">Your shopping cart is empty.</p>
+                        <p class="second">O.M.G!!!</p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+<?php endif; ?>

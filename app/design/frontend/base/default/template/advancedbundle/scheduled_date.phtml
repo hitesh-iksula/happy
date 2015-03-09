@@ -1,0 +1,23 @@
+<?php
+/**
+ * 
+ * This page is linked with the following block in New Order email template-
+ * {{block type='core/template' area='frontend' template='advancedbundle/scheduled_date.phtml' order=$order}}
+ * 
+ * This file is used for BSchool Campaign, to show the scheduled delivery date in Email if user has entered it
+ * 
+ */
+?>
+
+<?php
+
+$session = Mage::getSingleton("core/session");
+
+$scheduledDelivery = $session->getData("scheduled_delivery");
+
+if(isset($scheduledDelivery)) {
+	$scheduledDeliveryDate = date("d - M - Y", $scheduledDelivery);
+	echo "Your Scheduled Delivery Date- <b>" . $scheduledDeliveryDate . "</b>";
+}
+
+?>

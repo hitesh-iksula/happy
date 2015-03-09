@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<paytmpromo_index_redirect>
+		<reference name="root">
+			<action method="setTemplate"><template>paytm/blank.phtml</template></action>
+		</reference>
+		<reference name="content">
+			<block type="paytm/redirect" name="paytm_redirect" template="paytmpromo/redirect.phtml" />
+		</reference>
+	</paytmpromo_index_redirect>
+
+	<paytmpromo_index_response>
+		<reference name="root">
+			<action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+		<reference name="content">
+			<block type="core/template" name="paytm_response_success" template="paytmpromo/response_success.phtml" />
+		</reference>
+	</paytmpromo_index_response>
+</layout>

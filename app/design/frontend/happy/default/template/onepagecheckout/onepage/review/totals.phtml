@@ -1,0 +1,73 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Shopping cart totals template
+ *
+ * @see Mage_Checkout_Block_Cart_Totals
+ * @var $this Mage_Checkout_Block_Cart_Totals
+ */
+?>
+<?php if ($this->canApplyMsrp()): ?>
+    <div class="cart-msrp-totals"><?php echo $this->__('ORDER TOTAL WILL BE DISPLAYED BEFORE YOU SUBMIT THE ORDER'); ?></div>
+<?php else: ?>
+    <table id="shopping-cart-totals-table" class="shopping-cart-totals-table">
+        <col />
+        <col width="1" />
+        <!-- <tfoot>
+            <?php // made this hidden because we dont want to show final total, just the subtotal. ?>
+            <?php // echo $this->renderTotals('footer'); ?>
+        </tfoot> -->
+        <tbody>
+            <?php echo $this->renderTotals(); ?>
+
+            <!-- Additional total added, does not affect any total. Just a representation -->
+            <?php $totals = Mage::getSingleton('checkout/session')->getQuote()->getTotals(); ?>
+            <?php if($totals['discount']): ?>
+                <?php
+                $subtotal = $totals['subtotal']->getValue();
+                $discount = abs($totals['discount']->getValue());
+                $totalAfterDiscount = $subtotal - $discount;
+                ?>
+                <tr>
+                    <td style="" class="a-right" colspan="1">
+                        <div class="totals_table_labels">
+                            Total (After Discount)
+                        </div>
+                    </td>
+                    <td style="" class="a-right">
+                        <div class="totals_table_amounts">
+                            <span class="price">
+                                <?php echo $this->helper('checkout')->formatPrice($totalAfterDiscount); ?>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+<?php endif; ?>

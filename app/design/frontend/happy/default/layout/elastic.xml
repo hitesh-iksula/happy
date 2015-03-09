@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+	<elastic_search_result>
+
+		<reference name="root">
+			<action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+
+		<reference name="head">
+
+			<block type="page/html" name="top.Js" as="topJs" template="md/quickview/page/lablequickview.phtml"/>
+			<action method="removeItem"><type>skin_css</type><name>css/override.css</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/product.list.js</name></action>
+
+            <action method="addJs"><script>md/quickview/fancy/fancybox/jquery.fancybox-1.3.4.pack.js</script></action>
+            <action method="addCss"><stylesheet>md/quickview/css/jquery.fancybox-1.3.4.css</stylesheet></action>
+			<action method="addCss"><stylesheet>md/quickview/css/stylefancy.css</stylesheet></action>
+
+			<action method="addCss"><stylesheet>css/override.css</stylesheet></action>
+
+			<action method="addItem"><type>skin_js</type><name>js/jquery_002.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/jquery.mousewheel.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/jquery.accordion.2.0.min.js</name></action>
+
+        </reference>
+
+		<reference name="header">
+			<block type="core/template" name="cart_button" template="explore/header/cart_button.phtml" />
+		</reference>
+
+		<!-- The search block in content is appended from the controller action -->
+
+	</elastic_search_result>
+
+</layout>

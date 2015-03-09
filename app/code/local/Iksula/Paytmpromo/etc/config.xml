@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Iksula_Paytmpromo>
+      <version>0.1.1</version>
+    </Iksula_Paytmpromo>
+  </modules>
+  <global>
+    <helpers>
+      <paytmpromo>
+        <class>Iksula_Paytmpromo_Helper</class>
+      </paytmpromo>
+    </helpers>
+	<blocks>
+	  <paytmpromo>
+		<class>Iksula_Paytmpromo_Block</class>
+	  </paytmpromo>
+	</blocks>
+	<models>
+	  <paytmpromo>
+		<class>Iksula_Paytmpromo_Model</class>
+		<resourceModel>paytmpromo_mysql4</resourceModel>
+	  </paytmpromo>
+
+	  <coupons>
+		<class>Iksula_Paytmpromo_Model_Coupons</class>
+		<resourceModel>paytmpromo_mysql4</resourceModel>
+	  </coupons>
+
+	  <paytmpromo_mysql4>
+		<class>Iksula_Paytmpromo_Model_Mysql4</class>
+		<entities>
+			  <paytmpromo>
+				<table>paytm_promotion_entries</table>
+			  </paytmpromo>
+
+			  <coupons>
+				<table>paytm_coupons</table>
+			  </coupons>
+        </entities>
+	  </paytmpromo_mysql4>
+	</models>
+	<resources>
+	  <paytmpromo_setup>
+		<setup>
+		  <module>Iksula_Paytmpromo</module>
+		</setup>
+		<connection>
+		  <use>core_setup</use>
+		</connection>
+	  </paytmpromo_setup>
+	  <paytmpromo_write>
+		<connection>
+		  <use>core_write</use>
+		</connection>
+	  </paytmpromo_write>
+	  <paytmpromo_read>
+		<connection>
+		  <use>core_read</use>
+		</connection>
+	  </paytmpromo_read>
+	</resources>
+
+	<template>
+		<email>
+			<custom_email_template_1 module="paytmpromo">
+				<label>Paytm Promotion</label>
+				<file>paytmpromo_email.html</file>
+				<type>html</type>
+			</custom_email_template_1>
+		</email>
+	</template>
+
+  </global>
+  <frontend>
+  		<routers>
+			<paytmpromo>
+				<use>standard</use>
+				<args>
+					<module>Iksula_Paytmpromo</module>
+					<frontName>paytmpromo</frontName>
+				</args>
+			</paytmpromo>
+			<checkout>
+				<use>standard</use>
+				<args>
+					<modules>
+						<Iksula_Paytmpromo before="Mage_Checkout">Iksula_Paytmpromo</Iksula_Paytmpromo>
+					</modules>
+				</args>
+			</checkout>
+		</routers>
+		<layout>
+			<updates>
+				<paytmpromo>
+					<file>paytmpromo.xml</file>
+				</paytmpromo>
+			</updates>
+		</layout>
+	</frontend>
+  <admin>
+	<routers>
+	  <paytmpromo>
+	    <use>admin</use>
+		<args>
+		  <module>Iksula_Paytmpromo</module>
+		  <frontName>admin_paytmpromo</frontName>
+		</args>
+	  </paytmpromo>
+	</routers>
+  </admin>
+  <adminhtml>
+	<menu>
+	  <paytmpromo module="paytmpromo">
+		<title>Paytm Promotions</title>
+		<sort_order>100</sort_order>
+		<children>
+		  <paytmpromo module="paytmpromo">
+		    <title>View Entries</title>
+			<sort_order>0</sort_order>
+			<action>admin_paytmpromo/adminhtml_paytmpromo</action>
+		  </paytmpromo>
+		</children>
+	  </paytmpromo>
+	</menu>
+	<acl>
+	  <resources>
+		<all>
+		  <title>Allow Everything</title>
+		</all>
+		<admin>
+		  <children>
+			<paytmpromo translate="title" module="paytmpromo">
+			  <title>Paytmpromo</title>
+			  <sort_order>1000</sort_order>
+			  <children>
+		  <paytmpromo translate="title">
+			<title>Manage Paytmpromo</title>
+			<sort_order>0</sort_order>
+		  </paytmpromo>
+			  </children>
+			</paytmpromo>
+		  </children>
+		</admin>
+	  </resources>
+	</acl>
+	<layout>
+	  <updates>
+		<paytmpromo>
+		  <file>paytmpromo.xml</file>
+		</paytmpromo>
+	  </updates>
+	</layout>
+
+		<acl>
+	        <resources>
+	            <all>
+	                <title>Allow Everything</title>
+	            </all>
+	            <admin>
+	                <children>
+	                    <system>
+	                        <children>
+	                            <config>
+	                                <children>
+	                                    <paytmpromo>
+	                                        <title>Paytmpromo Settings</title>
+	                                    </paytmpromo>
+	                                </children>
+	                            </config>
+	                        </children>
+	                    </system>
+	                </children>
+	            </admin>
+	        </resources>
+	    </acl>
+	</adminhtml>
+
+  	<default>
+		<paytmpromo>
+			<paytmpromo_group>
+				<paytmpromo_increment_id>promo</paytmpromo_increment_id>
+			</paytmpromo_group>
+		</paytmpromo>
+	</default>
+</config>

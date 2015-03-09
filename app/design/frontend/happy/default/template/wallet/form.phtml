@@ -1,0 +1,17 @@
+<?php $_code = $this->getMethodCode(); ?>
+
+<div class="input-box display-none payment-data-box" id="p_method_<?php echo $_code ?>_data">
+	<p class="payment-note"><span>MobiKwik Wallet</span> is a secure and one click method to pay online. Now store money in your pre-paid wallet and shop without disclosing your bank details.</p>
+
+	<div class="checkout-final-button">
+        <button type="submit" id="place-order" class="button mobikwik_button" onclick="checkout.save(); return false;">
+        	<?php echo $this->__('') ?>
+        </button>
+    </div>
+
+    <!-- <p class="payment-footnote">
+		<b>Shipping & Handling charge:</b><br/>
+		(a) Free shipping for orders above Rs. 2500<br/>
+		(b) For rest, charge would be Rs. 50 OR 10% of the order amount, whichever is higher.
+	</p> -->
+</div>

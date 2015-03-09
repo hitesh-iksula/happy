@@ -1,0 +1,368 @@
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+<?php $_category = Mage::getSingleton('catalog/layer')->getCurrentCategory(); ?>
+<script type="text/javascript">
+	var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+
+<script type="text/javascript">
+/*
+	ga('require', 'ec');
+	ga('ec:addProduct', {
+		'id': '<?php echo $_product->getSku(); ?>',
+		'name': '<?php echo str_replace("'", "\\'", $_product->getName()); ?>',
+		'category': '<?php echo $_category->getName(); ?>',
+		'brand': '<?php echo "Happily Unmarried"; ?>',
+		'variant': '<?php "" ?>'
+	});
+
+	ga('ec:setAction', 'detail');
+
+	ga('send', 'pageview');*/
+
+</script>
+
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="product-view" itemscope itemtype="http://schema.org/Product">
+	<div class="product-essential">
+
+		<form action="<?php  echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?> onSubmit="return false;">
+
+			<div class="no-display">
+				<input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+				<input type="hidden" name="related_product" id="related-products-field" value="" />
+
+			</div>
+
+			<ul class="messages" style="display:none;clear:left;"></ul>
+
+			<div class="product-shop">
+
+				<div class="product-description-box<?php if(!count($_product->getUpSellProductCollection()->getItems())): echo ' product-description-box-long'; endif; ?>">
+					<div class="product-name" itemprop="name">
+						<h1 class="product-name-heading-main"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+					</div>
+					<div class="product-short-desc">
+						<?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+					</div>
+
+					<div class="product-img-box">
+						<?php echo $this->getChildHtml('media') ?>
+						<?php if($_product['non_inventory_products'] == 1){ ?>
+							<div class="build-to-non-inventory">This product is made to order. Delivery in 10 days</div>
+						<?php } ?>
+					</div>
+
+					<?php echo $this->getTierPriceHtml() ?>
+
+					<div class="product-shop-content-area" id="product-shop-new">
+						<div class="product-desc">
+							<?php if ($_product->getDescription()):?>
+								<div class="short-description">
+									<div class="std">
+										<?php echo $_helper->productAttribute($_product, $_product->getDescription(), 'description') ?>
+									</div>
+									<?php if($_product->getDesignedBy()): ?>
+										<div class="designed_by"><?php echo $this->__('Designed By: '); echo strip_tags($_product->getDesignedBy()); ?></div>
+									<?php endif; ?>
+								</div>
+							<?php endif;?>
+						</div>
+					</div>
+
+					<div class="wrapper-96">
+
+						<div class="product-page-price f-right"><?php echo $this->getPriceHtml($_product) ?></div>
+
+						<div class="quantity_dropdown<?php if(!$this->hasOptions()) { echo ' one_step_down'; } ?>">
+							<select name="qty" id="qty" class="qty-dropdown validate-select">
+								<option value>Quantity</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+							</select>
+						</div>
+
+						<?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+
+					</div>
+
+					<?php if ($_product->isSaleable() && $this->hasOptions()):?>
+						<?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+					<?php endif;?>
+				</div>
+
+			</div>
+
+			<div class="clearer"></div>
+
+		</form>
+		<script type="text/javascript">
+		//<![CDATA[
+			var productAddToCartForm = new VarienForm('product_addtocart_form');
+			productAddToCartForm.submit = function(button, url) {
+				if (this.validator.validate()) {
+					var form = this.form;
+					var oldUrl = form.action;
+
+					if (url) {
+					   form.action = url;
+					}
+					var e = null;
+					try {
+						this.form.submit();
+						window._fbq = window._fbq || [];
+						window._fbq.push(['track', '6024008684704', {'value':'0.00','currency':'INR'}]);
+					} catch (e) {
+					}
+					this.form.action = oldUrl;
+					if (e) {
+						throw e;
+					}
+
+					if (button && button != 'undefined') {
+						button.disabled = true;
+					}
+				}
+			}.bind(productAddToCartForm);
+
+			productAddToCartForm.submitLight = function(button, url){
+				if(this.validator) {
+					var nv = Validation.methods;
+					delete Validation.methods['required-entry'];
+					delete Validation.methods['validate-one-required'];
+					delete Validation.methods['validate-one-required-by-name'];
+					// Remove custom datetime validators
+					for (var methodName in Validation.methods) {
+						if (methodName.match(/^validate-datetime-.*/i)) {
+							delete Validation.methods[methodName];
+						}
+					}
+
+					if (this.validator.validate()) {
+						if (url) {
+							this.form.action = url;
+						}
+						this.form.submit();
+						window._fbq = window._fbq || [];
+						window._fbq.push(['track', '6024008684704', {'value':'0.00','currency':'INR'}]);
+					}
+					Object.extend(Validation.methods, nv);
+				}
+			}.bind(productAddToCartForm);
+		//]]>
+		</script>
+
+		<script type="text/javascript">
+
+            ga('require', 'ec');
+            ga('ec:addProduct', {
+                'id': '<?php echo $_product->getSku(); ?>',
+                'name': '<?php echo str_replace("'", "\\'", $_product->getName()); ?>',
+                'category': '<?php echo $_category->getName(); ?>',
+                'brand': '<?php echo "Happily Unmarried"; ?>',
+                'variant': '<?php '' ?>',
+                'list': '<?php echo "Mobile_Product_page" ?>'
+                /*'position': '<?php echo $product_counter; ?>'*/
+            });
+
+            ga('ec:setAction', 'click', {
+				list: "Mobile_product_page"
+			});
+        </script>
+
+	</div>
+
+</div>
+
+<link rel="stylesheet" href="<?php echo $this->getSkinUrl('css/jquery.bxslider.css') ?>" />
+<script src="<?php echo $this->getSkinUrl('js/jquery.bxslider.min.js') ?>"></script>
+<?php echo $this->getChildHtml('upsell_products'); ?>
+
+<script type="text/javascript">
+var options = {};
+var out_of_stock_product_info = {};
+var p_id = "<?php echo $_product->getId(); ?>";
+
+var zoom_status = 0;
+selected_option_label = "<?php echo $this->getRequest()->getParam('option'); ?>";
+
+var mode_of_view = '<?php echo $this->getRequest()->getParam("type"); ?>';
+var cart_url = "<?php echo $this->getUrl('checkout/cart'); ?>";
+
+var pinit_base_url = 'https://pinterest.com/pin/create/button/?url=' + '<?php echo $this->getUrl() ?>' + '&media=';
+var pinit_image_url = '<?php echo $_product->getImageUrl(); ?>';
+var pinit_trailing_url = '&description=Happily%20Unmarried';
+
+var scooso_url = "<?php echo $this->getUrl('scooso/index/prequantity'); ?>";
+var product_image_url = "<?php echo $_product->getImageUrl() ?>";
+
+var getRecentlyViewedBlockUrl = "<?php echo $this->getUrl('mobile/index/getRecentlyViewedBlock') ?>";
+
+var full_gallery_slider, mini_slider;
+
+var slider_settings = {
+	pager: false,
+	auto: false,
+	auto_controls: false,
+	infiniteLoop: false,
+	hideControlOnEnd: true
+};
+
+jQuery(document).ready(function($){
+
+	options['pid'] = p_id;
+
+	try {
+		$.ajax({
+			url: scooso_url,
+			dataType: 'json',
+			type : 'get',
+			data: options,
+			success: function(response){
+				options = response;
+				if(options.type == 'bundle') {
+					if(options.inStock) {
+						$('.btn-cart').show();
+						$('.notify-me-when-available').hide();
+						$('#notify_email_id').removeClass('validate-email, required-entry');
+					} else {
+						$('.btn-cart').hide();
+						$('.notify-me-when-available').show();
+						$('#notify_email_id').addClass('validate-email, required-entry');
+					}
+				} else {
+					check_stock_status();
+				}
+			}
+		});
+	} catch (e) {
+	}
+
+	try {
+		$.ajax({
+			url: getRecentlyViewedBlockUrl,
+			type : 'get',
+			success: function(html){
+				$('.product-view').after(html);
+			}
+		});
+	} catch (e) {
+	}
+
+	$('.m_notify_me_button').click(function() {
+		var out_of_stock_product_info_options = {};
+		out_of_stock_product_info.id = p_id;
+		out_of_stock_product_info.email_id = $('#m_notify_email_id').val();
+		$('.super-attribute-select').each(function() {
+			if(!$(this).hasClass('selectboxit')) {
+				out_of_stock_product_info_options[$(this).attr('id')] = $(this).val();
+			}
+		});
+		out_of_stock_product_info.options = out_of_stock_product_info_options;
+		out_of_stock_product_info.label = selected_option_label;
+
+		try {
+			$('#m_notify_email_id').attr('disabled', 'disabled');
+			$('#m_notify_email_id').addClass('notify_email_id_is_disabled');
+			jQuery.ajax({
+				url: "<?php echo $this->getUrl() . 'scooso/index/notifyme'; ?>",
+				dataType: 'json',
+				type: 'get',
+				data: out_of_stock_product_info,
+				success: function(response){
+					alert(response.response);
+					$('#m_notify_email_id').removeAttr('disabled');
+					$('#m_notify_email_id').removeClass('notify_email_id_is_disabled');
+					if(response.error == 1) {
+						$('#m_notify_email_id').addClass('validation-failed');
+					} else {
+						$('#m_notify_email_id').removeClass('validation-failed');
+						$('#m_notify_email_id').val("Email ID");
+					}
+				}
+			});
+		} catch (e) {
+		}
+	});
+
+	$('.super-attribute-select').change(check_stock_status);
+
+	function check_stock_status() {
+
+		var option_string = '';
+		$('.super-attribute-select').each(function() {
+			if(!$(this).hasClass('selectboxit')) {
+				option_string = option_string + "-" + $(this).val();
+			}
+		});
+		if(option_string) {
+			option_string = option_string.slice(1);
+		}
+
+		if($('.super-attribute-select').length > 0) {
+			if(options[option_string] == 0) {
+				$('.btn-cart').hide();
+				$('.notify-me-when-available').show();
+				$('#notify_email_id').addClass('validate-email, required-entry');
+			} else {
+				$('.btn-cart').show();
+				$('.notify-me-when-available').hide();
+				$('#notify_email_id').removeClass('validate-email, required-entry');
+			}
+		}
+
+	}
+
+	mini_slider = $('.slides_container').bxSlider(slider_settings);
+
+	$('body').append('<div id="fullscreen_gallery"></div>');
+	var gallery_html = $('.slides_container').clone().wrap('<p/>').parent().html();
+
+	$('#fullscreen_gallery')
+		.hide()
+		.append(gallery_html)
+		.append('<div class="zoom_close_button">Close</div>')
+		.addClass('product-img-box');
+
+	$('.product-shop .slides_container').click(function() {
+		$('.search-form').hide();
+		$('.middle-container').hide();
+		$('.footer-container').hide();
+		$('#fullscreen_gallery').show().addClass('product-img-box');
+		full_gallery_slider = $('#fullscreen_gallery .slides_container').bxSlider($.extend(slider_settings, {
+			startSlide: parseInt(mini_slider.getCurrentSlide())
+		}));
+	});
+
+	$('.zoom_close_button').live('click', function() {
+		$('.search-form').show();
+		$('.middle-container').show();
+		$('.footer-container').show();
+		$('#fullscreen_gallery').hide();
+		mini_slider.goToSlide(full_gallery_slider.getCurrentSlide());
+		full_gallery_slider.destroySlider();
+	});
+
+	if($('.quantity_dropdown').hasClass('one_step_down')) {
+		var price_box_height = $('.price-box').height();
+		var margin_top = ($('.product-page-price').height() - $('.quantity_dropdown').height()) / 2;
+		$('.quantity_dropdown').css('margin-top', margin_top);
+	}
+
+	if($('.super-attribute-select').length > 0) {
+		var dropdown_height = $('.price-box').height() + $('#product-options-wrapper').height();
+		var margin_top = (dropdown_height - $('.product-page-price').height()) / 2;
+		$('.product-page-price').css('margin-top', margin_top);
+	}
+
+});
+
+</script>

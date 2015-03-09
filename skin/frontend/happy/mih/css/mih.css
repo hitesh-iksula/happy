@@ -1,0 +1,62 @@
+.col-main { border: none; }
+.product-view { color: #878787; }
+
+.product-options-bottom { background: none; border: none; }
+.product-options { overflow: hidden; float: none; width: auto; height: auto; border: none; background: #f7f7f7; border-radius: 10px 10px 0 0; padding: 6px; padding-bottom: 0; }
+.product-collateral { background: none; }
+
+.product-essential { width: 84%; margin: auto; }
+.row { overflow: hidden; }
+.column { float: left; border-right: 1px solid #d5d5d5; padding: 8px 0 4px; border-bottom: 1px solid #d5d5d5; /*min-height: 100px;*/ }
+.heading .column { text-align: center; text-transform: uppercase; font-size: 16px; font-weight: 300; border: none; border-bottom: 1px solid #d5d5d5; min-height: 0; }
+.packages { width: 41%; margin-left: 1%; }
+.rate { width: 20%; padding: 8px 1% 4px; }
+.heading .rate { width: 22%; padding: 8px 0 4px; }
+.quantity { width: 16%; }
+.amount { width: 19%; border-right: none; font-size: 24px; font-weight: 300; text-align: center; }
+.amount .price { margin-top: 11px; }
+
+input, textarea, select, input:focus, textarea:focus, select:focus, input.input-text:focus, select:focus, textarea:focus { background: #6e6e6e; border: 2px solid #4b4b4b; color: #F4F4F4; width: 80%; }
+.input-box { text-align: center; margin-top: 5px; }
+
+.price-excluding-tax, .price-including-tax, .just-the-tax { overflow: hidden; }
+
+.price-box .price { float: right; width: 19%; padding: 16px 2px 16px 0; border-bottom: 1px solid #d5d5d5; border-left: 1px solid #d5d5d5; margin: 0; }
+.price-box .label { padding: 16px 2px 16px 0; border-bottom: 1px solid #d5d5d5; border-left: 1px solid #d5d5d5; margin: 0; float: right; width: 12%; padding-left: 4%; font-size: 14px; color: #808080; text-align: left; }
+.price-box .filler { width: 20%; padding: 16px 10px 16px 11px; border-bottom: 1px solid #d5d5d5; border-left: 1px solid #d5d5d5; margin: 0; float: right; }
+.price-box .price { font-size: 24px; font-weight: 300; color: #878787 }
+.product-options-bottom .price-box { float: none; text-align: right; }
+.product-options-bottom { padding: 0 1.4%; background: #F7F7F7; border-radius: 0 0 10px 10px; }
+
+.just-the-tax { display: block; }
+.just-the-tax .label { white-space: nowrap; color: #808080; }
+
+.product-shop { display: none; }
+
+.product-options label { color: #c61b09; text-transform: uppercase; font-size: 14px; font-weight: 300; margin: 4px 0; display: block; }
+.option-information { margin: 0 15px 5px; text-align: justify; }
+
+.rate-row-1 { font-size: 24px; font-weight: 300; text-align: center; padding: 10px 0; margin: 0 0 5px 0; border-bottom: 1px solid #d5d5d5; }
+.rate-row-2 { text-align: center; font-size: 15px; font-weight: 300; }
+
+.just-the-tax .price, .just-the-tax .label, .just-the-tax .filler { border-bottom: none; }
+
+.price-including-tax { padding: 8px 0; border-top: 1px solid #c61b09; border-bottom: 1px solid #c61b09; }
+.price-including-tax .price, .price-including-tax .label, .price-including-tax .filler { border: none; }
+.price-including-tax .label { text-transform: uppercase; }
+
+.button.happy_button { display: block; padding: 9px 16px; background-color: #A23B3C; color: #F7F7F7; font-size: 16px; margin: 20px 10px; }
+.button.happy_button:hover { background-color: #9a0000; }
+
+.product-collateral { display: none !important; }
+
+.error-msg { border-radius: 10px; border: none; border-color: #F7D7D7; background-color: #F7D7D7; color: #8B0F0F; background-image: url('../images/error-bg.png'); background-repeat: no-repeat; background-position: 8px !important; padding: 8px 8px 8px 44px !important; }
+ul.messages { margin: 4px auto !important; max-width: 91.5%; }
+
+.disabled_input { background: #BBB; border: 2px solid #999; color: #888; }
+
+.WebRupee { margin: 0 6px; font-size: 22px; }
+.rate-row-2 .WebRupee { font-size: 15px; }
+.display-none { display: none; }
+
+.align-center { margin: 6px 0; font-size: 14px; text-align: center; }

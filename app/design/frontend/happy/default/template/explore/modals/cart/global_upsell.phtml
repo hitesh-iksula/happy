@@ -1,0 +1,85 @@
+<?php $referer = $this->getRequest()->getParam('referer'); ?>
+<?php if($referer != 'onepagecheckout'): ?>
+
+	<?php $required_parent = 4;
+	//This  is the parent category to load product childs ?>
+
+	<link rel="stylesheet" href="<?php echo $this->getSkinUrl('css/jquery.bxslider.css') ?>" />
+	<script src="<?php echo $this->getSkinUrl('js/jquery.bxslider.min.js') ?>"></script>
+
+	<?php $totalItemsInCart = Mage::helper('checkout/cart')->getCart()->getItemsCount(); ?>
+	<?php if($totalItemsInCart > 0): ?>
+		<div class="global_upsells_container">
+			<?php
+				$category = Mage::getModel('catalog/category')->load($required_parent);
+				//Getting a collection of VISIBLE-SIMPLE products under mentioned parent category;
+				$productCollection = Mage::getResourceModel('catalog/product_collection')
+					->addCategoryFilter($category)
+					->addAttributeToFilter('visibility', array('eq' => 4))
+					->addAttributeToFilter('type_id', array('eq' => 'simple'));
+				//loading all NON deleted items from current cart session;
+				$cart_collection=Mage::getSingleton('checkout/session')->getQuote()->getAllItems();
+			?>
+			<h4>Frequently bought together with products in Carton to look cool!</h4>
+			<ul class="upsell_items" id="cart-modal-global-upsell">
+				<?php foreach($productCollection as $productEntry): ?>
+					<?php $product = Mage::getModel('catalog/product')->load($productEntry->getId()); ?>
+					<?php $cart_check_id = $product->getId(); ?>
+
+					<?php //loading product which are NOT in current cart
+						foreach($cart_collection as $cart_item){
+							if($cart_item->getProductId()==$cart_check_id){
+								$isincart=yes;//IN CART
+								break;
+							}
+							else{
+								$isincart=no;//NOT IN CART
+							}
+						}
+					?>
+					<?php if($isincart==no AND $product->isSaleable()): ?>
+						<li class="upsell_item">
+							<div class="up_product">
+								<div class="up_left">
+									<img class="prod-img" src="<?php echo $this->helper('catalog/image')->init($product, 'thumbnail', $product->getImage())->resize(70); ?>" alt="<?php echo $this->htmlEscape($product->getName()) ?>"/>
+								</div>
+								<div class="up_right">
+									<h4><?php echo $product->getName(); ?></h4>
+									<div class="up_price">
+										<?php
+										$productPrice = $product->getFinalPrice();
+										echo $this->helper('explore')->formatPrice($productPrice);
+										?>
+									</div>
+									<a class="upsell_add_to_cart" href="<?php echo $this->helper('checkout/cart')->getAddUrl($product) ?>"><div class="upsell_add_button" title="Add To Cart"></div></a>
+								</div>
+							</div>
+						</li>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	<?php endif; ?>
+
+	<!--<script type="text/javascript">
+	/*jQuery(document).ready(function($) {
+
+		var upsell_slider_list_width = Math.floor($(".global_upsells_container").width()/4);
+		$('#cart-modal-global-upsell').bxSlider({
+			pager: false,
+			prev_image: 'images/general/sprite_with_vodka.png',
+			next_image: 'images/general/sprite_with_vodka.png',
+			wrapper_class: 'global_upsells_container',
+			slideWidth : upsell_slider_list_width,
+			auto: false,
+			auto_controls: false,
+			minSlides: 5,
+			maxSlides: 5,
+			moveSlides: 1
+
+		});
+
+	});*/
+	</script>-->
+
+<?php endif; ?>

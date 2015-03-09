@@ -1,0 +1,212 @@
+<?php $versionString = $this->helper('jcversioning')->getVersionString(); ?>
+<?php  
+	$acb = Mage::getSingleton('core/session')->getCategoryArray($categoriesInCart);
+?>
+
+<?php $cart = Mage::getModel('checkout/cart')->getQuote(); ?>
+<script type="text/javascript">
+	/*window.productsInCart = {};
+	<php $catNa =  array(); ?>
+	ga('require', 'ec');
+	<?php foreach($cart->getAllItems() as $item): ?>
+		<?php $product = $item->getProduct(); ?>
+		<?php foreach ($item->getProduct()->getCategoryIds() as $value) {
+           		$cat = Mage::getModel("catalog/category")->load($value);
+	        }
+	        $proId = $product->getId();
+	    ?>
+
+		productsInCart["<?php echo $product->getId(); ?>"] = {
+			'id': '<?php echo $product->getSku(); ?>',
+			'name': '<?php echo $product->getName(); ?>',
+			'category': '<?php echo $acb[$proId] ?>',
+			'brand': '<?php echo "HappilyUnmarried"; ?>',
+			'variant': '<?php echo ""; ?>',
+			'price': '<?php echo $product->getPrice(); ?>',
+			'quantity': '<?php echo $item->getQty(); ?>',
+        };
+	<?php endforeach; ?>
+	ga('send', 'pageview');*/
+</script>
+
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/happy_checkout.js') . $versionString; ?>"></script>
+
+<div class="checkout_cart_sidebar" id="checkout-cart-sidebar-load"><?php echo $this->getChildHtml('cart_sidebar') ?></div>
+<input type="hidden" value="<?php echo $display_sidebar;?>" name="reviewdisplay" id="reviewdisplay" />
+<div class="checkout_progress">
+	<div class="step_bubble<?php if(Mage::getSingleton('customer/session')->isLoggedIn()): echo ' not_clickable'; endif; ?>" id="login-step"><div></div>Your Details</div>
+	<div class="step_bubble<?php if(Mage::getSingleton('customer/session')->isLoggedIn()): echo ' active_step'; else: echo ' not_clickable'; endif; ?>" id="address-step"><div></div>Shipping Info</div>
+	<div class="step_bubble not_clickable" id="review-step"><div></div>Order Summary</div>
+	<div class="step_bubble not_clickable" id="payment-step"><div></div>Payment</div>
+</div>
+
+<div class="checkout_steps onepagecheckout_datafields">
+
+	<div class="step" id="login-step">
+
+		<?php if (!Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+
+			<div class="envelope" id="new_user">
+
+				<form id="new-user-first-step" action="#" method="get">
+
+					<table cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="va-top">
+								<input type="radio" name="has_account" id="has_account_no" value="no" class="checkout_tiny_inputs" checked="checked" />
+							</td>
+							<td>
+								<label for="has_account_no" class="step_1_account_radio_label">Continue as Guest</label>
+								<p class="checkout_small_note">(You do not need a password)</p>
+							</td>
+						</tr>
+					</table>
+
+					<div class="form_fields input-container">
+						<div class="full fulldetaillabel">
+							<div class="data_area">
+								<input type="email" name="emailid" id="emailid" class="input-text t1 required-entry validate-email" placeholder="Email ID *" />
+							</div>
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+
+			<div class="envelope" id="returning_user">
+
+				<table cellspacing="0" cellpadding="0">
+					<tr>
+						<td class="va-top">
+							<input type="radio" name="has_account" id="has_account_yes" value="yes" class="checkout_tiny_inputs" />
+						</td>
+						<td>
+							<label for="has_account_yes" class="step_1_account_radio_label">I have a Happily Unmarried account & password</label>
+							<p class="checkout_small_note">(Sign into your account and checkout faster)</p>
+						</td>
+					</tr>
+				</table>
+
+				<div class="form_fields input-container">
+
+					<?php
+					echo $this->getChildHtml('customer.login');
+					echo $this->getChildHtml('customer.forgot');
+					?>
+
+				</div>
+
+			</div>
+
+			<div class="buttons-set">
+				<button class="continue button red" id="login-step-continue" onClick="validate_form($('new-user-first-step'))">continue</button>
+			</div>
+
+		<?php endif; ?>
+		<div class="or">or</div>
+		<div class="login_with_text_onepagecheckout">Login with:</div>
+		<div class="facebook_twitter_google">
+	        <?php echo $this->getChildHtml('inchoo_socialconnect_facebook_login_button1') ?>
+	        <?php echo $this->getChildHtml('inchoo_socialconnect_twitter_login_button1') ?>
+	        <?php echo $this->getChildHtml('inchoo_socialconnect_google_login_button1') ?>
+    	</div>
+	</div>
+
+	<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+	<?php
+	$seq_http = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on');
+	?>
+
+	<script type="text/javascript">
+		var http_type = '<?php if($seq_http){echo 'https';}else{echo 'http';}?>';
+	</script>
+	<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/onepagecheckout.pack.js') . $versionString; ?>"></script>
+	<script type="text/javascript">countryRegions = <?php echo $this->helper('directory')->getRegionJson() ?></script>
+
+	<form action="javascript:void(0)" method="POST" id="onepagecheckout_orderform" autocomplete="on">
+
+		<div class="form_steps">
+
+			<div class="step" id="address-step">
+
+				<?php echo $this->getChildHtml('billing.address') ?>
+				<?php echo $this->getChildHtml('shipping.address') ?>
+
+			</div>
+			<div class="step" id="review-step">
+
+				<?php echo $this->getChildHtml('review') ?>
+
+			</div>
+			<div class="step" id="payment-step">
+
+				<?php echo $this->getChildHtml('payment.method') ?>
+
+			</div>
+
+				<?php echo $this->getChildHtml('shipping.method') ?>
+			<input type='submit' id='opc_submit_form' style='visibility:hidden;' />
+
+			<input type="hidden" name="order_source" id="order_source" value="Mobile"/>
+
+		</div>
+
+	</form>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+	var checkout = new OPC('onepagecheckout_orderform', {
+		save    : '<?php echo $this->getUrl('onepagecheckout/index/saveOrder', array('_secure'=>$seq_http)) ?>',
+		update  : '<?php echo $this->getUrl('onepagecheckout/index/updateCheckout', array('_secure'=>$seq_http)) ?>',
+		success : '<?php echo $this->getUrl('onepagecheckout/index/success', array('_secure'=>$seq_http)) ?>',
+		failure : '<?php echo $this->getUrl('checkout/cart') ?>'
+	}, "<?php echo $this->__('Please agree to all the terms and conditions.') ?>");
+
+	document.observe("dom:loaded", function() {
+		var win_triggers	= Array();
+		$$('.checkout-agreements .agree a').each(function(item){
+			var obj	= {
+				el: $$('.' + item.className),
+				event: 'click',
+				window: $(item.className + '-window')
+			};
+			win_triggers.push(obj);
+		});
+		opc_window	= new OPC.Window({triggers: win_triggers});
+	});
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+function validate_form(form_to_validate) {
+	var validator = new Validation(form_to_validate);
+	validation_status[index] = 0;
+	if(validator.validate()) {
+		validation_status[index] = 1;
+	}
+	return false;
+}
+var update_qty_url = "<?php echo $this->getUrl('checkout/cart/ajaxUpdate') ?>";
+var address_fetch_url = "<?php echo $this->getUrl('explore/cart/getCustomerAddressById') ?>";
+var is_production = parseInt("<?php if($this->helper('backdrop')->getIsProduction()) { echo 1; } else { echo 0; } ?>");
+//]]!>
+</script>
+
+<script type="text/javascript" language="javascript">
+  	jQuery(document).ready(function() {
+	    jQuery("#login-step-continue").click(function(){
+	    var emailid = jQuery("#emailid").val();
+          jQuery.post( 
+             "/hupopup/subscriber/orderflow/",
+             { email: emailid },
+	             function(data) {
+	                console.log(data);
+	             }
+            );
+	    });
+   	});
+</script>

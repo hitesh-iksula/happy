@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+	<default>
+		<reference name="head">
+			<action method="addCss"><stylesheet>css/override.css</stylesheet></action>
+			<action method="addJs"><script>md/quickview/js/jquery-1.7.2.min.js</script></action>
+			<action method="addJs"><script>md/quickview/thickbox/jquery.noconflict.js</script></action>
+			<action method="addItem"><type>skin_js</type><name>js/jquery.lazyload.min.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/happy.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/jquery.mCustomScrollbar.concat.min.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/html5.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/jquery-ui.min.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/jquery.selectBoxIt.js</name></action>
+		</reference>
+	</default>
+
+	<cms_index_index>
+
+		<reference name="head">
+
+			<block type="page/html" name="top.Js" as="topJs" template="md/quickview/page/lablequickview.phtml"/>
+			<action method="removeItem"><type>skin_css</type><name>css/override.css</name></action>
+			<action method="addCss"><stylesheet>css/override.css</stylesheet></action>
+
+        </reference>
+
+		<reference name="content">
+			<block type="explore/explore" name="category_container" template="explore/master.phtml"/>
+		</reference>
+
+	</cms_index_index>
+
+	<explore_cart_cartmodal>
+		<remove name="header"/>
+        <remove name="footer"/>
+        <remove name="right"/>
+        <remove name="left"/>
+		<update handle="checkout_cart_index"/>
+		<reference name="root">
+            <action method="setTemplate"><template>explore/modals/cart/page/cartpage.phtml</template></action>
+        </reference>
+        <reference name="content">
+        	<remove name="checkout.cart.coupon"/>
+        	<remove name="checkout.cart.shipping"/>
+        </reference>
+	</explore_cart_cartmodal>
+	<checkout_cart_index>
+        <reference name="content">
+        	<block type="explore/explore" name="cart.scripts" as="scripts" template="explore/modals/cart/cart_scripts.phtml" after="-" />
+        </reference>
+	</checkout_cart_index>
+
+</layout>

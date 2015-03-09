@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Offi_CustomerAttribute>
+            <version>0.1.0</version>
+        </Offi_CustomerAttribute>
+    </modules>
+    <global>        
+        <helpers>
+            <customerattribute>
+                <class>Offi_CustomerAttribute_Helper</class>
+            </customerattribute>  
+        </helpers>
+        <models>
+            <customerattribute>
+                <class>Offi_CustomerAttribute_Model</class>
+            </customerattribute>  
+        </models>
+        <blocks>
+            <customerattribute>
+                <class>Offi_CustomerAttribute_Block</class>
+            </customerattribute>            
+        </blocks>
+		<!--Starts here-->
+		<blocks>
+		<adminhtml>
+			<rewrite>
+				<adminhtml_grid>Offi_CustomerAttribute_Block_Adminhtml_Grid</adminhtml_grid>
+			</rewrite>
+		</adminhtml>
+		<!-- Disabled Customer Grid Rewrite -->
+		<!-- <adminhtml>
+			<rewrite>
+				<customer_grid>Offi_CustomerAttribute_Block_Customer_Grid</customer_grid>
+			</rewrite>
+		</adminhtml> -->
+	</blocks>
+	
+	
+	
+	
+	
+	 <resources>
+            <customerattribute_setup>
+                <setup>
+                    <module>Offi_CustomerAttribute</module>
+                    <class>Offi_CustomerAttribute_Model_Setup</class>
+                </setup>
+                
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </customerattribute_setup>
+            
+            <mn_customer_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </mn_customer_write>
+            
+            <mn_customer_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </mn_customer_read>
+        </resources>
+        
+        <fieldsets>
+            <customer_account>
+                <tax_class_id>
+                    <create>1</create>
+                    <update>1</update>
+                </tax_class_id>
+            </customer_account>
+        </fieldsets>
+		
+		<!--Starts here-->
+		
+		
+		
+		
+    </global>
+    <admin>
+        <routers>
+            <customerattribute>
+                <use>admin</use>
+                <args>
+                    <module>Offi_CustomerAttribute</module>
+                    <frontName>customerattribute</frontName>
+                </args>
+            </customerattribute>
+        </routers>
+    </admin>
+    <adminhtml>
+        <menu>                        
+            <customer>
+                <children>                  
+                    <customerattribute_adminhtml_index>
+                        <title>Customer Attributes Manager</title>
+                        <action>customerattribute/adminhtml_index</action>
+                        <sort_order>12</sort_order>
+                    </customerattribute_adminhtml_index>                                                                           				                                                                             
+                </children>                    
+            </customer>
+        </menu>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <Offi_CustomerAttribute>
+                            <title>Customer Attribute Module</title>
+                            <sort_order>10</sort_order>
+                        </Offi_CustomerAttribute>
+                    </children>                   
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <attribute>
+                    <file>offi_customer_attribute.xml</file>
+                </attribute>                
+            </updates>
+        </layout>
+    </adminhtml>
+</config>

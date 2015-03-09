@@ -1,0 +1,257 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+date_default_timezone_set('Asia/Kolkata');
+$currentTime = date("H", strtotime("now"));
+$currentDay = date('D', $time);
+$offDelivery = '';
+$mydate = date('d/m/Y');
+$t=date('d-m-Y');
+$myday1 = date("D",strtotime($t));
+$myday = date("l",strtotime($t));
+$nextday = Date('l', strtotime("+1 days"));
+$nextday1 = Date('l', strtotime("+2 days"));
+    if ($this->getOrderId()){
+        $order = Mage::getSingleton('sales/order')->loadByIncrementId($this->getOrderId());
+    }
+?>
+<?php $order = Mage::getModel('sales/order')->loadByIncrementId(Mage::getSingleton('checkout/session')->getLastRealOrderId()); ?>
+ <!-- echo "<pre>";
+ print_r($order); -->
+<?php  
+    $acb = Mage::getSingleton('core/session')->getCategoryArray($categoriesInCart);
+?>
+
+<script type="text/javascript">       
+
+    ga('require', 'ec');
+
+    <?php foreach($order->getAllItems() as $item): ?>
+    <?php $product = $item->getProduct(); ?>
+    <?php foreach ($item->getProduct()->getCategoryIds() as $value) {
+            $cat = Mage::getModel("catalog/category")->load($value);
+        }
+         $proId = $product->getId();
+     ?>
+        ga('ec:addProduct', {
+          'id': '<?php echo $item->getSku(); ?>',
+          'name': '<?php echo $item->getName(); ?>',
+          'category': '<?php echo $acb[$proId] ?>',
+          'brand': '<?php echo "HappilyUnmarried"; ?>',
+          'variant': '<?php echo ""; ?>',
+          'price': '<?php echo $item->getPrice();?>',
+          'quantity': '<?php echo  $item->getQtyOrdered(); ?>',
+        });
+
+    <?php endforeach; ?>
+    
+    // Transaction level information is provided via an actionFieldObject.
+    ga('ec:setAction', 'purchase', {
+      'id': '<?php echo $this->getOrderId(); ?>', 
+      'affiliation': 'HappilyUnmarried',
+      'revenue': '<?php echo $order->getBaseGrandTotal(); ?>',
+      'tax': '<?php echo $order->getBaseTaxAmount(); ?>',
+      'shipping': '<?php echo $order->getBaseShippingAmount(); ?>',
+      'coupon': '<?php echo $order->getCouponCode(); ?>'    // User added a coupon at checkout.
+    });
+
+
+    ga('send', 'pageview');  
+
+</script>
+
+<div class="success-page-content">
+
+<div class="success-upper">
+    <div class="page-title success-title">
+        <h1><?php echo $this->__('Your order has been placed!') ?></h1>
+    </div>
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+    <div class="order-success-banner"></div>
+
+    <div class="order-details-summary">
+        <span class="order-id"><?php echo $this->__('Your Order Id is : ') ?><?php echo $this->getOrderId() ?></span>
+        <span><?php echo $this->__('Amount : ') ?><?php echo $this->helper('explore')->formatPrice($order->getGrandTotal()) ?></span>
+        <p><?php echo $this->__("Because you're so amazing, you'll get an awesome") ?><br><?php echo $this->__('email with all your order details soon!') ?></p>
+    </div>
+
+</div>
+
+    <div class="success-msgs">
+        <p><?php echo $this->__('So, now that this is done, we just wanted you to know that,') ?></p>
+
+        <p><?php echo $this->__('"We" without "You" is like a neard without braces, A shoe without laces, aSentenceWithoutSpaces!') ?></p><br>
+
+        <p class="success-last-msg"><?php echo $this->__("So, let's spend some time together and see how it goes from there!") ?></p>
+    </div>
+
+    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('success_social_links')->toHtml() ?>
+
+
+<!--     <?php if ($this->getOrderId()):?>
+        <?php
+        $order = Mage::getSingleton('sales/order')->loadByIncrementId($this->getOrderId());
+        ?>
+        <ul class="order-details">
+            <li id="order-num">
+                <div class="f-left">
+                    <p><?php echo $this->__('Your Order Number:'); ?></p>
+                </div>
+                <div class="f-right">
+                    <p><b><?php echo $this->getOrderId() ?></b></p>
+                </div>
+            </li>
+            <li id="item-count">
+                <div class="f-left">
+                    <p><?php echo $this->__('Number of items:'); ?></p>
+                </div>
+                <div class="f-right">
+                    <p><?php echo $order->getTotalItemCount() ?></p>
+                </div>
+            </li>
+            <li id="order-total">
+                <div class="f-left">
+                    <p><?php echo $this->__('total '); ?><span><?php echo $this->__('(Including Taxes)'); ?></span></p>
+                </div>
+                <div class="f-right">
+                    <p><?php echo $this->helper('explore')->formatPrice($order->getGrandTotal()) ?></p>
+                </div>
+            </li>
+            <?php if($addressObject = $order->getShippingAddress()): ?>
+                <li id="shipping-address">
+                    <div class="f-left">
+                        <h3>Shipping Information</h3>
+                        <?php $address = $addressObject->getData(); ?>
+                        <div>
+                            <p><?php echo $address['firstname'] . $address['lastname']; ?></p><br/>
+                            <?php if($address['company'] AND $address['company'] != ''): ?>
+                                <p><?php echo $address['company']; ?></p>
+                            <?php endif; ?>
+                            <p><?php echo $address['street']; ?></p>
+                            <p><?php echo $address['city']; ?></p>
+                            <p><?php echo Mage::getModel('directory/region')->load($address['region_id'])->getName() . ', ' . Mage::app()->getLocale()->getCountryTranslation($address['country_id']) . ' ' . $address['postcode']; ?></p><br/>
+                            <p>T: <?php echo $address['telephone']; ?></p>
+                        </div>
+                    </div>
+                    <div class="f-right">
+                        <h3>Delivery Date</h3>
+                        <div>
+                            <?php $delivery_rate=Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getShippingMethod();?>
+                            <?php $las_idd=Mage::getSingleton('checkout/session')->getLastOrderId(); ?>
+                            <?php $delivery_success_rate = Mage::getModel('sales/order')->load($las_idd); ?>
+                            <?php $delivery_rate = $delivery_success_rate->getData('shipping_method'); ?>
+                            <?php if($delivery_rate == 'tablerate_bestway'): ?>
+                                <div class="delivery_date">
+                                    <p>3 - 4 working days</p>
+                                </div>
+                            <?php else: ?>
+                                <div class="delivery_date">
+                                    <?php $nextshipmentday = 'Monday' ?>
+                                    <?php if(($myday1 == 'Fri') && ($currentTime > 16)): ?>
+                                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+3 days")); ?> 
+                                        <p><?php echo $nextshipmentday; ?></p> 
+                                        <p><?php echo $nextshipmentdate; ?></p>
+                                    <?php elseif($myday1 == 'Sat'): ?>
+                                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+2 days")); ?> 
+                                        <p><?php echo $nextshipmentday; ?></p>
+                                        <p><?php echo $nextshipmentdate; ?></p>
+                                    <?php elseif(($myday1 == 'Sun') && ($currentTime <= 16)): ?>
+                                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+1 days")); ?> 
+                                        <p><?php echo $nextshipmentday; ?></p>
+                                        <p><?php echo $nextshipmentdate; ?></p>
+                                    <?php elseif(($myday1) && ($currentTime > 16) && ($myday1 != 'Fri') && ($myday1 != 'Sat')): ?>
+                                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+2 days")); ?> 
+                                        <p><?php echo $nextday1; ?></p>
+                                        <p><?php echo $nextshipmentdate; ?></p>
+                                    <?php else: ?>
+                                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+1 days")); ?> 
+                                        <p><?php echo $nextday; ?></p>
+                                        <p><?php echo $nextshipmentdate; ?></p>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </li>
+            <?php endif; ?>
+        </ul>
+    <?php endif;?>
+
+    <div class="buttons-set">
+        <button type="button" class="button green" onclick="window.location='<?php echo $this->getUrl() ?>'"><?php echo $this->__('Keep Shopping') ?></button>
+    </div> -->
+
+</div>
+
+<?php if($this->helper('backdrop')->getIsProduction()): ?>
+
+    <!-- Google Code for Sale Conversion Page -->
+    <script type="text/javascript">
+    /* <![CDATA[ */
+    var google_conversion_id = 968143207;
+    var google_conversion_language = "en";
+    var google_conversion_format = "2";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = "vdLdCLno_wgQ5-LSzQM";
+    var google_conversion_value = <?php echo round($order->getGrandTotal()); ?>;
+    var google_remarketing_only = false;
+    /* ]]> */
+    </script>
+    <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+    </script>
+    <noscript>
+    <div style="display:inline;">
+    <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/968143207/?label=vdLdCLno_wgQ5-LSzQM&amp;guid=ON&amp;script=0"/>
+    </div>
+    </noscript>
+
+    <!-- Offer Conversion: Happily Unmarried - Sitewide -->
+    <iframe src="https://mysmartprice.go2cloud.org/aff_l?offer_id=16&adv_sub=<?php echo $this->getOrderId() ?>&amount=<?php echo round($order->getGrandTotal()); ?>" scrolling="no" frameborder="0" width="1" height="1"></iframe>
+    <!-- // End Offer Conversion -->
+
+	<!-- InMobi tracking code | START -->
+	<div id="sdt-js"></div>
+
+	<script>
+	    var _beaconping = _beaconping || [];
+	    _beaconping.push({goalName:"Purchase", appId:"63cd7f0375094cca8f1ffc913b5d62f1",event:"onloadbeacon"});
+	    (function() {
+	        var e = document.createElement('script');
+	        e.src = 'http://sdtbeacon.appsdt.com/sdtbeacon.js';
+	        e.async = true;
+	        document.getElementById('sdt-js').appendChild(e);
+	    }());
+	</script>
+	<!-- InMobi tracking code | END -->
+
+<?php endif; ?>
+
+<?php
+// Set Order Source
+// $order->setOrderSource('Mobile')->save();
+?>

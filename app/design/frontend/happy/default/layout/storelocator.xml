@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<storelocator_index_index>
+		<reference name="root">
+			<action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+		<reference name="head">
+			<action method="addItem"><type>skin_js</type><name>js/storelocator.js</name></action>
+			<action method="setTitle"><title>Places to buy Happily Unmarried products from.</title></action>
+			<action method="setKeywords"><title>Happily, Unmarried, Store, Locator</title></action>
+			<action method="setDescription"><title>Places to buy Happily Unmarried products from.</title></action>
+			<action method="addJs"><script>md/quickview/fancy/fancybox/jquery.fancybox-1.3.4.pack.js</script></action>
+            <action method="addCss"><stylesheet>md/quickview/css/jquery.fancybox-1.3.4.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+			<block type="storelocator/index" name="storelocator_index" template="storelocator/index.phtml"/>
+		</reference>
+
+		<reference name="header">
+			<!-- <block type="core/template" name="find_products_by" template="explore/header/find_products_by.phtml" /> -->
+			<block type="core/template" name="cart_button" template="explore/header/cart_button.phtml" />
+		</reference>
+	</storelocator_index_index>
+</layout>

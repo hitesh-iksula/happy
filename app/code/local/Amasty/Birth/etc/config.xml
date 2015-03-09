@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Amasty_Birth>
+            <version>1.0.4</version>
+        </Amasty_Birth>
+    </modules>
+    
+    <global>
+        <models>
+            <ambirth>
+                <class>Amasty_Birth_Model</class>
+                <resourceModel>ambirth_mysql4</resourceModel>
+            </ambirth>
+            <ambirth_mysql4>
+                <class>Amasty_Birth_Model_Mysql4</class>
+				<entities>
+                    <log>
+                        <table>am_birth_log</table>
+                    </log> 
+                </entities>				
+            </ambirth_mysql4>
+        </models>
+        
+        <resources>
+            <ambirth_setup>
+                <setup>
+                    <module>Amasty_Birth</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </ambirth_setup>
+            
+            <ambirth_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </ambirth_write>
+            
+            <ambirth_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </ambirth_read>
+        </resources>
+        <helpers>
+            <ambirth>
+                <class>Amasty_Birth_Helper</class>
+            </ambirth>
+        </helpers>
+        
+        <template>
+            <email>
+               <ambirth_general_template translate="label" module="ambirth">
+                   <label>Birthday Coupon</label>
+                   <file>amasty_birthday_coupon.html</file>
+                   <type>html</type>
+               </ambirth_general_template>
+               <ambirth_general_template2 translate="label" module="ambirth">
+                   <label>Registration Coupon</label>
+                   <file>amasty_registration_coupon.html</file>
+                   <type>html</type>
+               </ambirth_general_template2>
+            </email>
+        </template>         
+    </global>
+
+    <crontab>
+        <jobs>
+            <ambirth_send>
+                <!-- each hour -->
+                <schedule><cron_expr>* * * * *</cron_expr></schedule>
+                <run><model>ambirth/observer::send</model></run>
+            </ambirth_send>
+        </jobs> 
+    </crontab>
+    
+           
+   <adminhtml>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <ambirth translate="title" module="ambirth">
+                                            <title>Birthday Coupon</title>
+                                        </ambirth>
+                                    </children>
+                                </config>
+                            </children>
+                        </system> 
+                     </children>
+                </admin> 
+			</resources>
+		</acl>
+        <translate>
+            <modules>
+                <Amasty_Birth>
+                    <files>
+                        <default>Amasty_Birth.csv</default>
+                    </files>
+                </Amasty_Birth>
+            </modules>
+        </translate>
+    </adminhtml> 
+    
+    <default>
+        <ambirth>
+           <general>
+                <enabled>0</enabled>
+                <identity>general</identity> 
+                <template>ambirth_general_template</template> 
+                <days>0</days> 
+                <birth_days>0</birth_days> 
+                <remove_days>30</remove_days> 
+                <template2>ambirth_general_template2</template2> 
+                <coupon_type>by_percent</coupon_type> 
+                <coupon_amount>5</coupon_amount> 
+                <coupon_days>1</coupon_days> 
+                <coupon_uses>1</coupon_uses> 
+            </general>
+        </ambirth>
+    </default>
+</config>

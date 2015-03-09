@@ -1,0 +1,47 @@
+<label for="<?php echo $this->getFieldId('month')?>"<?php if ($this->isRequired()) echo ' class="required"' ?>>
+	<?php echo $this->__('DOB') ?>
+    <?php if ($this->isRequired()) echo '<sup>*</sup>' ?>
+</label>
+<div class="data_area customer-dob">
+<?php
+
+    $valueDay = $this->getDay();
+    if(!$valueDay) { $valueDay = 'DD'; }
+    $this->setDateInput('d',
+        '<div class="dob-day">
+
+             <input type="text" id="' . $this->getFieldId('day') . '" name="' . $this->getFieldName('day') . '" value="' . $valueDay . '" class="t1 validate-custom" ' . $this->getFieldParams() . ' />
+         </div>'
+    );
+
+    $valueMonth = $this->getMonth();
+    if(!$valueMonth) { $valueMonth = 'MM'; }
+    $this->setDateInput('m',
+        '<div class="dob-month">
+
+             <input type="text" id="' . $this->getFieldId('month') . '" name="' . $this->getFieldName('month') . '" value="' . $valueMonth . '" class="t1 validate-custom" ' . $this->getFieldParams()  . ' />
+         </div>'
+    );
+
+    $valueYear = $this->getYear();
+    if(!$valueYear) { $valueYear = 'YYYY'; }
+    $this->setDateInput('y',
+        '<div class="dob-year">
+
+             <input type="text" id="' . $this->getFieldId('year') . '" name="' . $this->getFieldName('year') . '" value="' . $valueYear . '" class="t1 validate-custom" ' . $this->getFieldParams()  . ' />
+         </div>'
+    );
+
+    echo $this->getSortedDateInputs()
+?>
+    <div class="dob-full" style="display:none;">
+        <input type="hidden" id="<?php echo $this->getFieldId('dob')?>" name="<?php echo $this->getFieldName('dob')?>" />
+    </div>
+
+    <div class="validation-advice" style="display:none;"></div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    var customer_dob = new Varien.DOB('.customer-dob', <?php echo $this->isRequired() ? 'true' : 'false' ?>, '<?php echo $this->getDateFormat() ?>');
+//]]>
+</script>

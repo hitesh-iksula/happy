@@ -1,0 +1,150 @@
+<?php
+/**
+ * Redirect view file
+ *
+ * @category    View
+ * @package     Junaidbhura_Ccavenue
+ * @author      Junaid Bhura <info@junaidbhura.com>
+ */
+
+// Include CCAvenue Functions
+require_once('libfuncs.php3');
+
+/* -- FUNCTIONS START -- */
+function getUserIP() {
+	if (isset($_SERVER)) {
+		if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
+			return $_SERVER["HTTP_X_FORWARDED_FOR"];
+		
+		if (isset($_SERVER["HTTP_CLIENT_IP"]))
+			return $_SERVER["HTTP_CLIENT_IP"];
+		
+		return $_SERVER["REMOTE_ADDR"];
+	}
+	
+	if (getenv('HTTP_X_FORWARDED_FOR'))
+		return getenv('HTTP_X_FORWARDED_FOR');
+	
+	if (getenv('HTTP_CLIENT_IP'))
+		return getenv('HTTP_CLIENT_IP');
+	
+	return getenv('REMOTE_ADDR');
+}
+/* -- FUNCTIONS END -- */
+
+// Retrieve order
+$order = new Mage_Sales_Model_Order();
+$orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
+$order->loadByIncrementId($orderId);
+
+// echo "<pre>"; print_r($order); print_r($order->getPayment()->getMethodInstance()->getPaymentInfo()); exit;
+
+// Get CCAvenue Parameters
+$action = Mage::getStoreConfig('payment/ccavenue/submit_url');
+$Merchant_Id = Mage::getStoreConfig('payment/ccavenue/merchant_id');
+$Amount = round($order->base_grand_total, 2);
+$Order_Id = $orderId;
+$Redirect_Url = Mage::getBaseUrl().'ccavenue/payment/response';
+$WorkingKey = Mage::getStoreConfig('payment/ccavenue/working_key');
+$Checksum = getCheckSum($Merchant_Id,$Amount,$Order_Id ,$Redirect_Url,$WorkingKey);
+
+// Retrieve order details
+$billingAddress = $order->getBillingAddress();
+$billingData = $billingAddress->getData();
+$shippingAddress = $order->getShippingAddress();
+if($shippingAddress)
+	$shippingData = $shippingAddress->getData();
+else
+	$shippingData = '';
+
+$billing_cust_name = $billingData['firstname'].' '.$billingData['lastname'];
+$billing_cust_address = $billingAddress->street;
+$billing_cust_state = $billingAddress->region;
+$billing_cust_country = Mage::getModel('directory/country')->load($billingAddress->country_id)->getName();
+$billing_cust_tel= $billingAddress->telephone;
+$billing_cust_email = $order->customer_email;
+$billing_city = $billingAddress->city;
+$billing_zip = $billingAddress->postcode;
+if($shippingData != '') {
+	$delivery_cust_name = $shippingData['firstname'].' '.$shippingData['lastname'];
+	$delivery_cust_address = $shippingAddress->street;
+	$delivery_cust_state = $shippingAddress->region;
+	$delivery_cust_country = Mage::getModel('directory/country')->load($shippingAddress->country_id)->getName();
+	$delivery_cust_tel = $shippingAddress->telephone;
+	$delivery_city = $shippingAddress->city;
+	$delivery_zip = $shippingAddress->postcode;
+}
+else {
+	$delivery_cust_name = '';
+	$delivery_cust_address = '';
+	$delivery_cust_state = '';
+	$delivery_cust_country = '';
+	$delivery_cust_tel = '';
+	$delivery_city = '';
+	$delivery_zip = '';
+}
+$Merchant_Param = '';
+$billing_cust_notes = '';
+
+// Insert into CCAvenue Redirect Log Table
+$query = "INSERT INTO tbl_ccavenue_redirect SET merchant_id='".$Merchant_Id."', amount=".$Amount.", order_id=".$Order_Id.", redirect_url='".$Redirect_Url."', checksum='".$Checksum."', billing_cust_name='".addslashes($billing_cust_name)."', billing_cust_address='".addslashes($billing_cust_address)."', billing_cust_country='".addslashes($billing_cust_country)."', billing_cust_state='".addslashes($billing_cust_state)."', billing_zip='".$billing_zip."', billing_cust_tel='".$billing_cust_tel."', billing_cust_email='".$billing_cust_email."', delivery_cust_name='".addslashes($delivery_cust_name)."', delivery_cust_address='".addslashes($delivery_cust_address)."', delivery_cust_country='".addslashes($delivery_cust_country)."', delivery_cust_state='".addslashes($delivery_cust_state)."', delivery_cust_tel='".$delivery_cust_tel."', billing_cust_notes='".addslashes($billing_cust_notes)."', merchant_param='".$Merchant_Param."', billing_cust_city='".addslashes($billing_city)."', billing_zip_code='".$billing_zip."', delivery_cust_city='".addslashes($delivery_city)."', delivery_zip_code='".$delivery_zip."', ccavenue_redirect_ip='".getUserIP()."', ccavenue_redirect_dtime = NOW()";
+$db = Mage::getSingleton('core/resource')->getConnection('core_write');
+$db->query($query);
+$db->query("COMMIT");
+
+?>
+
+<div id="category-cols" style="margin-top:30px;">
+    <div id="category-col-left">&nbsp;</div>
+    <div id="category-col-right" style="padding-top:20px;">
+        <p>Redirecting... If you have been here for a while, please <a href="javascript:document.ccavenueform.submit();">click here</a>.</p>
+        <p>Make sure you don't press the 'Back' button in your browser till your order is complete.</p>
+    </div>
+</div>
+
+<?php
+
+// CCavenue Seamless integration parameters
+$ccavenuePaymentMethod = $order->getPayment()->getCcavenuePaymentMethod();
+$ccavenueMethodOption = $order->getPayment()->getCcavenueMethodOption();
+
+$ccavenueOptionArray = array(
+	'NonMoto'    => 'NonMotoCardType',
+	'netBanking' => 'netBankingCards'
+);
+
+?>
+
+<form name="ccavenueform" method="post" action="<?php echo $action; ?>">
+	<input type="hidden" name="Merchant_Id" value="<?php echo $Merchant_Id; ?>">
+	<input type="hidden" name="Amount" value="<?php echo $Amount; ?>">
+	<input type="hidden" name="Order_Id" value="<?php echo $Order_Id; ?>">
+	<input type="hidden" name="Redirect_Url" value="<?php echo $Redirect_Url; ?>">
+	<input type="hidden" name="Checksum" value="<?php echo $Checksum; ?>">
+	<input type="hidden" name="billing_cust_name" value="<?php echo $billing_cust_name; ?>"> 
+	<input type="hidden" name="billing_cust_address" value="<?php echo $billing_cust_address; ?>"> 
+	<input type="hidden" name="billing_cust_country" value="<?php echo $billing_cust_country; ?>"> 
+	<input type="hidden" name="billing_cust_state" value="<?php echo $billing_cust_state; ?>"> 
+	<input type="hidden" name="billing_zip" value="<?php echo $billing_zip; ?>"> 
+	<input type="hidden" name="billing_cust_tel" value="<?php echo $billing_cust_tel; ?>"> 
+	<input type="hidden" name="billing_cust_email" value="<?php echo $billing_cust_email; ?>"> 
+	<input type="hidden" name="delivery_cust_name" value="<?php echo $delivery_cust_name; ?>"> 
+	<input type="hidden" name="delivery_cust_address" value="<?php echo $delivery_cust_address; ?>"> 
+	<input type="hidden" name="delivery_cust_country" value="<?php echo $delivery_cust_country; ?>"> 
+	<input type="hidden" name="delivery_cust_state" value="<?php echo $delivery_cust_state; ?>"> 
+	<input type="hidden" name="delivery_cust_tel" value="<?php echo $delivery_cust_tel; ?>"> 
+	<input type="hidden" name="billing_cust_notes" value="<?php echo $billing_cust_notes; ?>"> 
+	<input type="hidden" name="Merchant_Param" value="<?php echo $Merchant_Param; ?>"> 
+	<input type="hidden" name="billing_cust_city" value="<?php echo $billing_city; ?>"> 
+	<input type="hidden" name="billing_zip_code" value="<?php echo $billing_zip; ?>"> 
+	<input type="hidden" name="delivery_cust_city" value="<?php echo $delivery_city; ?>"> 
+	<input type="hidden" name="delivery_zip_code" value="<?php echo $delivery_zip; ?>">
+
+	<input type="hidden" name='cardOption' value='<?php echo $ccavenuePaymentMethod ?>'>
+	<input type="hidden" name='<?php echo $ccavenueOptionArray[$ccavenuePaymentMethod] ?>' value='<?php echo $ccavenueMethodOption ?>'>
+
+</form>
+
+<script type="text/javascript">
+document.ccavenueform.submit();
+</script>

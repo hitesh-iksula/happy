@@ -1,0 +1,24 @@
+<?php
+$folofoCategoryId = $this->helper('explore')->getFolofoCategory();
+$folofoCategory = Mage::getModel('catalog/category')->load($folofoCategoryId);
+?>
+
+<div class="folofo_cms_head">
+
+	<a href="<?php echo $folofoCategory->getUrl(); ?>">
+		<img src="<?php echo $this->getSkinUrl('images/folofo_logo.png') ?>" class="folofo_logo"/>
+	</a>
+
+	<ul class="folofo_cms_links">
+		<li style="visibility: hidden;">
+			<a href="<?php echo $this->getUrl('folofo'); ?>" class="button happy_button red_button">Videos</a>
+		</li>
+		<li style="visibility: hidden;" class="folofo_partners_link">
+			<a href="<?php echo $this->getUrl('folofo'); ?>" class="button happy_button red_button">Partners</a>
+		</li>
+		<li>
+			<a href="<?php echo $this->getUrl('folofo'); ?>" class="button happy_button red_button">About Us</a>
+		</li>
+	</ul>
+
+</div>

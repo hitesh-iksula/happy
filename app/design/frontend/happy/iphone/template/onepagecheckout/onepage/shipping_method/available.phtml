@@ -1,0 +1,241 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<?php 
+
+$quote        = Mage::getSingleton('checkout/session')->getQuote();
+$_items       = $quote->getAllVisibleItems();
+$NonInventory = 0;
+$Inventory    = 0;
+
+	foreach($_items as $_item):
+		 $product = Mage::getModel('catalog/product')->load($_item->getProduct()->getId());
+		 if($product->getNonInventoryProducts() != 1){
+			$Inventory = 1;
+		 }else{
+		 	$NonInventory = 1;
+		 } 
+	endforeach;
+
+?>
+<?php
+$currentTime = date('H', time());
+$currentDay = date('D', $time);
+$offDelivery = '';
+switch($currentDay) {
+	case 'Sun':
+		if(intval($currentTime) < 9) {
+			$offDelivery = 'disabled="disabled"';
+		}
+		break;
+	case 'Sat':
+		if(intval($currentTime) > 16) {
+			$offDelivery = 'disabled="disabled"';
+		}
+		break;
+}
+?>
+<?php if (!($_shippingRateGroups = $this->getShippingRates())): ?>
+    <p><?php echo $this->__('Sorry, no quotes are available for this order at this time.') ?></p>
+<?php else: ?>
+<?php
+	$postcode = $this->getAddress()->getPostcode();
+	$pincodeModel = Mage::getModel('pincode/pincode');
+	$collection = $pincodeModel->getCollection();
+	$collection->addFieldToFilter('pincode', $postcode);
+
+
+	if($collection->getData()){
+		$pincodeVerify = true;
+		}else{
+		$offDelivery = 'disabled="disabled"';
+		$pincodeVerify = false;
+		}
+	?>
+
+	<?php
+		if($NonInventory == 1 && $Inventory == 0) {
+			$offDelivery = 'disabled="disabled"';
+		}
+	?>
+
+
+	    <dl class="sp-methods">
+	    <?php $shippingCodePrice = array(); ?>
+	    <?php $_sole = count($_shippingRateGroups) == 1;
+	    foreach ($_shippingRateGroups as $code => $_rates): ?>
+
+	        <dt><?php //echo $this->getCarrierName($code) ?></dt>
+	        <dd class="delivery-option-msg">
+	            <ul>
+	            <?php $_sole = $_sole && count($_rates) == 1;
+	            foreach ($_rates as $_rate): ?>
+	                <?php $shippingCodePrice[] = "'".$_rate->getCode()."':".(float)$_rate->getPrice(); ?>
+	                <li<?php if(!$pincodeVerify && $_rate->getCode() == 'flatrate_flatrate'): echo ' class="greyed_out"'; endif; ?>>
+	                   <?php if ($_rate->getErrorMessage()): ?>
+	                    <ul class="messages"><li class="error-msg"><ul><li><?php echo $_rate->getErrorMessage() ?></li></ul></li></ul>
+	                   <?php else: ?>
+	                        <?php if ($_sole) : ?>
+	                        <span class="no-display display-block">
+	                        <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" /></span>
+	                        <?php else: ?>
+	                        <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode() == $this->getAddressShippingMethod()): ?>checked="checked"<?php endif; ?> class="radio validate-one-required-by-name" <?php if($_rate->getCode()=='flatrate_flatrate') echo $offDelivery; ?> />
+							<?php if ($_rate->getCode() === $this->getAddressShippingMethod()): ?>
+	                        <script type="text/javascript">
+	                            //<![CDATA[
+	                                lastPrice = <?php echo (float)$_rate->getPrice(); ?>;
+	                            //]]
+	                        </script>
+	                        
+	                        <?php endif; ?>
+
+	                        <?php endif; ?>
+	                        <label for="s_method_<?php echo $_rate->getCode() ?>"><?php echo $_rate->getMethodTitle() ?>
+	                        <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+	                        <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
+	                        <?php //echo $_excl; ?>
+	                        <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+	                            (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+
+	                        <?php endif; ?>
+	                        </label>
+
+	                        <?php if(($NonInventory == 1 && $Inventory == 0) && $_rate->getCode() == 'flatrate_flatrate') {}else{?>
+	                        <span id="question_<?php echo $_rate->getCode() ?>" class="delivery-question-mark"> ? </span>
+	                        <?php } ?>
+
+	                        <?php if($_rate->getCode() == 'flatrate_flatrate'): ?>
+								<span class="nxt-day-msg-1">(Option valid for orders placed b/w 12 AM & 4 PM on working days from Monday to Friday. NOT applicable on or a day prior to a public holiday.)</span>
+								<?php if($postcode && !$pincodeVerify): ?>
+									<span class="nxt-day-msg-2">This option is not available for your location.</span>
+								<?php endif; ?>
+								<?php if($NonInventory == 1 && $Inventory == 0):?>
+									<span class="nxt-day-msg-2">This option is NOT available for your order.</span>
+								<?php endif; ?>
+	                        <?php endif; ?>
+	                   <?php endif; ?>
+	                </li>
+	            <?php endforeach; ?>
+	            </ul>
+	        </dd>
+	    <?php endforeach; ?>
+	    </dl>
+	<script type="text/javascript">
+	//<![CDATA[
+	    <?php if (!empty($shippingCodePrice)): ?>
+	        var shippingCodePrice = {<?php echo implode(',',$shippingCodePrice); ?>};
+	    <?php endif; ?>
+
+
+	    $$('input[type="radio"][name="shipping_method"]').each(function(el){
+	        Event.observe(el, 'click', function(){
+	        	if (el.checked == true) {
+	        		jQuery('#loading_gif').show();
+					jQuery('#popup_jacket').show();
+	                var getShippingCode = el.getValue();
+	                <?php if (!empty($shippingCodePrice)): ?>
+	                    var newPrice = shippingCodePrice[getShippingCode];
+	                    if (!lastPrice) {
+	                        lastPrice = newPrice;
+	                        quoteBaseGrandTotal += newPrice;
+	                    }
+	                    if (newPrice != lastPrice) {
+	                        quoteBaseGrandTotal += (newPrice-lastPrice);
+	                        lastPrice = newPrice;
+	                    }
+	                <?php endif; ?>
+	                checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
+	                jQuery('#loading_gif').hide();
+					jQuery('#popup_jacket').hide();
+	                return false;
+	            }
+	       });
+	    });
+	//]]>
+	</script>
+
+
+<?php endif; ?>
+
+<div id="nxt-day-dialog" class="popup-dialog" style="display: none;">
+	<?php if($Inventory == 1 && $NonInventory == 1){?>
+		<P><?php echo $this->__('(i) Shipping cost is flat Rs. 250') ?></P>
+		<P><?php echo $this->__('(ii) Your order has 2 packages. Please see Order Summary for delivery details.') ?></P>
+		<button type="button" class="button green close_popup"><?php echo $this->__('OK') ?></button>
+	<?php } ?>
+
+	<?php if($Inventory == 1 && $NonInventory == 0){?>
+		<div><b>Next Day Delivery</b></div>
+		<p><?php echo $this->__('(i) This option is valid for orders placed between 12 AM and 4 PM on working days from Monday to Friday.') ?></p>
+		<p><?php echo $this->__('(ii) Order would be delivered on next day.') ?> </p>
+		<p></p>
+		<p></p>
+		<P><b><?php echo $this->__('Examples:') ?></b></P>
+		<P><?php echo $this->__('- Order placed at 3 PM on a Monday gets delivered on Tuesday.') ?></P>
+		<p><?php echo $this->__('- Order placed at 5 PM on a Monday gets delivered on Wednesday.') ?></p>
+		<p><?php echo $this->__('- Order placed at 5 PM on a Friday gets delivered on Monday.') ?></P>
+		<p></p>
+		<p><?php echo $this->__('(iii)  Shipping cost is Rs. 250') ?></p>
+		<button type="button" class="button green close_popup"><?php echo $this->__('OK') ?></button>
+	<?php }?>
+
+	<?php if($NonInventory == 1 && $Inventory == 0){?><?php }?>
+</div>
+
+<div id="stndrd-dialog" class="popup-dialog" style="display: none;">
+	<?php if($Inventory == 1 && $NonInventory == 1){?>
+		<div><?php echo $this->__('Shipping Cost:') ?></div>
+		<p><?php echo $this->__('(i) FREE shipping for orders above Rs. 1,500') ?></p>
+		<p><?php echo $this->__('(ii) Rs. 49 for orders less than Rs.500') ?></p>
+		<p><?php echo $this->__('(iii) Rs. 99 for orders between Rs. 500 and Rs. 1,500') ?></p>
+		<div></div>
+		<div></div>
+		<p><?php echo $this->__('Your order has 2 packages. Please see Order Summary for delivery time details.') ?></p>
+		<button type="button" class="button green close_popup"><?php echo $this->__('OK') ?></button>
+	<?php } ?>
+
+	<?php if($Inventory == 1 && $NonInventory == 0){?>
+	<div><b><?php echo $this->__('Standard Delivery') ?></b></div>
+		<p><?php echo $this->__('(i) FREE shipping for orders above Rs.1500.') ?> </p>
+		<p><?php echo $this->__('(ii) Rs. 49 for orders less than Rs.500.') ?></p>
+		<p><?php echo $this->__('(iii) Rs. 99 for orders between Rs. 500 and Rs. 1500') ?></p>
+		<p></p>
+		<p></p>
+		<p><b><?php echo $this->__('Delivery would happen within 3-4 working days.') ?></b></p>
+		<button type="button" class="button green close_popup"><?php echo $this->__('OK') ?></button>
+	<?php }?>
+
+	<?php if($NonInventory == 1 && $Inventory == 0){?>
+		<div><?php echo $this->__('Delivery would happen within 10 days') ?></div>
+		<div><?php echo $this->__('Shipping Cost:') ?></div>
+		<p><?php echo $this->__('(i) FREE shipping for orders above Rs. 1,500') ?></p>
+		<p><?php echo $this->__('(ii) Rs. 49 for orders less than Rs.500') ?></p>
+		<p><?php echo $this->__('(iii) Rs. 99 for orders between Rs. 500 and Rs. 1,500') ?></p>
+		<button type="button" class="button green close_popup"><?php echo $this->__('OK') ?></button>
+	<?php }?>
+
+</div>
+

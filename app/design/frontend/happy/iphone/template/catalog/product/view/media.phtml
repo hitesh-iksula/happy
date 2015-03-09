@@ -1,0 +1,62 @@
+<?php
+	$_product = $this->getProduct();
+	$_helper = $this->helper('catalog/output');
+	$zoomWidth   = Mage::helper('quickview/quickview')->getZoomWidth();
+	$zoomHeight  = Mage::helper('quickview/quickview')->getZoomHeight();
+	$zoomPosition  = Mage::helper('quickview/quickview')->getZoomPosition();
+	$zoomColor  = Mage::helper('quickview/quickview')->getZoomColor();
+
+	$top  = Mage::helper('quickview/quickview')->getTOP();
+	$leftNext  = Mage::helper('quickview/quickview')->getLeftNext();
+	$leftPrev  = Mage::helper('quickview/quickview')->getLeftPrev();
+	$pHeight  = Mage::helper('quickview/quickview')->getPaginationHeight();
+	$pWidth  = Mage::helper('quickview/quickview')->getPaginationWidth();
+	$imgWidth  = Mage::helper('quickview/quickview')->getImageWidth();
+	$imgHeight  = Mage::helper('quickview/quickview')->getImageHeight();
+?>
+
+<div id="product_img_slider">
+
+	<?php if ($_product->getImage() != 'no_selection' && $_product->getImage()): ?>
+
+		<?php if (count($this->getGalleryImages()) > 0): ?>
+
+			<ul class="slides_container">
+				<?php foreach ($this->getGalleryImages() as $_image): ?>
+					<?php $imageLabel = $_image->getLabel(); ?>
+					<li class='image_gallery'>
+						<img class="prod-img" src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(400); ?>" alt="<?php echo $this->htmlEscape($_image->getLabel()) ?>"/>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+
+		<?php else:?>
+
+			<p class="product-image">
+				<div href="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize(600); ?>" class='cloud-zoom' rel="position:'<?php echo $zoomPosition?>' ,tint: '<?php echo $zoomColor ?>',tintOpacity:0.5 ,smoothMove:5,zoomWidth:<?php echo $zoomWidth?>,zoomHeight:<?php echo $zoomHeight?>,adjustY:-4, adjustX:10, zoomFlyOut:false,zoomSizeMode:'lens' ">
+				<?php
+					$_img = '<img id="image" width="'.$imgWidth.'" height="'.$imgHeight.'" src="'.$this->helper('catalog/image')->init($_product, 'image')->resize($imgWidth,$imgHeight).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel()).'" />';
+					echo $_helper->productAttribute($_product, $_img, 'image');
+				?>
+
+				</div>
+			</p>
+
+		<?php endif; ?>
+
+	<?php else: ?>
+
+		<p class="product-image">
+			<div href="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize(600); ?>" class='cloud-zoom' rel="position:'<?php echo $zoomPosition?>' ,tint: '<?php echo $zoomColor ?>',tintOpacity:0.5 ,smoothMove:5,zoomWidth:<?php echo $zoomWidth?>,zoomHeight:<?php echo $zoomHeight?>,adjustY:-40, adjustX:100, zoomFlyOut:false,zoomSizeMode:'lens' ">
+
+			<?php
+				$_img = '<img id="image" width="'.$imgWidth.'" height="'.$imgHeight.'" src="'.$this->helper('catalog/image')->init($_product, 'image')->resize($imgWidth,$imgHeight).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel()).'" />';
+				echo $_helper->productAttribute($_product, $_img, 'image');
+			?>
+
+			</div>
+		</p>
+
+	<?php endif; ?>
+
+</div>

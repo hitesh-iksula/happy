@@ -1,0 +1,51 @@
+<?php
+
+$currentCategoryId = Mage::getSingleton('core/session')->getCurrentCategory();
+$currentCategory = Mage::getModel('catalog/category')->load($currentCategoryId);
+
+?>
+
+<div class="category_head<?php if($currentCategory->getData('children_count') > 0): echo ' category_has_subcategories'; endif; ?>">
+
+	<div class="category_label" id="<?php echo 'category' . $currentCategory->getData('entity_id') ?>">
+		<a href="<?php echo $currentCategory->getUrl(); ?>">
+			<img class="category_thumbnail" src="<?php echo Mage::getBaseUrl('media') . 'catalog' . DS . 'category' . DS . $currentCategory->getActiveThumbnail(); ?>" />
+			<?php if($currentCategory->getData('name') == 'UFO'): ?>
+				<span><?php echo $this->__('Unidentified Funny Objects') ?></span>
+			<?php else: ?>
+				<span><?php echo $currentCategory->getData('name') ?></span>
+			<?php endif; ?>
+		</a>
+	</div>
+
+	<?php $subcategories = explode(',', $currentCategory->getChildren()); ?>
+	<?php if($currentCategory->getData('children_count') > 0): ?>
+
+		<ul class="subacategory_labels" id="label_master_<?php echo $currentCategoryId; ?>">
+			<li class="subcategory_label active_label" id="<?php echo 'cat' . $currentCategoryId; ?>"><?php echo $this->__('All'); ?></li>
+			<?php foreach($subcategories as $subcategoryId): ?>
+
+				<?php $subcategory = Mage::getSingleton('catalog/category')->load($subcategoryId); ?>
+				<li class="subcategory_label" id="<?php echo 'cat' . $subcategory->getData('entity_id'); ?>"><?php echo $subcategory->getData('name'); ?></li>
+
+			<?php endforeach; ?>
+		</ul>
+
+	<?php endif; ?>
+
+</div>
+
+<?php if($currentCategory->getData('subcategory_colors')): ?>
+	<?php $colorCodes = explode(',', $currentCategory->getData('subcategory_colors')); ?>
+	<style type="text/css">
+	#category<?php echo $currentCategoryId; ?> .category_head .category_description { color: #<?php echo trim($colorCodes[0]); ?>; }
+
+	<?php if(count($colorCodes) > 1): ?>
+		#label_master_<?php echo $currentCategoryId; ?> .subcategory_label { background-color: #<?php echo trim($colorCodes[1]); ?>; }
+		#label_master_<?php echo $currentCategoryId; ?> .subcategory_label:hover { background-color: #<?php echo trim($colorCodes[2]); ?>; }
+		#label_master_<?php echo $currentCategoryId; ?> .active_label { background-color: #<?php echo trim($colorCodes[3]); ?>; }
+		#label_master_<?php echo $currentCategoryId; ?> .active_label:hover { background-color: #<?php echo trim($colorCodes[3]); ?>; }
+	<?php endif; ?>
+
+	</style>
+<?php endif; ?>

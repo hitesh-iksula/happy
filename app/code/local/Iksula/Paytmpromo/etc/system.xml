@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<tabs>
+		<paytmpromo translate="label" module="paytmpromo">
+			<label>Paytmpromo Page Settings</label>
+			<sort_order>10</sort_order>
+		</paytmpromo>
+	</tabs>
+	<sections>
+		<paytmpromo translate="label" module="paytmpromo">
+			<label>General Settings</label>
+			<tab>paytmpromo</tab>
+			<sort_order>100</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+				<paytmpromo_group translate="label" module="paytmpromo">
+					<label>General Settings</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>100</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<paytmpromo_increment_id translate="label">
+							<label>Increment ID</label>
+							<comment>Do not change</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</paytmpromo_increment_id>
+					</fields>
+				</paytmpromo_group>
+			</groups>
+		</paytmpromo>
+	</sections>
+</config>

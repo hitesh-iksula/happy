@@ -1,0 +1,10 @@
+<div class="pinit_pinit_button">
+	<?php $pinitUrl = '?url=' . $this->getUrl() . '&media=' . $this->getRequest()->getParam('product_image_url') . '&description=' . 'Happily%20Unmarried'; ?>
+	<a href="https://pinterest.com/pin/create/button/<?php echo $pinitUrl; ?>" data-pin-do="buttonPin" ddata-pin-config="none" target="_blank">
+		<img src="<?php echo $this->getSkinUrl('images/product_modal/pinit.jpg'); ?>" />
+	</a>
+	<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js" data-pin-hover="true"></script>
+</div>
+<a href="#" onclick=" window.open( 'https://www.facebook.com/sharer/sharer.php?u=<?php echo $this->getUrl(); ?>', 'facebook-share-dialog', 'width=626,height=436' ); return false;">
+	<img src="<?php echo $this->getSkinUrl('images/product_modal/likefb.jpg')?>" border="0" style="margin:3px 0 0 0;"/>
+</a>

@@ -1,0 +1,26 @@
+<?php
+
+$folofoCategoryId = $this->helper('explore')->getFolofoCategory();
+
+$folofoChildren = Mage::getModel('catalog/category')->getCategories($folofoCategoryId, 1, true, true);
+
+$childCategories = array();
+foreach ($folofoChildren as $category) {
+	$childCategories[$category->getPosition()] = $category->getId();
+}
+ksort($childCategories);
+
+$currentCategoryId = Mage::registry('current_category')->getId();
+
+?>
+
+<div class="folofo_head_separator_line"></div>
+
+<div class="folofo_subcategories">
+	<?php foreach ($childCategories as $childCategoryId): ?>
+		<?php $childCategory = Mage::getModel('catalog/category')->load($childCategoryId); ?>
+		<div class="folofo_subcategory<?php if($childCategoryId == end($childCategories)): ?> last<?php endif; ?><?php if($currentCategoryId == $childCategoryId): ?> active<?php endif; ?>">
+			<a href="<?php echo $childCategory->getUrl(); ?>" class="button happy_button green_button"><?php echo $childCategory->getName(); ?></a>
+		</div>
+	<?php endforeach; ?>
+</div>

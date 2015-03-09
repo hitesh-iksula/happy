@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Iksula_Mobile>
+			<version>0.1.0</version>
+		</Iksula_Mobile>
+	</modules>
+	<frontend>
+		<routers>
+			<mobile>
+				<use>standard</use>
+				<args>
+					<module>Iksula_Mobile</module>
+					<frontName>mobile</frontName>
+				</args>
+			</mobile>
+		</routers>
+	</frontend>
+	<global>
+		<helpers>
+			<mobile>
+				<class>Iksula_Mobile_Helper</class>
+			</mobile>
+		</helpers>
+		<blocks>
+			<mobile>
+				<class>Iksula_Mobile_Block</class>
+			</mobile>
+		</blocks>
+	</global>
+	<adminhtml>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<system>
+							<children>
+								<config>
+									<children>
+										<mobile>
+											<title>Mobile Settings</title>
+										</mobile>
+									</children>
+								</config>
+							</children>
+						</system>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+	</adminhtml>
+</config>

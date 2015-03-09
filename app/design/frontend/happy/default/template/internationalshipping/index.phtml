@@ -1,0 +1,45 @@
+<div class="cms-image-area"><img src="<?php echo $this->getSkinUrl('images/cmspages/international-shipping1.jpg');?>" alt="" /></div>
+<div class="cms-content-area">
+<h1 class="cms-page-title">International Shipping</h1>
+<p>We never say no to our customers. So yes, we would definitely ship orders to your country. The only catch is, that you would have to take care of the shipping cost.</p>
+<p>Kindly fill this form and we will get back to you with prices and delivery timelines!</p>
+	<div class="international-shipping-formarea">
+		<form action="<?php echo $this->getAction();?>" method="post" id="international_shipping">
+			<label for="name">Name</label>
+			<input class="cms-input-text-sty required-entry" name="name" type="text" title="Name" /> 
+			
+			<label for="email">Email Address</label>
+			<input class="cms-input-text-sty required-entry validate-email" name="email" type="text" title="Email Address" /> 
+
+			<label for="products">List of Products</label>
+			<textarea class="cms-textarea-sty required-entry" name="products" title="List of Products"></textarea> 
+			
+			<label for="shipping_add">Shipping Address</label>
+			<textarea class="cms-textarea-sty1 required-entry" name="shipping_add" title="Shipping Address"></textarea> 
+			
+			<div class="cms-input-text-sty1">
+				<label for="pincode">Pincode</label>
+				<input class="cms-input-text-sty required-entry" name="pincode" type="text" title="Pincode" /> 
+			</div>
+			
+			<div class="cms-input-text-sty1">
+				<label for="country">Country</label>
+				<input class="cms-input-text-sty required-entry" name="country" type="text" title="Country" /> 
+			</div>
+			
+			<input class="cms-input-submit-sty required-entry" name="submit" type="submit" value="SUBMIT" /> 
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+//< ![CDATA[
+var myForm = new VarienForm('international_shipping', true);
+//]]>
+</script>
+
+<style type="text/css">
+.cms-input-text-sty1 { width: 46%; color: #878787; }
+.cms-content-area { margin-bottom: 130px; }
+.international-shipping-formarea { margin-top: 30px; }
+</style>

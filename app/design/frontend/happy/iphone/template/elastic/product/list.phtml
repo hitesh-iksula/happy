@@ -1,0 +1,114 @@
+<?php
+$_productCollection = $this->getLoadedProductCollection();
+$_helper = $this->helper('catalog/output');
+$_collectionSize = $_productCollection->count();
+?>
+<?php $_category = Mage::getSingleton('catalog/layer')->getCurrentCategory(); ?>
+<script type="text/javascript">
+/*var productList = {};
+
+function onProductClick(element) {
+    var productId = jQuery(element).parent().attr('id');
+    productId = parseInt(productId.replace('product_id_', ''));
+
+    ga('ec:addProduct', productList[productId]);
+    ga('ec:setAction', 'click', { list: "<?php echo $_category->getName(); ?>" });
+    ga('send', 'event', 'UX', 'click', 'Results', {
+        'hitCallback': function() {
+            document.location = jQuery(element).attr('href');
+        }
+    });
+}*/
+</script>
+
+
+<div class="one_category" id="category0">
+
+		<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+		<div class="category_head page-title search-title">
+			<h1><?php echo ($this->getHeaderText() || $this->getHeaderText() === false) ? $this->getHeaderText() : $this->__("Search results for '<b>%s</b>'", $this->helper('catalogsearch')->getEscapedQueryText()) ?></h1>
+		</div>
+
+		<?php if($messages = $this->getNoteMessages()): ?>
+
+			<p class="note-msg">
+				<?php foreach ($messages as $message):?>
+					<?php echo $message?><br />
+				<?php endforeach;?>
+			</p>
+
+		<?php endif; ?>
+
+		<?php $searchString = $this->helper('explore')->checkAndReturnSearchString(); ?>
+
+
+
+		<?php if(!$_productCollection->count()): ?>
+
+			<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+
+		<?php else: ?>
+
+			<div class="category-products">
+
+				<ul class="products-grid" id="container0">
+					<?php $product_counter = 1; ?>
+					<?php $i=0; foreach ($_productCollection as $product): $i++; ?>
+
+						<?php $_product = Mage::getModel('catalog/product')->load($product->getId()); ?>
+
+						<li class="item" id="product_id_<?php echo $_product->getId(); ?>">
+
+							<a href="<?php echo $_product->getProductUrl() . $searchString ?>">
+
+								<div class="product-image" id="<?php echo 'product_' . $_product->getId(); ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>">
+									<img class="item-image" src="<?php echo $this->getSkinUrl('images/homepage/lazyloader_placeholder.png') ?>" data-original="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(256); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+									<noscript>
+										<img class="item-image" src="<?php echo $this->getSkinUrl() . 'images/homepage/lazyloader_placeholder.png' ?>" data-original="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(256); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+									</noscript>
+								</div>
+
+								<h2 class="product-name">
+										<?php $name = $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>
+										<?php $thresholdSize = 20; ?>
+										<?php $nameLength = strlen($name); ?>
+										<?php $title = 0; ?>
+										<?php if($nameLength > $thresholdSize) { $name = substr($name, 0, ($thresholdSize - 1)) . '...'; $title = 1; } ?>
+									<span class="product_name_title" <?php if($title == 1): ?>title="<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>"<?php endif; ?>>
+										<?php echo $name ?>
+									</span>
+								</h2>
+								<?php echo $this->getPriceHtml($_product, true) ?>
+							</a>
+
+						</li>
+						<script type="text/javascript">
+                           /* var productId = parseInt("<?php echo $_product->getId(); ?>");
+
+                            productList[productId] = {
+                                'id': '<?php echo $_product->getSku(); ?>',
+                                'name': '<?php echo addslashes($_product->getName()); ?>',
+                                'category': '<?php echo $_category->getName(); ?>',
+                                'brand': '<?php echo "Happily Unmarried"; ?>',
+                                'variant': '<?php '' ?>',
+                                'list': '<?php echo $_category->getName(); ?>',
+                                'position': '<?php echo $product_counter; ?>'
+                            };
+
+                            ga('require', 'ec');
+                            ga('ec:addImpression', productList[productId]);
+                            ga('send', 'pageview');*/
+                        </script>
+
+                        <?php $product_counter = $product_counter+1; ?>
+                       
+					<?php endforeach; ?>
+
+				</ul>
+
+			</div>
+
+		<?php endif; ?>
+
+</div>

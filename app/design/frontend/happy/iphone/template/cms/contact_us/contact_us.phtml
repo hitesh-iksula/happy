@@ -1,0 +1,42 @@
+<div class="my-account">
+	<?php echo $this->getMessagesBlock()->getGroupedHtml(); ?>
+	<div class="box">
+		<div class="box-title">
+			<h3>Contact Us</h3>
+		</div>
+		<div class="box-content">
+			<form action="<?php echo $this->getUrl('explore/contactus/postmobile') ?>" method="POST" id="contact_us" name="contact_us" class="form-list">
+				<ul class="form-list">
+					<li class="wide">
+						<input type="text" id="faq_name" name="name" placeholder="Name" class="input-text required-entry" />
+					</li>
+					<li class="wide">
+						<input type="text" id="faq_email" name="email" placeholder="Email" class="input-text required-entry validate-email" />
+					</li>
+					<li class="wide">
+						<textarea name="comment" id="faq_comment" placeholder="Message" class="data-text required-entry" ></textarea>
+					</li>
+					<li class="wide">
+						<input type="submit" value="Submit" class="button red"/>
+					</li>
+			</form>
+			<div id="post_contact_us_note" class="header_and_note">
+				<h3>You can also call Us!</h3>
+				<p class="slim ml-10px">
+					011 - 41057590<br/>
+					011 - 41042266
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="y-20">
+	<?php echo $this->getLayout()->createBlock('core/template')->setTemplate('cms/likeus/index.phtml')->toHtml(); ?>
+</div>
+
+<script type="text/javascript">
+//< ![CDATA[
+	var myForm = new VarienForm('contact_us', false);
+//]]>
+</script>

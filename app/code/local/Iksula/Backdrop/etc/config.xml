@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Iksula_Backdrop>
+      <version>0.1.0</version>
+    </Iksula_Backdrop>
+  </modules>
+  <global>
+    <helpers>
+      <backdrop>
+        <class>Iksula_Backdrop_Helper</class>
+      </backdrop>
+    </helpers>
+  </global>
+</config> 

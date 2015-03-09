@@ -1,0 +1,192 @@
+<?php
+    $_helper    = $this->helper('catalog/output');
+    $_category  = $this->getCurrentCategory();
+    $_categoryId = $_category->getId();
+    $_imgHtml   = '';
+?>
+
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php $theme = Mage::getSingleton('core/design_package')->getTheme('frontend');?>
+<div class="wrap_cover">
+
+    <div class="container_cover">
+
+        <!--Banner-->
+        <div class="banner_cover">
+            <?php
+                     if ($_imgUrl = $_category->getImageUrl()) {
+                        $_imgHtml = '<img src="'.$_imgUrl.'" alt="'.$this->htmlEscape($_category->getName()).'" title="'.$this->htmlEscape($_category->getName()).'" />';
+                        $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
+                        echo $_imgHtml;
+                     }
+            ?>
+        </div>
+
+        <!--Breadcrumbs-->
+        <div class="breadcrumbs_cover breadcrumbs">
+            <ul>
+                <li class="home">
+                    <a href="<?php echo $this->getUrl('');?>" title="Go to Home Page"><?php echo $this->__('Happily Unmarried') ?></a>
+                    <img src="<?php echo $this->getSkinUrl('images/general/breadcrumb_separator.png');?>" class="breadcrumb_separator">
+                </li>
+                <li class="category85">
+                    <a><?php echo $this->__('Phone Covers') ?></a>
+                </li>
+            </ul>
+        </div>
+
+        <!--Filter-->
+        <div class="middle_content_cover">
+
+            <div class="search_cover">
+
+                <h1><?php echo $this->__('Find all designs available for your phone!') ?></h1>
+
+                <div class="search_form_cover">
+
+                    <form>
+
+                        <div class="search_wrap">
+
+                            <div class="brands_wrap">
+
+                                <select name="brands" class="brands">
+                                  <option value=""><?php echo $this->__('BRAND') ?></option>
+                                    <?php
+                                        $cat = Mage::getModel('catalog/category')->load($_categoryId);
+                                        $subcats = $cat->getChildren();
+
+                                            foreach(explode(',',$subcats) as $sub_subCatid)
+                                            {
+                                                $_sub_category = Mage::getModel('catalog/category')->load($sub_subCatid);
+                                                  if($_sub_category->getIsActive()) { ?>
+                                                    <option value="<?php echo $sub_subCatid;?>"><?php echo $_sub_category->getName();?></option>
+                                                <?php }
+                                             }
+                                    ?>
+                                </select>
+
+                            </div>
+
+                            <div class="models_wrap">
+
+                                <select name="models" class="models">
+                                  <option value=""><?php echo $this->__('MODEL') ?></option>
+                                    <?php
+                                        // $cat = Mage::getModel('catalog/category')->load(95);
+                                        // $subcats = $cat->getChildren();
+
+                                        //     foreach(explode(',',$subcats) as $sub_subCatid)
+                                        //     {
+                                        //         $_sub_category = Mage::getModel('catalog/category')->load($sub_subCatid);
+                                        //           if($_sub_category->getIsActive()) { ?>
+                                                     <!--<option value="<?php //echo $_sub_category->getUrl();?>"><?php //echo $_sub_category->getName();?></option>-->
+                                                 <?php //}
+                                        //      }
+                                    ?>
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="find_design_wrap">
+                            <input type="submit" class="find_design" value="FIND DESIGN" name="find_design">
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--Models-->
+        <div class="bottom_content_cover">
+            <ul class="thumbnail-list">
+                <?php
+                        $cat = Mage::getModel('catalog/category')->load($_categoryId);
+                        $subcats = $cat->getChildren();
+                        $i = 1;
+                        foreach(explode(',',$subcats) as $subCatid)
+                        {
+                          $_category = Mage::getModel('catalog/category')->load($subCatid);
+                          if($_category->getIsActive()) {
+                            $sub_cat = Mage::getModel('catalog/category')->load($_category->getId());
+                            $sub_subcats = $sub_cat->getChildren();
+                            foreach(explode(',',$sub_subcats) as $sub_subCatid)
+                            {
+                              $_sub_category = Mage::getModel('catalog/category')->load($sub_subCatid);
+                              if($_sub_category->getIsActive() && $_sub_category->getFeaturedCategory() == 1) {
+                                    if($i <= 6){
+                                ?>
+                                    <li <?php if($i%3 == 2){echo "class='middle_product'";}?>>
+                                        <a href="<?php echo $_sub_category->getUrl();?>" class="image-w">
+                                              <?php if($_sub_category->getFeaturedCategoryImage()){?>
+                                                <img src="<?php echo $this->getUrl("media/catalog/category/").$_sub_category->getFeaturedCategoryImage();?>" width="368" height="368" />
+                                              <?php }else{ ?>
+                                                <img src="<?php echo $this->getSkinUrl('images/model-image.jpg');?>" width="368" height="368" />
+                                              <?php } ?>
+                                              <div class="cover">
+                                                <h3><?php echo $_sub_category->getName();?></h3>
+                                              </div>
+                                        </a>
+                                    </li>
+                               <?php }
+                                    $i++;
+                                }
+                             }
+                          }
+
+                        }
+                ?>
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    <?php if($theme != 'iphone'){?>
+    jQuery("select").msDropdown({roundedBorder:false});
+    <?php } ?>
+    jQuery('.brands option:eq(0)').attr('selected','selected');
+    jQuery('.brands_wrap .ddTitleText .ddlabel').text(jQuery('.brands option:eq(0)').text());
+    jQuery('.models option:eq(0)').attr('selected','selected');
+    jQuery('.models_wrap .ddTitleText .ddlabel').text(jQuery('.models option:eq(0)').text());
+    jQuery('.brands').live('change', function(e){
+        jQuery('#fancybox-loading-overlay').show();
+        jQuery('#fancybox-loading').show();
+        jQuery('#popup_jacket').show();
+        jQuery('#loading_gif').show();
+        e.preventDefault();
+            jQuery.ajax({
+                url: '<?php echo $this->getUrl('explore/cover/subcategories');?>',
+                type: 'POST',
+                data: 'sub_cat_id=' + jQuery('.brands').val(),
+                success: function(return_data) {
+                    jQuery('#fancybox-loading-overlay').hide();
+                    jQuery('#fancybox-loading').hide();
+                    jQuery('.models_wrap').html(return_data);
+                    jQuery('.models option:eq(1)').attr('selected','selected');
+                    jQuery('.models_wrap .ddTitleText .ddlabel').text(jQuery('.brands option:eq(1)').text());
+                    <?php if($theme != 'iphone'){?>
+                    jQuery("select").msDropdown({roundedBorder:false});
+                    <?php } ?>
+                    jQuery('#popup_jacket').hide();
+                    jQuery('#loading_gif').hide();
+                }
+            });
+    });
+    jQuery('.find_design').click(function(e){
+        e.preventDefault();
+        jQuery('#fancybox-loading-overlay').show();
+        jQuery('#fancybox-loading').show();
+        window.location = jQuery('.models option:selected').val();
+
+    });
+});
+</script>

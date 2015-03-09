@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Iksula_Misc>
+			<version>0.1.0</version>
+		</Iksula_Misc>
+	</modules>
+	<global>
+		<helpers>
+			<misc>
+				<class>Iksula_Misc_Helper</class>
+			</misc>
+		</helpers>
+
+		<models>
+			<misc>
+				<class>Iksula_Misc_Model</class>
+				<resourceModel>misc_mysql4</resourceModel>
+			</misc>
+			<misc_mysql4>
+				<class>Iksula_Misc_Model_Mysql4</class>
+				<entities>
+					<misc>
+						<table>product_minilog</table>
+					</misc>
+				</entities>
+			</misc_mysql4>
+		</models>
+
+		<resources>
+			<misc_setup>
+				<setup>
+					<module>Iksula_Misc</module>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</misc_setup>
+			<misc_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</misc_write>
+			<misc_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</misc_read>
+		</resources>
+
+		<events>
+			<catalog_product_save_after>
+				<observers>
+					<misc_observer>
+						<type>singleton</type>
+						<class>misc/observer</class>
+						<method>productSave</method>
+					</misc_observer>
+				</observers>
+			</catalog_product_save_after>
+		</events>
+
+	</global>
+
+	<crontab>
+		<jobs>
+			<iksula_misc>
+				<schedule><cron_expr>0 0 */7 * *</cron_expr></schedule>
+				<run><model>misc/observer::weeklyUpdate</model></run>
+			</iksula_misc>
+		</jobs>
+	</crontab>
+
+	<admin>
+		<events>
+			<catalog_product_save_after>
+				<observers>
+					<misc_observer>
+						<type>singleton</type>
+						<class>misc/observer</class>
+						<method>productSave</method>
+					</misc_observer>
+				</observers>
+			</catalog_product_save_after>
+		</events>
+	</admin>
+	
+</config>

@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<config>
+
+	<modules>
+		<Junaidbhura_Ccavenue>
+			<version>0.3</version>
+		</Junaidbhura_Ccavenue>
+	</modules>
+
+	<global>
+		<models>
+			<ccavenue>
+				<class>Junaidbhura_Ccavenue_Model</class>
+			</ccavenue>
+		</models>
+
+		<resources>
+			<ccavenue_setup>
+				<setup>
+					<module>Junaidbhura_Ccavenue</module>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</ccavenue_setup>
+			<ccavenue_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</ccavenue_write>
+			<ccavenue_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</ccavenue_read>
+		</resources>
+
+		<helpers>
+			<ccavenue>
+				<class>Junaidbhura_Ccavenue_Helper</class>
+			</ccavenue>
+		</helpers>
+		<blocks>
+			<ccavenue>
+				<class>Junaidbhura_Ccavenue_Block</class>
+			</ccavenue>
+		</blocks>
+
+		<fieldsets>
+			<sales_convert_quote_payment>
+				<ccavenue_payment_method>
+					<to_order_payment>*</to_order_payment>
+				</ccavenue_payment_method>
+				<ccavenue_method_option>
+					<to_order_payment>*</to_order_payment>
+				</ccavenue_method_option>
+			</sales_convert_quote_payment>
+		</fieldsets>
+
+	</global>
+
+	<default>
+		<payment>
+			<ccavenue>
+				<model>ccavenue/standard</model>
+				<active>1</active>
+				<order_status>pending</order_status>
+				<title>CC Avenue</title>
+				<payment_action>sale</payment_action>
+				<submit_url>http://www.ccavenue.com</submit_url>
+				<merchant_id>123</merchant_id>
+				<allowspecific>0</allowspecific>
+				<sort_order>0</sort_order>
+			</ccavenue>
+		</payment>
+	</default>
+
+	<frontend>
+		<routers>
+			<ccavenue>
+				<use>standard</use>
+				<args>
+					<module>Junaidbhura_Ccavenue</module>
+					<frontName>ccavenue</frontName>
+				</args>
+			</ccavenue>
+		</routers>
+	</frontend>
+
+</config>

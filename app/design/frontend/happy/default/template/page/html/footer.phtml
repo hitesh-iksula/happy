@@ -1,0 +1,327 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<div class="footer-container">
+
+	<div class="footer-strain">
+
+		<div class="footer">
+			<?php //echo $this->getChildHtml() ?>
+
+			<?php
+			$controllerName = Mage::app()->getRequest()->getControllerName();
+			$routeName = Mage::app()->getRequest()->getRouteName();
+			?>
+
+			<div class="slideContent">
+
+				<div class="paymentOpt not_on_checkout_page">
+					<div class="paymentOpt1">
+						<h1 class="footTitle">Payment Options</h1>
+						<img class="footer_payment_options" src="<?php echo $this->getSkinUrl('images/payment_options.png')?>" alt=""/>
+					</div>
+					<h1 class="footTitle1">100% Secure Payments</h1>
+					<h2 class="footTitle2">All major credit and debit cards accepted.</h2>
+				</div>
+
+				<div class="facepileArea not_on_checkout_page">
+					<div class="facepileArea1">
+						<div class="facepileArea2">
+							<h1 class="facepiletitle" >Stay Connected!</h1>
+							<div class="gridWdt f-left">
+								<div id="facebook-likebox"></div>
+								<script type="text/javascript">
+								var facebook_likebox_controller = "<?php echo $this->getUrl('explore/cover/getFacebookLikebox'); ?>";
+								jQuery('#facebook-likebox').load(facebook_likebox_controller);
+								</script>
+
+							</div>
+						</div>
+						<div class="facepileArea3">
+							<h2 class="footTitle2">Subscribe for Our Newsletter</h2>
+							<form id="subscription" name="newsletter-form" method="post" action="<?php echo $this->getUrl(); ?>newsletter/subscriber/new/">
+								<input id="subEmail" class="news required-entry validate-email" type="text" name="email" Placeholder="Email ID" style="color:rgb(204, 204, 204);line-height: 30px;"/>
+								<input id="subSubmit" class="footerButton" type="submit" value="Submit" />
+							</form>
+							<script type="text/javascript">
+								//< ![CDATA[
+								var customForm = new VarienForm('subscription');
+								//]]>
+								jQuery(document).ready(function($){
+									$('#subEmail').focusin(function(){
+										$(this).css('color','rgb(51, 51, 51)');
+									});
+								});
+							</script>
+						</div>
+					</div>
+					<div class="facepileArea1"  style="border-bottom:none;">
+							<ul>
+								<li class="headtitle">Company</li>
+								<li><a href="<?php echo $this->getUrl('about-us')?>">About Us</a></li>
+								<li><a href="<?php echo $this->getUrl('careers')?>">Interns</a></li>
+								<li><a href="<?php echo $this->getUrl('about-us#contact-us-scroll')?>">Contact Us</a></li>
+								<li><a href="<?php echo $this->getUrl('brand-protection')?>">Brand Protection</a></li>
+								<li><a href="<?php echo $this->getUrl('privacy')?>">Privacy Policy</a></li>
+								<li><a href="<?php echo $this->getUrl('terms-and-conditions')?>">Terms of Use</a></li>
+							</ul>
+							<ul>
+								<li class="headtitle">Order</li>
+								<li><a href="<?php echo $this->getUrl('refund-and-replacement')?>">Replacement & Refund</a></li>
+								<li><a href="<?php echo $this->getUrl('shipping-handling-policy')?>">Shipping & Handling</a></li>
+								<li><a href="<?php echo $this->getUrl('next-day-delivery')?>">Next Day Delivery</a></li>
+								<li><a href="<?php echo $this->getUrl('international-shipping')?>">Ship-To Country</a></li>
+								<!-- <li><a href="<?php echo $this->getUrl('trackorder')?>">Track My Order</a></li> -->
+								<!-- <li><a href="<?php// echo $this->getUrl('cancellation')?>">Cancellation</a></li>
+								<li><a href="<?php// echo $this->getUrl('refunds')?>">Refund</a></li>
+								<li><a href="<?php //echo $this->getUrl('gift-card-balance')?>">Gift Card Balance</a></li>
+								<li><a href="<?php// echo $this->getUrl('gift-card-balance')?>">Track My Order</a></li> -->
+								
+								
+							</ul>
+							<ul>
+								<li class="headtitle">Need Help</li>
+								<li><a href="<?php echo $this->getUrl('hu_faq')?>">FAQ</a></li>
+								<li><a href="<?php echo $this->getUrl('about-us#contact-us-scroll')?>">Trade Enquiry</a></li>
+								<li><a href="<?php echo $this->getUrl('franchise')?>">Franchisee</a></li>
+								<li><a href="<?php echo $this->getUrl()?>">Corporate</a></li>
+								<li><a href="<?php echo $this->getUrl('about-us#contact-us-scroll')?>">Retail Enquiry</a></li>
+							</ul>
+							<ul>
+								<li class="headtitle">Partners</li>
+								<li><a href="http://www.cuponation.in " target="_blank">CupoNation</a></li>
+								<li><a href="http://coupons.oneindia.in/" target="_blank">OneIndia</a></li>
+								<!-- <li><div style="height: 6px;">&nbsp;</div></li> -->
+								<li><a href="http://www.coupondunia.in" target="_blank">Coupon Dunia</a></li>
+								<li><a href="http://www.grabbestoffers.com" target="_blank">Grab Best Offer</a></li>
+								<li><a href="http://www.maddycoupons.in/" target="_blank">Maddy Coupons</a></li>
+								<li><a href="http://www.flipit.com/in" target="_blank">Flipit India</a></li>
+							</ul>
+					</div>
+				</div>
+
+				<div class="only_on_checkout_page">
+					<?php echo $this->helper('explore')->getPaymentFAQs() ?>
+				</div>
+
+				<div class="copyrightTxt">
+					<div class="copyrightTxt1">
+						<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('footer_description')->toHtml() ?>
+					</div>
+					<div class="copyrightTxt2">
+						<img class="footer_main_logo" src="<?php echo $this->getSkinUrl('images/logo-footer-main.png')?>" alt=""/><br/>
+						&copy;<?php echo ' ' . date('Y') . ' ' . $this->getCopyright() ?>
+					</div>
+				</div>
+
+			</div>
+
+			<div id="scroll_button" class="back_to_top" alt="Back to Top" title="Back to Top"/></div>
+
+		</div>
+
+	</div>
+
+</div>
+
+<div class="no-display">
+	<div id="cart-modal-html" class="modal"></div>
+</div>
+<div class="faq_envelope">
+	<div class="faq_btn">
+		<div class="faq_toggle" id="faq_toggle"></div>
+		<div class="faq_content_area">
+			<div class="faq_qus_area">
+				<div class="faq_title">
+					<hgroup>
+						<h2>Want a helping hand?</h2>
+					</hgroup>
+				</div>
+				<ul id="faq_accordion" class="accordion">
+					<li>
+						<h3>FAQ</h3>
+						<div class="panel loading">
+							<div class="faq-block-scroll">
+								<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('explore_faqs')->toHtml(); ?>
+							</div>
+						</div>
+					</li>
+					<li>
+						<h3>Track Order</h3>
+						<div class="panel loading">
+							<form method="post" name="trackorderform" id="trackorderform" action="<?php echo $this->getUrl().'trackorder';?>" >
+							<input type="text" value="Your Order ID" class="tracker_order required-entry" onfocus="if(this.value == 'Your Order ID') this.value = ''; this.style.color='#333';" name="orderid" id="orderid"/>
+							<label class="validation-advice" id="errormsg"></label>
+							<input type="submit" value="Submit" class="submitbtn" id="trackordersubmitbtn" />
+							</form>
+						</div>
+					</li>
+					<li>
+						<h3>Contact Us</h3>
+						<div class="panel loading">
+							<input type="text" id="faq_name" name="name" value="Name" onfocus="if(this.value == 'Name') this.value = ''; this.style.color='#333';" onblur="if(this.value == '') { this.value = 'Name'; this.style.color='#CCC'; }" class="input-text required-entry tracker_order" />
+							<input type="text" id="faq_email" name="email" value="Email" onfocus="if(this.value == 'Email') this.value = ''; this.style.color='#333';" onblur="if(this.value == '') { this.value = 'Email'; this.style.color='#CCC'; }" class="input-text required-entry validate-email tracker_order" />
+							<textarea name="comment" id="faq_comment" onfocus="if(this.value == 'Message') this.value = ''; this.style.color='#333';" onblur="if(this.value == '') { this.value = 'Message'; this.style.color='#CCC'; }" class="required-entry input-text textAreaSty" >Message</textarea>
+							<input type="submit" value="Submit" class="faq_submit submitbtn"/>
+							<p>
+								You can also call Us!<br/>
+								011 - 41042266<br/>
+								+91 8800896678
+							</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div class="like_us_area">
+				<span>Like Us</span>
+				<a href="http://www.facebook.com/Like.HU" target="_blank">
+					<img src="<?php echo $this->getSkinUrl('images/faq_facebook.jpg')?>" alt="Facebook"/>
+				</a>
+				<a href="https://twitter.com/happlyunmarried" target="_blank">
+					<img src="<?php echo $this->getSkinUrl('images/faq_twitter.jpg')?>" alt="Twitter"/>
+				</a>
+				<a href="http://pinterest.com/happlyunmarried/" target="_blank">
+					<img src="<?php echo $this->getSkinUrl('images/faq_print.jpg')?>" alt="Pinterest"/>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+
+var faq_offset = 0;
+jQuery(document).ready(function($){
+
+
+	$('#errormsg').hide();
+
+	$('#faq_accordion').accordion({ heightStyle: "content" });
+
+	$(".loading").removeClass("loading");
+	var faq_status = 'closed';
+	$("#faq_toggle").live('click', function(){
+
+		if(faq_status == 'closed'){
+			$('.faq_envelope').animate({
+				width: '354px',
+				// left: parseInt($('.faq_envelope').offset().left + $('.faq_envelope').width() - 212) + 'px'
+			});
+
+			$('.faq_toggle').toggleClass('faq_toggle_open');
+			faq_status = 'opened';
+
+		} else if(faq_status == 'opened') {
+			$('.faq_envelope').animate({
+				width: '30px',
+				// left: faq_offset
+			}, 400, 'swing', function(){
+				$('.faq_toggle').toggleClass('faq_toggle_open');
+				faq_status = 'closed';
+			});
+		}
+
+		var customScrollbar=$(".faq-block-scroll").find(".mCSB_scrollTools");
+		customScrollbar.css({"opacity":0});
+		$(".faq-block-scroll").mCustomScrollbar("update");
+		customScrollbar.animate({opacity:1},"slow");
+
+	});
+
+	$('.faq_submit').live('click', function(e){
+		e.preventDefault();
+		var name = $('#faq_name').val();
+		var email = $('#faq_email').val();
+		var comment = $('#faq_comment').val();
+		if (name == 'Name') {
+			name = '';
+		}
+		if (email == 'Email') {
+			email = '';
+		}
+		if (comment == 'Message') {
+			comment = '';
+		}
+		$(this).attr('disabled','disabled');
+		$.ajax({
+			url : "<?php echo $this->getBaseUrl() . 'explore/contactus/post'; ?>",
+			type : 'post',
+			data : { 'name' : name, 'email' : email, 'comment' : comment, 'hideit' : '' },
+			success : function(data){
+				$('.faq_submit').removeAttr('disabled');
+				alert(data);
+			}
+		});
+		$('#faq_name').val('Name').css('color','rgb(204, 204, 204)');
+		$('#faq_email').val('Email').css('color','rgb(204, 204, 204)');
+		$('#faq_comment').val('Message').css('color','rgb(204, 204, 204)');
+	});
+
+	$(".faq-block-scroll").mCustomScrollbar({
+		advanced:{
+			updateOnBrowserResize:true,
+			updateOnContentResize:true
+		}
+	});
+
+	$("#trackordersubmitbtn").on('click',function(event) {
+		event.preventDefault();
+		$("#errormsg").hide();
+		if($("#orderid").val() != "" && $("#orderid").val() != 'Your Order ID'){
+				$.ajax({
+					tyep:'post',
+					url:'<?php echo $this->getUrl();?>trackorder/index/orderexistence',
+					data:'orderid='+$("#orderid").val(),
+					success:function(e){
+						if(e == "true"){
+							$("#trackorderform").submit();
+						} else {
+							$("#errormsg").html("Please enter a valid Order ID").show();
+						}
+					},
+					error:function(e){
+						alert(e);
+					}
+				});
+		} else {
+			$("#errormsg").html("Please enter an Order ID").show();
+			event.preventDefault();
+
+		}
+	});
+
+});
+jQuery('.col-main').append('<div class="faq_envelope"></div>');
+
+//< ![CDATA[
+		var trackorderform= new VarienForm('trackorderform', true);
+	//]]>
+</script>
+
+

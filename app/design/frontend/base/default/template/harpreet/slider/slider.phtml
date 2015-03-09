@@ -1,0 +1,82 @@
+
+<?php $harpreet = $this->helper('harpreet_slider/config'); ?>
+<?php $design = $harpreet->getDesign(); ?>
+<?php $animation = $harpreet->getAnimation(); ?>
+<?php $event = $harpreet->getEvent(); ?>
+
+<div class="harpreet-slider-block">
+    <div class="slider-wrapper" style="<?php echo $design['width'] . $design['height'] ?>px;">
+        <div id="slider" class="nivoSlider" style="<?php echo $design['height'] ?>" >
+            <?php $_counter = 0 ?>
+            <?php foreach ($harpreet->getSliders() as $_slider) : ?>
+                <a href="<?php echo $_slider['link'] ?>">
+                    <img src="<?php echo $_slider['image'] ?>" <?php if ($design['texten'] == 1) : ?>title="#harpreet-elem<?php echo $_counter ?>"<?php endif; ?> />
+                </a> 
+                <?php $_counter++ ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <?php $_counter = 0 ?>
+    <?php foreach ($harpreet->getSliders() as $_slider) : ?>
+        <div id="harpreet-elem<?php echo $_counter ?>" class="nivo-html-caption">
+            <?php echo $_slider['title'] ?>
+        </div>
+        <?php $_counter++ ?>
+    <?php endforeach; ?>
+</div>
+
+<style>
+    .nivo-caption, .nivo-caption *{
+        <?php echo $design['textscolor']; ?>
+    }
+    .nivo-caption{
+        <?php echo $design['bgscolor']; ?>
+        <?php echo $design['textopacity']; ?>
+        <?php echo $design['textpos']; ?>
+        <?php echo $design['textsize']; ?>
+    }
+    
+    .nivo-controlNav a{
+        <?php echo $design['buttonscolor']; ?>
+    }
+    .nivo-controlNav a.active, .nivo-controlNav a:hover{
+        <?php echo $design['buttonscolorhover']; ?>
+    }
+    .nivo-controlNav{
+        <?php echo $design['buttonpos']; ?>
+    }
+    .nivo-nextNav{
+        <?php echo $design['nextimage']; ?>
+    }
+    .nivo-prevNav{
+        <?php echo $design['previmage']; ?>
+    }
+</style>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        jQuery('#slider').nivoSlider({
+            effect: '<?php echo $animation['type'] ?>',
+            slices: <?php echo $animation['slices'] ?>,
+            boxCols: <?php echo $animation['boxcols'] ?>,
+            boxRows: <?php echo $animation['boxrows'] ?>,
+            animSpeed: <?php echo $animation['speed'] ?>,
+            pauseTime: <?php echo $animation['pausetime'] ?>,
+            startSlide: 0,
+            directionNav: <?php echo $design['nextpreven'] ?>,
+            controlNav: <?php echo $design['buttonen'] ?>,
+            controlNavThumbs: false,
+            pauseOnHover: <?php echo $animation['hover'] ?>,
+            manualAdvance: false,
+            prevText: 'Prev',
+            nextText: 'Next',
+            randomStart: false,
+            beforeChange: function(){<?php echo $event['beforechange'] ?>},
+            afterChange: function(){<?php echo $event['afterchange'] ?>},
+            slideshowEnd: function(){<?php echo $event['slideshowEnd'] ?>},
+            lastSlide: function(){<?php echo $event['lastSlide'] ?>},
+            afterLoad: function(){<?php echo $event['afterLoad'] ?>}
+        });
+    });
+</script>

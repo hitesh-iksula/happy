@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Manoj_Pincode>
+      <active>true</active>
+      <codePool>community</codePool>
+      <version>0.1.0</version>
+    </Manoj_Pincode>
+  </modules>
+</config>

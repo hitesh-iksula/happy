@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+	<folofo_index_index>
+
+		<reference name="root">
+			<action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+
+		<reference name="head">
+
+			<block type="page/html" name="top.Js" as="topJs" template="md/quickview/page/lablequickview.phtml"/>
+			<action method="removeItem"><type>skin_css</type><name>css/override.css</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/product.list.js</name></action>
+
+            <action method="addJs"><script>md/quickview/fancy/fancybox/jquery.fancybox-1.3.4.pack.js</script></action>
+            <action method="addCss"><stylesheet>md/quickview/css/jquery.fancybox-1.3.4.css</stylesheet></action>
+			<action method="addCss"><stylesheet>md/quickview/css/stylefancy.css</stylesheet></action>
+
+			<action method="addCss"><stylesheet>css/override.css</stylesheet></action>
+
+			<action method="addItem"><type>skin_js</type><name>js/jquery.mousewheel.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/jquery.accordion.2.0.min.js</name></action>
+
+        </reference>
+
+		<reference name="header">
+			<!-- <block type="core/template" name="find_products_by" template="explore/header/find_products_by.phtml" /> -->
+			<block type="core/template" name="cart_button" template="explore/header/cart_button.phtml" />
+		</reference>
+
+		<reference name="content">
+			<!-- The Block that loads the Left side Category Floater -->
+			<block type="explore/explore" name="left.categories" template="explore/sidebars/categories.phtml" />
+
+			<block type="folofo/index" name="folofo_about_page" template="folofo/cms_page.phtml">
+
+				<block type="core/template" name="folofo_head" template="folofo/cms_head.phtml"/>
+
+				<block type="cms/block" name="folofo_about_us_block">
+					<action method="setBlockId"><block_id>folofo_about_us_block</block_id></action>
+				</block>
+				<block type="cms/block" name="folofo_partners_block">
+					<action method="setBlockId"><block_id>folofo_partners_block</block_id></action>
+				</block>
+				<!-- <block type="cms/block" name="folofo_videos_block">
+					<action method="setBlockId"><block_id>folofo_videos_block</block_id></action>
+				</block> -->
+
+			</block>
+		</reference>
+
+	</folofo_index_index>
+
+</layout>

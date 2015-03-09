@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <happilyunmarried translate="title" module="happyhome">
+            <title>Happily Unmarried</title>
+            <sort_order>85</sort_order>
+        </happilyunmarried>
+    </menu>
+</config>

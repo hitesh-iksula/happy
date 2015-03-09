@@ -1,0 +1,85 @@
+<div id="coupon-discount">
+    <div class="discount">
+        
+        <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+        <?php // if($this->getMessagesBlock()->getGroupedHtml()): ?>
+
+        <?php //endif; ?>
+        
+        <?php if(strlen($this->getCouponCode()) == 0): ?>
+            <div class="op_block_title"><?php echo $this->__('Do you have a coupon?') ?></div>
+            <div class="happy_button coupon_apply_button" id="show-coupon-box"><?php echo $this->__('click here'); ?></div>
+        <?php endif; ?>
+        
+        <div class="discount-form"<?php if(strlen($this->getCouponCode())): ?> style="display:block;"<?php endif; ?>>
+            <!-- <label for="coupon_code"><?php // echo $this->__('Enter your coupon code if you have one.') ?></label> -->
+            <input type="hidden" name="process_coupon" id="process_coupon" value="0" />
+            <input type="hidden" name="coupon[remove]" id="coupon-remove" value="0" />
+            <input class="input-text" id="coupon-code" name="coupon[code]" value="<?php echo $this->htmlEscape($this->getCouponCode()) ?>" placeholder="Coupon Code"<?php if(strlen($this->getCouponCode())): ?> style="display:none;"<?php endif; ?>/>
+            
+            <?php if(strlen($this->getCouponCode())): ?>
+                
+                <button type="button" class="button left happy_button coupon_apply_button" value="<?php echo $this->__('Cancel Coupon') ?>" id="coupon-cancel"><?php echo $this->__('Cancel Coupon') ?></button>
+            
+            <?php else: ?>
+
+                <button type="button" class="button left happy_button coupon_apply_button" value="<?php echo $this->__('Apply Coupon') ?>" id="coupon-apply"><?php echo $this->__('Apply') ?></button>            
+                <div class="left happy_button coupon_apply_button" value="<?php echo $this->__('Cancel Coupon') ?>" id="coupon-hide"><?php echo $this->__('Cancel') ?></div>
+
+            <?php endif;?>
+        </div>
+
+    </div>
+</div>
+
+  <script type="text/javascript">
+    //<![CDATA[
+    $('coupon-apply') && $('coupon-apply').observe('click', function(e) {
+   	 	$('process_coupon').value = "1";
+        if (!$('coupon-code').value.length) {
+            $('coupon-code').addClassName('validation-failed');
+            return;
+        }
+        $('coupon-remove').value = "0";
+        checkout.update({
+            'process_coupon': 1,
+            'review': 1
+        });
+    });
+    $('coupon-cancel') && $('coupon-cancel').observe('click', function(e) {
+        $('coupon-remove').value = "1";
+        $('process_coupon').value = "1";
+        checkout.update({
+            'process_coupon': 1,
+            'review': 1
+        });
+    });
+
+ /*
+    $('coupon-code').observe('change', function(e) {
+        if (!$(this).value.length) {
+            $('coupon-remove').value = "1";
+        } else {
+            $('coupon-remove').value = "0";
+        }
+        checkout.update({
+            'process_coupon': 1,
+            'review': 1
+        });
+    });
+   */ 
+    //]]>
+</script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $('#show-coupon-box').click(function() {
+        $('.discount-form').show();
+        $(this).hide();
+    });
+
+    $('#coupon-hide').click(function() {
+        $('.discount-form').hide();
+        $('#show-coupon-box').show();
+    });
+});
+</script>

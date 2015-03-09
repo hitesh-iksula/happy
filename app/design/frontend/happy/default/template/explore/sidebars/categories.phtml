@@ -1,0 +1,144 @@
+<aside>
+	<div class="left_categories_floater" >
+		<div class="category_block_title">
+			<div>Shop by<br/>category</div>
+		</div>
+		<?php $childCategories = $this->getCategories(); ?>
+		<?php $_category  = $this->getCurrentCategory(); ?>
+		<ul id="floating_categories">
+			<?php $currentCategory = Mage::registry('current_category'); ?>
+			<?php foreach($childCategories as $childCategory): ?>
+				<?php $category = Mage::getModel('catalog/category')->load($childCategory); ?>
+				<?php if($this->getHomepageCategory() != $category->GetId()): ?>
+					<?php $categorychooser = $category->getData('categorychooser');?>
+					<?php
+					$current = '';
+					if($currentCategory AND (
+						$currentCategory->getId() == $category->getData('entity_id') OR
+						$currentCategory->getParentId() == $category->getData('entity_id')
+						)) {
+						$current = ' current persistent';
+					}
+					if($category->getData('name') == "Phantom") {
+						$current .= ' phantom';
+					}
+					?>
+
+					<li class='categories<?php echo $current; ?>' id='left<?php echo strtolower($category->getData('entity_id')); ?>'>
+						<a href="<?php echo $category->getUrl(); ?>" class="sidebar_category_label">
+							<?php echo $category->getData('name'); ?>
+							<div class='product_count'></div>
+						</a>
+					</li>
+
+					<?php if($category->getData('children_count') > 0): ?>
+						<?php $_category = Mage::getModel('catalog/category')->load($category->getData('entity_id')); ?>
+						<?php if($_category['featured_category_parent'] == 1): ?>
+							<?php $childSubcategories = $this->getChildCategories($category->getData('entity_id')); ?>
+							<?php $x = 0; foreach($childSubcategories as $childSubcategory): $x++; endforeach; ?>
+							<?php if($x > 0): ?>
+								<div class="subcategories" id='subcategory_of_<?php echo strtolower($category->getData('entity_id')); ?>'>
+									<dl>
+										<?php $cnt = 1; ?>
+										<?php foreach($childSubcategories as $childSubcategory): ?>
+											<?php $childSubcategoriess = $this->getChildCategories($childSubcategory->getId()); ?>
+											<?php $z = 0; ?>
+											<?php foreach($childSubcategoriess as $childSubcategorys): $z++; endforeach; ?>
+											<?php if($z > 0): ?>
+												<?php $y = 0; ?>
+												<?php foreach($childSubcategoriess as $childSubcategorys): $y++; ?>
+													<?php $categoryss = Mage::getModel('catalog/category')->load($childSubcategorys->getId()); ?>
+													<?php if($categoryss->getFeaturedCategory() != 0): ?>
+														<?php if($cnt <= 6): ?>
+															<dt <?php if($y == 1): echo " class='first'"; endif; ?>>
+																<a href="<?php echo $this->getUrl() . $childSubcategorys->getRequestPath(); ?>">
+																	<?php echo $childSubcategorys->getName(); ?>
+																</a>
+															</dt>
+															<?php if($cnt == 6): ?>
+																<dt<?php if($cnt == 6): echo " class='last'"; endif; ?><?php if($y == 1): echo " class='first'"; endif; ?>>
+																	<a href="<?php echo $this->getUrl('products/phone-covers.html'); ?>">See More</a>
+																</dt>
+															<?php endif; ?>
+															<?php $cnt++; ?>
+														<?php endif; ?>
+													<?php endif; ?>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										<?php endforeach; ?>
+									</dl>
+									<div class="pointer"></div>
+								</div>
+							<?php endif; ?>
+						<?php else: ?>
+							<?php if($category->getData('children_count') > 0): ?>
+								<?php $childSubcategories = $this->getChildCategories($category->getData('entity_id')); ?>
+								<?php $x = 0; foreach($childSubcategories as $childSubcategory): $x++; endforeach; ?>
+								<?php if($x > 0): ?>
+									<div class="subcategories" id='subcategory_of_<?php echo strtolower($category->getData('entity_id')); ?>'>
+										<dl>
+											<?php $y = 0; foreach($childSubcategories as $childSubcategory): $y++; ?>
+												<dt<?php if($x == $y): echo " class='last'"; endif; ?><?php if($y == 1): echo " class='first'"; endif; ?>>
+													<a href="<?php echo $this->getUrl() . $childSubcategory->getRequestPath(); ?>">
+														<?php echo $childSubcategory->getName(); ?>
+													</a>
+												</dt>
+											<?php endforeach; ?>
+										</dl>
+										<div class="pointer"></div>
+									</div>
+								<?php endif; ?>
+							<?php endif; ?>
+						<?php endif; ?>
+					<?php endif; ?>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+</aside>
+
+<style type="text/css">
+<?php foreach($childCategories as $childCategory): ?>
+
+	<?php $category = Mage::getSingleton('catalog/category')->load($childCategory); ?>
+	<?php $SubcategoryColors = explode(',', $category->getSubcategoryColors()); ?>
+
+	/* #floating_categories .subcategories #left<?php echo $category->getData('entity_id'); ?> a {
+		border-bottom: none !important;
+	}
+
+	#floating_categories .subcategories #left<?php echo $category->getData('entity_id'); ?>.current a {
+		border-bottom: none !important;
+	} */
+
+	#floating_categories #left<?php echo $category->getData('entity_id'); ?> a:hover {
+		border-bottom: 2px solid #<?php echo str_replace('#', '', trim($SubcategoryColors[1])); ?>
+	}
+	#floating_categories #left<?php echo $category->getData('entity_id'); ?>.current a {
+		font-weight: 400;
+		border-bottom: 2px solid #<?php echo str_replace('#', '', trim($SubcategoryColors[2])); ?>
+	}
+
+	#subcategory_of_<?php echo $category->getData('entity_id'); ?> {
+		background-color: #<?php echo str_replace('#', '', trim($SubcategoryColors[1])); ?>
+	}
+
+	#subcategory_of_<?php echo $category->getData('entity_id'); ?> dt:hover {
+		background-color: #<?php echo str_replace('#', '', trim($SubcategoryColors[3])); ?>
+	}
+
+	#subcategory_of_<?php echo $category->getData('entity_id'); ?> .pointer {
+		border-right: 10px solid #<?php echo str_replace('#', '', trim($SubcategoryColors[1])); ?>
+	}
+
+<?php endforeach; ?>
+
+/* #floating_categories .subcategories a:hover {
+	border-bottom: none !important;
+}
+#floating_categories #left85.current a {
+	border-bottom: none !important;
+} */
+</style>
+
+<script type="text/javascript">decorateGeneric($$('#floating_categories li.categories'), ['odd','even','first','last'])</script>

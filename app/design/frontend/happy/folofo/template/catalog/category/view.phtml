@@ -1,0 +1,139 @@
+<?php
+    $_helper    = $this->helper('catalog/output');
+    $_category  = $this->getCurrentCategory();
+    $_categoryId = $_category->getId();
+    $_imgHtml   = '';
+?>
+
+<?php echo $this->getLayout()->createBlock('core/template')->setTemplate('folofo/cms_head.phtml')->toHtml(); ?>
+
+<?php echo $this->getLayout()->createBlock('core/template')->setTemplate('folofo/subcategories.phtml')->toHtml(); ?>
+
+<?php if($_category->getLevel() == 3): ?>
+
+	<!-- <div class="harpreet-slider-wrapper">
+		<?php // echo $this->getLayout()->createBlock('harpreet_slider/slider')->setTemplate('folofo/slider.phtml')->toHtml(); ?>
+	</div> -->
+
+	<?php
+
+	$parentId = $this->getCurrentCategory()->getId();
+	$childCategories = array();
+	$children = Mage::getSingleton('catalog/category')->getCategories($parentId, 1, true, true);
+
+	foreach ($children as $category) {
+		$childCategories[$category->getPosition()] = $category->getId();
+	}
+
+	ksort($childCategories);
+
+	foreach($childCategories as $childCategory) {
+
+		$category = Mage::getSingleton('catalog/category')->load($childCategory);
+
+		if($category->getData('is_active') == '1') {
+
+			$category = $childCategory;
+
+			$block = $this->getLayout()->createBlock('explore/folofo_collection');
+			$block->setTemplate('explore/product/list.phtml')->setData('category_id', $childCategory);
+
+			$block2 = $this->getLayout()->createBlock('core/template')->setTemplate('explore/product/category.phtml');
+
+			$block->setChild('category_header', $block2);
+
+			echo $block->toHtml();
+
+		}
+
+	}
+
+	?>
+
+<?php else: ?>
+
+	<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+	<?php if($_imgUrl): ?>
+	    <?php echo $_imgHtml ?>
+	<?php endif; ?>
+
+	<?php $folofoCategoryId = $this->helper('explore')->getFolofoCategory(); ?>
+
+	<div class="one_category<?php if($_category->getParentId() == $folofoCategoryId): ?> folofo_child<?php endif; ?>" id="<?php echo 'category' . $_categoryId; ?>">
+
+	    <div class="category_head">
+
+	        <div class="category_label" id="<?php echo 'category' . $_category->getData('entity_id') ?>">
+                <a href="<?php echo $_category->getUrl(); ?>">
+                    <?php if($_category->getActiveThumbnail()): ?>
+                        <img class="category_thumbnail" src="<?php echo Mage::getBaseUrl('media') . 'catalog' . DS . 'category' . DS . $_category->getActiveThumbnail(); ?>" />
+                    <?php endif; ?>
+                    <?php if($_category->getData('name') == 'UFO'): ?>
+                        <span><?php echo $this->__('Unidentified Funny Objects') ?></span>
+                    <?php else: ?>
+                        <span><?php echo $_category->getName() ?></span>
+                    <?php endif; ?>
+                </a>
+            </div>
+
+            <div class="category_description"><?php echo $_category->getData('home_tagline') ?></div>
+
+            <?php $subcategories = explode(',', $_category->getChildren()); ?>
+            <?php if($_category->getData('children_count') > 0): ?>
+
+                <ul class="subacategory_labels" id="label_master_<?php echo $_categoryId; ?>">
+                    <?php foreach($subcategories as $subcategoryId): ?>
+
+                        <?php $subcategory = Mage::getModel('catalog/category')->load($subcategoryId); ?>
+                        <?php if($subcategory->getData('is_active')): ?>
+                            <a href="<?php echo $subcategory->getUrl() ?>" class="subcategory_label" id="<?php echo 'cat' . $subcategory->getData('entity_id'); ?>"><?php echo $subcategory->getName(); ?></a>
+                        <?php endif; ?>
+
+                    <?php endforeach; ?>
+                </ul>
+
+            <?php endif; ?>
+
+	        <div class="breadcrumb_container"></div>
+
+	    </div>
+
+	    <?php if($_category->getData('subcategory_colors')): ?>
+	        <?php $colorCodes = explode(',', $_category->getData('subcategory_colors')); ?>
+	        <style type="text/css">
+	        #category<?php echo $_categoryId; ?> .category_head .category_description { color: #<?php echo trim($colorCodes[0]); ?>; }
+
+	        <?php if(count($colorCodes) > 1): ?>
+	            #label_master_<?php echo $_categoryId; ?> .subcategory_label { background-color: #<?php echo trim($colorCodes[1]); ?>; }
+	            #label_master_<?php echo $_categoryId; ?> .subcategory_label:hover { background-color: #<?php echo trim($colorCodes[2]); ?>; }
+	            #label_master_<?php echo $_categoryId; ?> .active_label { background-color: #<?php echo trim($colorCodes[3]); ?>; }
+	            #label_master_<?php echo $_categoryId; ?> .active_label:hover { background-color: #<?php echo trim($colorCodes[3]); ?>; }
+	        <?php endif; ?>
+
+	        </style>
+	    <?php endif; ?>
+
+
+	    <?php if($this->isContentMode()): ?>
+	        <?php echo $this->getCmsBlockHtml() ?>
+
+	    <?php elseif($this->isMixedMode()): ?>
+	        <?php echo $this->getCmsBlockHtml() ?>
+	        <?php echo $this->getProductListHtml() ?>
+
+	    <?php else: ?>
+	        <?php echo $this->getProductListHtml() ?>
+	    <?php endif; ?>
+
+	    <input type="hidden" id="url_for_swatches" value="<?php echo $this->getBaseUrl() . "solidswatches/frontend/retrieve"; ?>" />
+	    <input type="hidden" id="visible_products_per_grid" value="<?php echo Mage::getStoreConfig('explore/explore_group/explore_grid_size', Mage::app()->getStore()); ?>" />
+	    <input type="hidden" id="add_cart_activity" value="0" />
+
+	    <div class="no_matching_products_envelope">
+	        <div class="no_matching_products">Sorry, there are no products in this category matching the current selection. However, you can browse other categories or choose different filters.</div>
+	    </div>
+
+	</div>
+
+<?php endif; ?>

@@ -1,0 +1,367 @@
+<?php
+
+$getNotid = Mage::getSingleton('core/session')->getNotid();
+
+$resultset = $this->getresultset();
+$ordertype = Mage::registry('ordertype');
+
+$response = $this->getresponse();
+$response = json_decode(json_encode($response), true);
+
+$shipmentNotCreated = $this->getshipmentnotcreated();
+
+$orderId = Mage::registry('trackorderid');
+if($orderId == ''){
+	Mage::getSingleton('core/session')->unsNotid();
+}else{
+	$order   = Mage::getModel('sales/order')->load($orderId, 'increment_id');
+	$orderdata = $order->getData();
+	$shipping_address = $order->getShippingAddress();
+	$ship_add_dtls = $shipping_address->getData();
+	$country = Mage::getModel('directory/country')->loadByCode($ship_add_dtls['country_id']);
+
+	$minutes_to_add = 330;
+	$time = new DateTime($orderdata['created_at']);
+	$time->add(new DateInterval('PT' . $minutes_to_add . 'M'));
+	$time_stamp = $time->format('d/m/Y');
+}
+
+?>
+
+ <div class="trace-order-wrapper">
+
+	<div class="trace-order-right">
+		<div class="breadcrumbs">
+			<ul>
+				<li class="home">
+                    <a href="<?php echo $this->getUrl('');?>" title="<?php echo $this->__('Go to Home Page') ?>">
+                    	<?php echo $this->__('HAPPILY UNMARRIED') ?>
+                    </a>
+                    <img src="<?php echo $this->getSkinUrl('images/general/breadcrumb_separator.png');?>" class="breadcrumb_separator">
+                </li>
+				<li><a href="#"><?php echo $this->__('TRACK ORDER') ?></a></li>
+			</ul>
+		</div>
+		<div class="trace-order-details">
+
+			<?php if($getNotid == 'true'){?>
+
+			<img src="<?php echo $this->getSkinUrl('images/no-results.png');?>" class="no-results">
+			<p><?php echo $this->__('You entered the wrong Order ID.') ?></p>
+			<p class="middle"><?php echo $this->__('Relax! Take a deep breath. We know its a bit hard after a couple of beers.') ?></p>
+			<p class="keep-calm"><?php echo $this->__('Keep calm and try again!') ?></p>
+
+			<?php }else{ ?>
+
+			<img src="<?php echo $this->getSkinUrl('images/trace_result.png');?>">
+			<h1><?php echo $this->__('Track My Order!') ?></h1>
+			<div class="trace-order-details-right">
+				<div class="trace-order-content-right">
+					<h3><?php echo $this->__('ORDER DETAILS') ?></h3>
+						<div class="trace-order-inner-right">
+							<div class="row-items">
+								<div class="label"><?php echo $this->__('Order Id') ?></div><div class="value"><span>:</span> <b><?php echo $orderId;?></b></div>
+							</div>
+							<div class="row-items">
+								<div class="label"><?php echo $this->__('Order Date') ?></div><div class="value"><span>:</span><?php echo $time_stamp;?></div>
+							</div>
+							<div class="row-items">
+								<div class="label"><?php echo $this->__('Amount Paid') ?></div><div class="value"><span>:</span><?php echo Mage::helper('core')->currency($orderdata['total_paid'],true,false);?></div>
+							</div>
+						</div>	
+				</div>	
+			</div>
+			<div class="clear"></div>
+			<div class="trace-order-shpping">
+				<div class="trace-order-shpping">
+					<?php if(!empty($resultset) || !empty($response)){?>
+
+	<h3><?php echo $this->__('SHIPPING DETAILS') ?></h3>
+		<table cellpadding="0" cellspacing="0">
+
+			<tr> 
+			     <th><?php echo $this->__('TRACKING ID') ?></th>
+			     <th><?php echo $this->__('COURIER') ?></th>
+			     <th class="last"><?php echo $this->__('STATUS') ?></th>
+			</tr>
+
+			<?php if(!empty($resultset)): ?>
+
+				<?php // COD order ?>
+				<?php if($ordertype == 'cashondelivery'): ?>
+
+				<?php else: ?>
+
+					<?php // Blue Dart order ?>
+					<?php if($resultset): ?>
+
+						<?php $resultsetRendered = false; ?>
+
+						<?php $i=1;foreach ($resultset as $res): ?>
+
+							<?php if (is_array($res)): ?>
+
+								<tr class="items">
+
+									<?php 
+										//echo "<pre>";print_r($res);echo "</pre>";
+										//$order = Mage::getModel('sales/order')->load($res['RefNo'], 'increment_id');
+										//$orderdata = $order->getData();//echo "<pre>";print_r($res);echo "</pre>";
+										$date     = $res['Shipment']['PickUpDate'];
+										$day 	  = date('l', strtotime($date));
+										$timepart = str_split($res['Shipment']['PickUpTime'], 2);
+
+										if($shipmentNotCreated){
+
+											$stats = 'Your Order is yet to be dispatched. Patience please!';
+
+										}else{
+										
+											switch ($res['Shipment']['StatusType']) {
+
+												case 'IT':
+															$stats = 'Left Okhla warehouse at '.$timepart[0].':'.$timepart[1].' on '.$day.','.$date.'.';
+															break;
+												case 'DL':
+															$stats = 'Your Order has been successfully delivered.';
+															break;
+												case 'NF':
+															$stats = 'No matching Waybill/Reference Number/Order Number';
+															break;
+												case 'RT':
+												case 'RD':
+												case 'UD':
+															$stats = 'Oops there seems to be some problem!! Please call us at 011 - 41042266';
+															break;
+
+											}
+											
+										}
+
+									?>
+
+								<td class="first"><?php echo $res['Shipment']['WaybillNo']; ?><br><img src="<?php echo $this->getSkinUrl('images/gift-pack.png');?>" /><?php echo "PACKAGE ".$i;?></td>
+
+								<?php if($res['Shipment']['StatusType'] == 'IT' || $res['Shipment']['StatusType'] == 'DL'){?>
+									<td><?php echo $this->__('Bule Dart') ?></td>
+									<td class="last"><?php echo $stats;?></td>
+								<?php }else{ ?>
+									<td class="last" colspan="2"><?php echo $stats;?></td>
+								<?php } ?>
+
+								</tr>
+
+							<?php else: ?>
+
+								<?php if(!$resultsetRendered): ?>
+
+									<tr class="items">
+
+										<?php
+
+										$order     = Mage::getModel('sales/order')->load($resultset['Shipment']['RefNo'], 'increment_id');
+										$orderdata = $order->getData();
+
+										$date     = $resultset['Shipment']['PickUpDate'];
+										$day 	  = date('l', strtotime($date));
+										$timepart = str_split($resultset['Shipment']['PickUpTime'], 2);
+
+										if($shipmentNotCreated){
+
+											$stats = 'Your Order is yet to be dispatched. Patience please!';
+
+										}else{
+										
+											switch ($resultset['Shipment']['StatusType']) {
+
+												case 'IT':
+															$stats = 'Left Okhla warehouse at '.$timepart[0].':'.$timepart[1].' on '.$day.','.$date.'.';
+															break;
+												case 'DL':
+															$stats = 'Your Order has been successfully delivered.';
+															break;
+												case 'NF':
+															$stats = 'No matching Waybill/Reference Number/Order Number';
+															break;
+												case 'RT':
+												case 'RD':
+												case 'UD':
+															$stats = 'Oops there seems to be some problem!! Please call us at 011 - 41042266';
+															break;
+
+											}
+
+										}
+									
+										$resultsetRendered = true;
+										//echo "<pre>";print_r($resultset);echo "</pre>";
+										?>
+
+										<td class="first"><?php echo $resultset['Shipment']['WaybillNo']; ?><br><img src="<?php echo $this->getSkinUrl('images/gift-pack.png');?>" /><?php echo "PACKAGE ".$i;?></td>
+										
+										<?php if($resultset['Shipment']['StatusType'] == 'IT' || $resultset['Shipment']['StatusType'] == 'DL'){?>
+											<td><?php echo $this->__('Bule Dart') ?></td>
+											<td class="last"><?php echo $stats;?></td>
+										<?php }else{ ?>
+											<td class="last" colspan="2"><?php echo $stats;?></td>
+										<?php } ?>
+
+									</tr>
+
+								<?php endif; ?>
+
+							<?php endif; ?>
+
+						<?php $i++;endforeach; ?>
+
+					<?php endif; ?>
+
+				<?php endif; ?>
+
+		<?php endif; ?>
+
+
+
+
+		<?php // Delhivery order ?>
+		<?php if($response): ?>
+
+			<?php $error = $response['Error']; ?>
+
+			<?php //if($error): ?>
+
+				<!-- <p class="shipment-not-created-note">Dear Customer, the delivery status of this order is not available yet, please check again after 3 hours!</p> -->
+
+			<?php //else: ?>
+
+						<?php
+							//echo "<pre>";print_r($response);echo "</pre>";
+ 							foreach($response as $resp){
+ 								//echo $i;
+ 								//echo "<pre>";print_r($resp['ShipmentData']);echo "</pre>";
+								$orderNo     = $resp['ShipmentData'][0]['Shipment']['ReferenceNo'];
+								$waybillNo   = $resp['ShipmentData'][0]['Shipment']['AWB'];
+								$date        = date("d M Y", strtotime($resp['ShipmentData'][0]['Shipment']['PickUpDate']));
+								$time        = date("H:i", strtotime($resp['ShipmentData'][0]['Shipment']['PickUpDate']));
+								$shipTo      = $resp['ShipmentData'][$i]['Shipment']['Consignee']['Name'];
+								$orderTotal  = $this->helper('explore')->formatPrice(Mage::getModel('sales/order')->loadByIncrementId(trim($orderNo))->getGrandTotal());
+								$orderStatus = $resp['ShipmentData'][0]['Shipment']['Status']['Status'];
+								$orderStatusType = $resp['ShipmentData'][0]['Shipment']['Status']['StatusType'];?>
+								<tr  class="items">
+								<?php if($error){
+
+									$stats = 'Your Order is yet to be dispatched. Patience please!';
+
+								}else{
+							
+								switch ($orderStatusType) {
+
+									case 'UD':
+									case 'PU':
+									case 'PP':
+												$stats = 'Left Okhla warehouse at '.$time.' on '.$date.'.';
+												break;
+									case 'DL':
+									case 'DTO':
+												$stats = 'Your Order has been successfully delivered.';
+												break;
+									case 'RT':
+									case 'RTO':
+									case 'RD':
+									case 'UD':
+									case 'CN':
+												$stats = 'Oops there seems to be some problem!! Please call us at XXXXXXXX';
+												break;
+
+								}
+
+							}
+
+							?>
+
+							<td class="first"><?php echo $waybillNo; ?><br><img src="<?php echo $this->getSkinUrl('images/gift-pack.png');?>" /><?php echo "PACKAGE ".$i;?></td>
+
+							<?php if($orderStatusType == 'UD' || $orderStatusType == 'PU' || $orderStatusType == 'PP' || $orderStatusType == 'DL' || $orderStatusType == 'DTO'){?>
+								<td><?php echo $this->__('Delhivery') ?></td>
+								<td class="last"><?php echo $stats;?></td>
+							<?php }else{ ?>
+								<td class="last" colspan="2"><?php echo $stats;?></td>
+							<?php } ?>
+
+						</tr>
+
+						<?php $i++;} ?>
+
+					<?php //endif; ?>
+
+				<?php endif; ?>
+                                <tr class="items">
+                                <?php if($order->canShip()){?>
+                                        <td class="first"><img src="<?php echo $this->getSkinUrl('images/gift-pack.png');?>" /><?php echo "PACKAGE ".$i;?></td>
+                                        <td class="last" colspan="3"><?php echo 'Your Order is yet to be dispatched. Patience please!';?></td>
+                                <?php }?>
+                                </tr>
+					<tr class="spacing">
+						<td></td>
+						<td></td>
+						<td class="last"></td>
+					</tr>
+		   </table>
+
+		   <?php }else{ ?>
+                    <h3><?php echo $this->__('SHIPPING DETAILS') ?></h3>
+                        <table cellpadding="0" cellspacing="0">
+
+			<tr> 
+			     <th><?php echo $this->__('TRACKING ID') ?></th>
+			     <th><?php echo $this->__('COURIER') ?></th>
+			     <th class="last"><?php echo $this->__('STATUS') ?></th>
+			</tr>
+                        <tr class="items">
+                             <td class="first"><img src="<?php echo $this->getSkinUrl('images/gift-pack.png');?>" /><?php echo "PACKAGE 1 ";?></td>
+                             <td class="last" colspan="3"><?php echo 'Your Order is yet to be dispatched. Patience please!';?></td>
+		   	</tr>
+                        <tr class="spacing">
+			<td class="last" colspan="3"></td>
+                        <tr>															</tr>
+                        </table>	
+<!--                        <p class="shipment-not-created-note"><?php //echo $this->__('Dear Customer, the delivery status of this order is not available yet, please check again after 3 hours!') ?></p>-->
+		   <?php } ?>
+                        </div>	
+			</div>
+
+			<?php } ?>
+
+		</div>	
+
+	<div class="trackyourorder-keepshopping">
+		<div class="proceed_to_payment_box" >
+			<div class="happy_button keep_shopping_button">
+				<a href="<?php echo $this->getUrl(); ?>" class="happy_button keep_shopping_button">
+				<button class="button green"><?php echo $this->__('Keep Shopping') ?></button>
+				</a>
+			</div>
+			<div class="button_separator"><?php echo $this->__('OR') ?></div>
+			<div class="happy_button track_another_order_button">
+				<a href="<?php echo Mage::getBaseUrl().'trackorder/index/trackorder';?>" class="happy_button keep_shopping_button">
+				<button class="button red"><?php echo $this->__('Track Another Order') ?></button>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	</div>	
+
+</div>
+ <?php Mage::getSingleton('core/session')->unsNotid();?>
+ <script>
+	 jQuery(document).ready(function() {
+	 	var i = 1;
+		    jQuery('table > tbody > tr.items').each(function() {
+			    	if(i%2 == 0){
+			    		jQuery(this).css('background','#f5f5f5');
+			    	}	
+		    	i++;
+		    });
+	});
+ </script>

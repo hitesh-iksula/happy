@@ -1,0 +1,319 @@
+<?php $_order = $this->getOrder();
+$productIds = array();
+foreach ($_order->getItemsCollection() as $item) {
+	$productIds[] = $item->getProductId();
+		}
+$mih_product_id = Mage::helper('mih')->getMihId();
+// check if cart contains MIH Product then only send email
+if(in_array($mih_product_id,$productIds)){
+
+// custom template desgin
+
+
+	 $i=0;
+	$option_value= array();
+	foreach ($_order->getAllItems() as $_item):
+
+	  $o = unserialize($_item->getData('product_options'));
+
+		if (isset($o['options'])):
+			$_options = $o['options'];
+			$i=0;
+			foreach ($_options as $_option) {
+				$option_value[$i++] = $_option['value'];
+
+			}
+			endif;
+			endforeach;
+	?>
+<?php if ($_order): ?>
+	<div style="float: none;height: auto;overflow: hidden;padding: 0 6px;width: auto; background: #F8F8F8; border-radius: 10px 10px 0 0;">
+		<dl class="last" style="margin-bottom: 0;">
+			<div class="row heading" style="overflow: hidden;">
+				<div class="column packages" style="-moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;border-color: -moz-use-text-color -moz-use-text-color #D5D5D5; border-image: none;border-style: none none solid;border-width: medium medium 1px;font-size: 16px;font-weight: 300;min-height: 0;text-align: center;text-transform: uppercase;border-bottom: 1px solid #D5D5D5;border-right: 1px solid #D5D5D5;float: left;padding: 8px 0 4px; margin-left: 1%;width: 38%;">packages</div>
+				<div class="column rate" style="-moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;border-color: -moz-use-text-color -moz-use-text-color #D5D5D5; border-image: none;border-style: none none solid;border-width: medium medium 1px;font-size: 16px;font-weight: 300;min-height: 0;text-align: center;text-transform: uppercase;padding: 8px 1% 4px;width: 23%;border-bottom: 1px solid #D5D5D5;border-right: 1px solid #D5D5D5;float: left;padding: 8px 0 4px;">rate</div>
+				<div class="column quantity" style="-moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;border-color: -moz-use-text-color -moz-use-text-color #D5D5D5; border-image: none;border-style: none none solid;border-width: medium medium 1px;font-size: 16px;font-weight: 300;min-height: 0;text-align: center;text-transform: uppercase;width: 16%;border-bottom: 1px solid #D5D5D5;border-right: 1px solid #D5D5D5;float: left;padding: 8px 0 4px;">qty.</div>
+				<div class="column amount" style="-moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none;border-color: -moz-use-text-color -moz-use-text-color #D5D5D5; border-image: none;border-style: none none solid;border-width: medium medium 1px;font-size: 16px;font-weight: 300;min-height: 0;text-align: center;text-transform: uppercase;border-right: medium none; width: 19%;border-bottom: 1px solid #D5D5D5;float: left;padding: 8px 0 4px;">amount</div>
+			</div>
+		</dl>
+
+		<dl class="last" style="margin: 0;">
+
+			<div id="option-row-3" class="row" style="overflow: hidden;">
+				<div class="column packages" style="margin-left: 1%;width: 38%;border-bottom: 1px solid #D5D5D5;border-right: 1px solid #D5D5D5;float: left;padding: 8px 0 4px;height:76px;">
+					<label style="color: #C61B09;display: block;font-size: 18px;font-weight: 300;margin: 4px 0;text-transform: uppercase; text-align:center;">two to a room</label>
+					<div class="option-information" style="margin: 0 15px 5px;text-align: justify;">
+					</div>
+				</div>
+				<div class="column rate" style="padding: 8px 1% 4px;width: 23%;border-bottom: 1px solid #D5D5D5;border-right: 1px solid #D5D5D5;float: left;padding: 8px 0 4px;height: 76px;" ><div class="rate-row-1" style="border-bottom: 1px solid #D5D5D5;font-size: 18px;font-weight: 300;margin: 0 0 5px;text-align: center;">Rs. 26,500</div><div class="rate-row-2" style="font-size: 12px;font-weight: 300;text-align: center;">Rs. 13,250 (per guest) X 2</div></div>
+				<div class="column quantity" style="width: 16%;border-bottom: 1px solid #D5D5D5;border-right: 1px solid #D5D5D5;float: left;padding: 8px 0 4px;height: 76px;" >
+					<div class="input-box" style="margin-top: 5px;text-align: center;"><span style="font-size:22px;"><?php if($option_value[0]): echo $option_value[0]; ?></span> rooms<?php endif; ?></div>
+				</div>
+				<div class="column amount" style="border-right: medium none;font-size: 24px;font-weight: 300;text-align: center; width: 19%;border-bottom: 1px solid #D5D5D5; float: left;padding: 8px 0 4px;height: 76px;" >
+					<div class="price" style="margin-top: 3px;"><?php if($option_value[0]): ?>Rs. <?php echo $option_value[0] * 26500; ?><?php endif; ?></div>
+				</div>
+			</div>
+
+			<div id="option-row-2" class="row" style="overflow: hidden;">
+				<div class="column packages" style="margin-left: 1%;width: 38%;border-bottom: 1px solid #D5D5D5;border-right: 1px solid #D5D5D5;float: left;padding: 8px 0 4px;height: 93px;" >
+					<label style="color:#c61b09;display:block;font-size:18px;font-weight:300;margin:4px 0;text-transform:uppercase; text-align:center;">three to a room</label>
+					<div class="option-information" style="margin: 0 15px 5px;text-align: justify;"></div>
+				</div>
+				<div class="column rate" style="padding: 8px 1% 4px;width: 23%;border-bottom: 1px solid #D5D5D5;border-right: 1px solid #D5D5D5;float: left;padding: 8px 0 4px;height: 93px;" ><div class="rate-row-1" style="border-bottom: 1px solid #D5D5D5;font-size: 18px;font-weight: 300;margin: 0 0 5px;text-align: center;">Rs. 37,500</div><div class="rate-row-2" style="font-size: 12px;font-weight: 300;text-align: center;">Rs. 12,500 (per guest) X 3</div></div>
+				<div class="column quantity" style="width: 16%;border-bottom: 1px solid #D5D5D5;border-right: 1px solid #D5D5D5;float: left;padding: 8px 0 4px;height: 93px;" >
+					<div class="input-box" style="margin-top: 5px;text-align: center;"><span style="font-size:22px;"><?php if($option_value[1]): echo $option_value[1]; ?></span> rooms<?php endif; ?></div>
+				</div>
+				<div class="column amount" style="border-right: medium none;font-size: 24px;font-weight: 300;text-align: center; width: 19%;border-bottom: 1px solid #D5D5D5; float: left;padding: 8px 0 4px;height: 93px;" >
+					<div class="price" style="margin-top: 3px;"><?php if($option_value[1]): ?>Rs. <?php echo $option_value[1] * 37500; ?><?php endif; ?></div>
+				</div>
+			</div>
+
+			<div id="option-row-1" class="row" style="overflow: hidden;">
+				<div class="column packages" style="margin-left: 1%;width: 38%;border-bottom: 1px solid #D5D5D5;border-right: 1px solid #D5D5D5;float: left;padding: 8px 0 4px;height: 76px;">
+					<label style="color:#c61b09;display:block;font-size:18px;font-weight:300;margin:4px 0;text-transform:uppercase; text-align:center;">kids between 5 - 10</label>
+					<div class="option-information" style="margin: 0 15px 5px;text-align: justify;"></div>
+				</div>
+				<div class="column rate" style="padding: 8px 1% 4px;width: 23%;border-bottom: 1px solid #D5D5D5;border-right: 1px solid #D5D5D5;float: left;padding: 8px 0 4px;height: 76px;"><div class="rate-row-1" style="border-bottom: 1px solid #D5D5D5;font-size: 18px;font-weight: 300;margin: 0 0 5px;text-align: center;">Rs. 5,000</div></div>
+				<div class="column quantity" style="width: 16%;border-bottom: 1px solid #D5D5D5;border-right: 1px solid #D5D5D5;float: left;padding: 8px 0 4px;height: 76px;" >
+					<div class="input-box" style="margin-top: 5px;text-align: center;"><span style="font-size:22px;"><?php if($option_value[2]): ?><?php echo $option_value[2];?></span> kids<?php endif; ?></div>
+				</div>
+				<div class="column amount" style="border-right: medium none;font-size: 24px;font-weight: 300;text-align: center; width: 19%;border-bottom: 1px solid #D5D5D5; float: left;padding: 8px 0 4px;height: 76px;" >
+					<div class="price" style="margin-top: 3px;"><?php if($option_value[2]): ?>Rs. <?php echo $option_value[2] * 5000;?><?php endif; ?></div>
+				</div>
+				</div>
+		</dl>
+	</div>
+	<div class="product-options-bottom" style="border: medium none; padding: 0 0.5% 2% 0.5%; background: #F8F8F8; border-radius: 0 0 10px 10px;">
+
+		<div class="price-box" style="float: none;text-align: right; padding: 0 6px;">
+			<span class="price-excluding-tax" style="overflow: hidden; display:block; width: 98%;">
+				<span id="price-excluding-tax-645_clone" class="price" style="color: #878787;font-size: 18px;font-weight: 300;border-bottom: 1px solid #D5D5D5;border-left: 1px solid #D5D5D5;float: right;margin: 0;padding: 13px 1px 13px 0; margin-left: 1px; width: 19.5%;" >Rs. <?php echo number_format($_order->getData('subtotal'), 2); ?></span>
+				<span class="label" style="border-bottom: 1px solid #D5D5D5;border-left: 1px solid #D5D5D5;color: #808080;float: right;font-size: 14px; margin: 0;padding: 16px 2% 16px 1.5%; text-align: left;width: 13%;">Sub Total</span>
+				<span class="filler" style="border-bottom: 1px solid #D5D5D5;border-left: 1px solid #D5D5D5;float: right;margin: 0;padding: 16px 10px 17px 11px;width: 20.8%;">&nbsp;</span>
+			</span>
+			<span class="just-the-tax" style="overflow: hidden; display: block; width: 98%;">
+				<span id="just-the-tax-645_clone" class="price" style="color: #878787;font-size: 18px;font-weight: 300; border-left: 1px solid #D5D5D5;float: right;margin: 0;padding: 13px 1px 13px 0; margin-left: 1px; width: 19.5%;">
+				   <label style="color: #808080;white-space: nowrap;"> Rs. <?php echo number_format($_order->getData('tax_amount'), 2); ?></label>
+				</span>
+				<span class="label" style="border-left: 1px solid #D5D5D5;color: #808080;float: right;font-size: 14px; margin: 0;padding: 16px 2% 16px 1.5%; text-align: left;width: 13%;">Tax @ 12.36%</span>
+				<span class="filler" style="border-left: 1px solid #D5D5D5;float: right;margin: 0;padding: 16px 10px 17px 11px;width: 20.8%;">&nbsp;</span>
+			</span>
+			<span class="price-including-tax" style="overflow: hidden; border-bottom: 1px solid #C61B09; border-top: 1px solid #C61B09; padding: 8px 0; width: 98%; display: block;">
+				<span id="price-including-tax-645_clone" class="price" style="border: medium none;color: #878787;font-size: 18px;font-weight: 300; float: right;margin: 0;padding: 14px 1px 14px 0; margin-left: 1px; width: 19.5%;">Rs. <?php echo number_format($_order->getData('grand_total'), 2); ?></span>
+				<span class="label" style="text-transform: uppercase;border: medium none; color: #808080;float: right;font-size: 14px; margin: 0;padding: 16px 2% 16px 1.5%; text-align: left;width: 13%;"><b>Total</b></span>
+				<span class="filler" style="border: medium none; float: right;margin: 0;padding: 16px 10px 17px 11px;width: 20.8%;">&nbsp;</span>
+			</span>
+		</div>
+	</div>
+
+<?php endif; ?>
+<?php
+
+}else{
+
+?>
+<?php //basic templete phtml code loads when simple product is added ?>
+
+<div class="checkout_table_main" style="font-family: arial;color: #636363;border-bottom:1px solid #d6d6d6;">
+    <div class="heading_main" style="display: table;width: 100%;font-size: 14px;color:#c4c4c4;font-family: arial;text-transform: uppercase;border-bottom:1px solid #d6d6d6;">
+        <div class="heading_in" style="width: 74%;display: table-cell;">
+            <div class="heading" style="display: table;width: 100%;">
+                <div class="product_head" style="width: 32%;display: table-cell;border-right:1px solid #d6d6d6;padding-top:5px;padding-bottom:5px;text-align: center;">Item</div>
+                <div class="qty_head" style="width: 6%;display: table-cell;text-align: center;border-right:1px solid #d6d6d6;padding-top:5px;padding-bottom:5px;word-break: break-all;">Qty.</div>
+                <div class="price_head" style="width: 17%;display: table-cell;text-align: center;border-right:1px solid #d6d6d6;padding-top:5px;padding-bottom:5px;">Amount</div>
+            </div>
+        </div>
+        <div class="delivery_head" style="width: 26%;display: table-cell;padding-top:5px;padding-bottom:5px;text-align: center;">Delivery Time</div>
+    </div>
+
+	<?php
+
+		date_default_timezone_set('Asia/Kolkata');
+		$currentTime = date('H', time());
+		$currentDay = date('D', $time);
+		$offDelivery = '';
+		$mydate = date('d/m/Y');
+		$t=date('d-m-Y');
+		$myday1 = date("D",strtotime($t));
+		$myday = date("l",strtotime($t));
+		$nextday = Date('l', strtotime("+1 days"));
+		$nextday1 = Date('l', strtotime("+2 days"));
+
+		$NonInventory = 0;
+		$Inventory = 0;
+		foreach($_order->getAllItems() as $_item):
+			$product = Mage::getModel('catalog/product')->load($_item->getProduct()->getId());
+			if($product->getNonInventoryProducts() != 1){
+				$Inventory = 1;
+			 }else{
+			 	$NonInventory = 1;
+			 } 
+		endforeach;
+
+	?>
+
+	<?php if($Inventory == 1){?>
+    <div class="top_product_main" style="display: table;width: 100%">
+        <div class="top_product" style="width: 74%;display: table-cell;">
+			<?php $i=0; foreach ($_order->getAllItems() as $_item): ?>
+				<?php if($_item->getParentItem()) continue; else $i++; ?>
+				<?php
+					$product = Mage::getModel('catalog/product')->load($_item->getProduct()->getId());
+					if($product->getNonInventoryProducts() != 1){
+					 	echo $this->getItemHtml($_item);
+					 	$date_invent = 'true';
+					 }
+				?>
+			<?php endforeach; ?>
+        </div>
+        <?php if($date_invent == 'true'){ ?>
+        <div class="delivery_time_top" style="vertical-align: middle;text-align: center;width: 26%;display: table-cell;font-size: 14px;color:#696969;">
+        	
+			<?php $delivery_rate=Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getShippingMethod();?>
+            <?php if($delivery_rate == 'tablerate_bestway'): ?>
+                 3 - 4 working days
+            <?php else: ?>
+                 <!-- Tommorrow</p> -->
+                    <?php $nextshipmentday = 'Monday' ?>
+                    <?php if(($myday1 == 'Fri') && ($currentTime >= 16) ): ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+3 days")); ?> 
+                        <?php echo $nextshipmentday; ?> ,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php elseif($myday1 == 'Sat'): ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+2 days")); ?> 
+                        <?php echo $nextshipmentday; ?>,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php elseif(($myday1 == 'Sun') && ($currentTime <= 16) ): ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+1 days")); ?> 
+                        <?php echo $nextshipmentday; ?>,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php elseif(($myday1) && ($currentTime >= 16)  && ($myday1 != 'Fri') && ($myday1 != 'Sat')): ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+2 days")); ?> 
+                        <?php echo $nextday1; ?>,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php else: ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+1 days")); ?> 
+                        <?php echo $nextday; ?>,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php endif; ?>
+            <?php endif; ?>
+
+        </div>
+        <?php } ?>
+    </div>
+    <?php } ?>
+
+    <?php if($NonInventory == 1){?>
+    <div class="bottom_product_main" style="display: table;width: 100%;background: #ededed;">
+        <div class="bottom_product">
+
+			<?php $i=0; foreach ($_order->getAllItems() as $_item): ?>
+				<?php if($_item->getParentItem()) continue; else $i++; ?>
+				<?php
+					$product = Mage::getModel('catalog/product')->load($_item->getProduct()->getId());
+					if($product->getNonInventoryProducts() == 1){
+						echo $this->getItemHtml($_item);
+					}
+				?>
+			<?php endforeach; ?>
+
+        </div>
+        <div class="delivery_date" style="vertical-align: middle;text-align: center;width: 26%;display: table-cell;font-size: 14px;color:#696969;">Within 10 Days</div>
+    </div>
+    <?php } ?>
+
+	<?php echo $this->getChildHtml('order_totals') ?>
+	
+</div>
+
+
+
+
+<!-- 	<table style="border-bottom:1px solid #d6d6d6; width:90%; margin: auto;" cellspacing="0" cellpadding="0" boder="0">
+        <tr>
+            <td style="border-right:1px solid #d6d6d6; border-bottom:1px solid #d6d6d6; text-align:center; color:#bababa; font-size: 14px; text-transform:uppercase; padding:5px 0; width:30%;"> Item </td>
+            <td style="border-right:1px solid #d6d6d6; border-bottom:1px solid #d6d6d6; text-align:center; color:#bababa; font-size: 14px; text-transform:uppercase; padding:5px 0; width:30%; "> SKU </td>
+            <td style="border-right:1px solid #d6d6d6; border-bottom:1px solid #d6d6d6; text-align:center; color:#bababa; font-size: 14px; text-transform:uppercase; padding:5px 0;  width:10%; "> QTY.</td>
+            <td style="border-bottom:1px solid #d6d6d6; text-align:center; color:#bababa; font-size: 14px; text-transform:uppercase; padding:5px 0;  width:28.5%; "> Amount </td>
+        </tr>
+
+
+        	<?php //$i=0; foreach ($_order->getAllItems() as $_item): ?>
+				<?php //if($_item->getParentItem()) continue; else $i++; ?>
+				<?php //echo $this->getItemHtml($_item) ?>
+			<?php //endforeach; ?> -->
+    </table>
+
+
+		<?php if ($this->helper('giftmessage/message')->isMessagesAvailable('order', $_order, $_order->getStore()) && $_order->getGiftMessageId()): ?>
+			<?php $_giftMessage = $this->helper('giftmessage/message')->getGiftMessage($_order->getGiftMessageId()); ?>
+			<?php if ($_giftMessage): ?>
+		<br />
+		<table cellspacing="0" cellpadding="0" border="0" width="100%" style="border:1px solid #EAEAEA;">
+			<thead>
+				<tr>
+					<th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><strong><?php echo $this->__('Gift Message for this Order') ?></strong></th>
+				</tr>
+			</thead>
+
+			<tbody>
+
+				<tr>
+					<td colspan="4" align="left" style="padding:3px 9px">
+					<strong><?php echo $this->__('From:'); ?></strong> <?php echo $this->htmlEscape($_giftMessage->getSender()) ?>
+					<br /><strong><?php echo $this->__('To:'); ?></strong> <?php echo $this->htmlEscape($_giftMessage->getRecipient()) ?>
+					<br /><strong><?php echo $this->__('Message:'); ?></strong><br /> <?php echo $this->htmlEscape($_giftMessage->getMessage()) ?>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+			<?php endif; ?>
+		<?php endif; ?>
+
+
+<!-- <table cellspacing="0" cellpadding="0" border="0" width="650" style="border:1px solid #EAEAEA;">
+	<thead>
+		<tr>
+			<th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><?php // echo $this->__('Item') ?></th>
+			<th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><?php // echo $this->__('Sku') ?></th>
+			<th align="center" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><?php // echo $this->__('Qty') ?></th>
+			<th align="right" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><?php // echo $this->__('Subtotal') ?></th>
+		</tr>
+	</thead>
+
+	<?php // $i=0; foreach ($_order->getAllItems() as $_item): ?>
+	<?php // if($_item->getParentItem()) continue; else $i++; ?>
+	<tbody<?php // echo $i%2 ? ' bgcolor="#F6F6F6"' : '' ?>>
+		<?php // echo $this->getItemHtml($_item) ?>
+	</tbody>
+	<?php // endforeach; ?>
+
+	<tbody>
+		<?php // echo $this->getChildHtml('order_totals') ?>
+	</tbody>
+</table>
+<?php // if ($this->helper('giftmessage/message')->isMessagesAvailable('order', $_order, $_order->getStore()) && $_order->getGiftMessageId()): ?>
+	<?php // $_giftMessage = $this->helper('giftmessage/message')->getGiftMessage($_order->getGiftMessageId()); ?>
+	<?php // if ($_giftMessage): ?>
+<br />
+<table cellspacing="0" cellpadding="0" border="0" width="100%" style="border:1px solid #EAEAEA;">
+	<thead>
+		<tr>
+			<th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><strong><?php // echo $this->__('Gift Message for this Order') ?></strong></th>
+		</tr>
+	</thead>
+
+	<tbody>
+
+		<tr>
+			<td colspan="4" align="left" style="padding:3px 9px">
+			<strong><?php // echo $this->__('From:'); ?></strong> <?php // echo $this->htmlEscape($_giftMessage->getSender()) ?>
+			<br /><strong><?php // echo $this->__('To:'); ?></strong> <?php // echo $this->htmlEscape($_giftMessage->getRecipient()) ?>
+			<br /><strong><?php // echo $this->__('Message:'); ?></strong><br /> <?php // echo $this->htmlEscape($_giftMessage->getMessage()) ?>
+			</td>
+		</tr>
+	</tbody>
+</table>
+	<?php // endif; ?>
+<?php // endif; ?> -->
+<?php } ?>

@@ -1,0 +1,17 @@
+<div class="page-title">
+    <h1>Track Order</h1>
+</div>
+<div class="panel open">
+	<form method="GET" name="trackorderform" id="trackorderform_top_link" action="<?php echo Mage::getUrl('trackorder'); ?>">
+		<input type="hidden" value="<?php echo Mage::getUrl('trackorder/index/orderexistence'); ?>" id="ajaxtrackurl">
+		<input type="text" class="tracker_order required-entry" name="orderid" id="orderid" style="color: rgb(51, 51, 51);" placeholder="Enter your order id">
+		<label class="validation-advice" id="errormsg" style="display: none;"></label>
+		<input type="submit" value="Submit" class="submitbtn" id="trackordersubmitbtn">
+	</form>
+</div>
+
+<script type="text/javascript">
+    //< ![CDATA[
+        var customForm = new VarienForm('trackorderform_top_link');
+    //]]>
+</script>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<modules>
+		<Iksula_Dashboardlinks>
+			<version>0.2.0</version>
+		</Iksula_Dashboardlinks>
+	</modules>
+	<global>
+		<blocks>
+			<customer>
+				<rewrite>
+					<account_navigation>Iksula_Dashboardlinks_Block_Account_Navigation</account_navigation>
+				</rewrite>
+			</customer>
+		</blocks>
+	</global>
+	<frontend>
+		<layout>
+			<updates>
+				<dashboardlinks>
+					<file>dashboardlinks.xml</file>
+				</dashboardlinks>
+			</updates>
+		</layout>
+	</frontend>
+</config>

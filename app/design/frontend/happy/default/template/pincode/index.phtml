@@ -1,0 +1,74 @@
+<div class="pincode-validation-div">
+	<span><b>Pincode Serviceability Check</b></sapn>
+		<br/>
+		<div class="pincode_main_div">
+			<input type="text" name="pincode-input" maxlength="6" id="pincode-textbox"/>
+			<button type="button" title="Pincode Validation" id="btn_pincode" class="button btn-pincode" onclick="pincodevalidation()">
+				<span>Check</span></button>
+
+			</div>
+			<div class="pincode_val_div">Shipping to :  <span class="pincode_val"></span><span class="change"><a href="">Change</a></span></div>
+			<div class="class_cod">Cash On delivery Available</div>
+			<div class="class_prepaid">Other Payment Method Also Available</div>
+			<div class="no_payment">Not available in your location yet.</div>
+		</div>
+
+		<script type="text/javascript">
+		function pincodevalidation(){
+			var pincodeval = jQuery('#pincode-textbox').val();
+		    // alert(pincodeval);
+		    jQuery('.pincode_val').html(pincodeval +'  ');
+		    jQuery('.pincode_main_div').css({'display':'none'});
+		    jQuery('.pincode_val_div').css({'display':'none'});
+		    var url = "<?php echo $this->getBaseUrl().'pincode/index/Pincodevalidation'?>";
+		    jQuery.post(url,{pincode:pincodeval},function(responce){
+
+		    	switch(responce){
+		    		case 'cod':
+		    		jQuery('.class_cod').css({'display':'block','font-weight' : 'bold'});
+		    		jQuery('.change').css({'display':'inline-block','font-weight' : 'bold'});
+		    		jQuery('.pincode_val_div').css({'display':'inline-block'});
+		    		break;
+
+		    		case 'prepaid':
+		    		jQuery('.class_prepaid').css({'display':'block','font-weight' : 'bold'});
+		    		jQuery('.change').css({'display':'inline-block'});
+		    		jQuery('.pincode_val_div').css({'display':'inline-block'});
+		    		break;
+
+		    		case 'both':
+		    		jQuery('.class_cod').css({'display':'block','font-weight' : 'bold'});
+		    		jQuery('.class_prepaid').css({'display':'block','font-weight' : 'bold'});
+		    		jQuery('.change').css({'display':'inline-block'});
+		    		jQuery('.pincode_val_div').css({'display':'inline-block'});
+		    		break;
+
+		    		default:
+		    		jQuery('.pincode_val_div').css({'display':'inline-block'});
+		    		jQuery('.class_cod').css({'display':'none'});
+		        	jQuery('.change').css({'display':'inline-block'});
+		    		jQuery('.class_prepaid').css({'display':'none'});
+		    		jQuery('.no_payment').css({'display':'block'});
+		    		break;
+
+		    	}
+		    });
+		}
+
+		jQuery(document).ready(function($){
+			// pincodevalidation();
+			$('.pincode_val_div').css({'display':'none'});
+			$('.class_cod').css({'display':'none'});
+			$('.class_prepaid').css({'display':'none'});
+			jQuery('.no_payment').css('display','none');
+			$('#pincode-textbox').keypress(function(e) {
+				if(e.which == 13)
+				{
+					pincodevalidation();
+				}
+			});
+		});
+</script>
+<style type="text/css">
+.change{display: none;}
+</style>

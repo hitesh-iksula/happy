@@ -1,0 +1,8 @@
+<?php $session = Mage::getSingleton('core/session'); ?>
+<?php if($session->getCustomCartActionMessage()): ?>
+	<?php $cartMessage = $session->getCustomCartActionMessage(); ?>
+	<div class="cart-activity-bar <?php echo $cartMessage['type']; ?>">
+		<?php echo $cartMessage['message']; ?>
+	</div>
+	<?php $session->unsCustomCartActionMessage(); ?>
+<?php endif; ?>

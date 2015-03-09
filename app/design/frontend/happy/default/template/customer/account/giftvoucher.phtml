@@ -1,0 +1,79 @@
+<div class="cms-image-area"><img src="<?php echo $this->getSkinUrl().'images/cmspages/gift-card-balance.jpg';?>" alt=" alt=" /></div>
+<div class="cms-content-area">
+	<h1 class="cms-page-title">Check Gift Voucher Balance</h1>
+	<p><input class="cms-gift-code-input" id="gift-voucher-code" name="gift_code" type="text" value="" /></p>
+	<a id="ckeck-balance" class="cms-gift-voucher-btn">Check Balance</a>
+	<div class="error_message" style="display:none">Please Enter Gift Voucher Code</div>
+	<div class="valid_code" style="display:none">Please Enter valid coupon code</div>
+</div>
+<div class="result" style="display:none">
+	<h1 class="cms-page-title">Gift Card Balance</h1>
+	<div class="balance_text"></div>
+	<div class="status_text"></div>
+	<a class="cms-gift-voucher-btn" id="keep-shopping" href="<?php echo $this->getUrl()?>">Keep Shopping</a>
+</div>
+<script type="text/javascript">
+jQuery(document).ready(function($){
+	$("#ckeck-balance").click(function(){
+		var voucher_code = $("#gift-voucher-code").val();
+		//alert(voucher_code);
+		if(voucher_code){
+			url = "<?php echo $this->getUrl().'socialconnect/account/checkCouponCode'?>";
+			$.post(url,{data:voucher_code},function(response){
+				var obj = $.parseJSON(response);
+				//alert(obj);
+				if(obj == ""){
+					//alert("no coupon");
+					$(".valid_code").show(function(){
+						$(this).fadeOut(10000);
+					});
+				}else{
+					
+					//console.log(obj);
+					balance = obj[0]['balance'];
+					status = obj[0]['status'];
+					//alert(status);
+					if(status == "1"){
+
+						status = "Pending"
+					}
+					if(status == "2"){
+						status = "Active"
+					}
+					if(status == "3"){
+						status = "Disabled"
+					}
+					if(status == "4"){
+						status = "Used"
+					}
+					if(status == "5"){
+						status = "Expired"
+					}
+					balance = parseFloat(balance).toFixed(2)
+					//alert(balance+""+status);
+					var balance_text = "Your Gift Voucher balance is : <span>"+balance+"</span> Rs. ";
+					var status_text = "Gift Voucher is "+status+" ";
+					$(".balance_text").html(balance_text);
+					$(".status_text").text(status_text);
+					$(".cms-content-area").hide(function(){
+						$(".result").show();
+					});
+
+				}
+				
+			});
+		}else{
+			$(".error_message").show(function(){
+				$(this).fadeOut(10000);
+			});
+		}
+	});
+});
+</script>
+<style type="text/css">
+.result{float:left;}
+.result #keep-shopping{background-color:#488082;}
+.result div{line-height:30px;}
+.balance_text span{font-size:24px;}
+.valid_code,.error_message{padding-top: 20px;color:#F20A21;font-size:18px;}
+</style>

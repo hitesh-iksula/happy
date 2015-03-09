@@ -1,0 +1,55 @@
+<?php if($this->getRequest()->getParam('type') == 'modal'): ?>
+
+    <div class="quickview-main">
+    	<?php echo $this->getChildHtml('content') ?>
+    </div>
+
+    <div class="modal_tailbar_container">
+        <?php
+        $totalItemsInCart = Mage::helper('checkout/cart')->getCart()->getItemsCount();
+        if($totalItemsInCart < 10) {
+            $totalItemsInCart = '0' . $totalItemsInCart;
+        }
+        ?>
+        <div class="modal_tailbar">
+            <div class="carton_logo_and_amount"><?php echo $this->__('My Carton'); echo " (<span>" . $totalItemsInCart . "</span>)"; ?></div>
+            <div class="keep_shopping_box">
+                <div class="happy_button keep_shopping_button"><?php echo $this->__('Keep Shopping'); ?></div>
+            </div>
+        </div>
+    </div>
+
+<?php else: ?>
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php // echo $this->getLang() ?>" lang="<?php // echo $this->getLang() ?>">
+        <head>
+            <?php echo $this->getChildHtml('head') ?>
+        </head>
+        <body<?php echo $this->getBodyClass()?' class="'.$this->getBodyClass().'"':'' ?>>
+            <?php echo $this->getChildHtml('after_body_start') ?>
+            <div class="wrapper">
+                <?php echo $this->getChildHtml('global_notices') ?>
+                <div class="page">
+                    <?php echo $this->getChildHtml('header') ?>
+                    <div class="main-container col2-right-layout">
+                        <div class="main">
+                            <?php echo $this->getChildHtml('breadcrumbs') ?>
+                            <div class="col-main">
+                                <div class="one_category" id="fancybox-content">
+                                    <?php echo $this->getChildHtml('global_messages') ?>
+                                    <?php echo $this->getChildHtml('content') ?>
+                                </div>
+                            </div>
+                            <div class="col-right sidebar"><?php echo $this->getChildHtml('right') ?></div>
+                        </div>
+                    </div>
+                    <?php echo $this->getChildHtml('footer') ?>
+                    <?php echo $this->getChildHtml('before_body_end') ?>
+                </div>
+            </div>
+            <?php echo $this->getAbsoluteFooter() ?>
+        </body>
+    </html>
+
+<?php endif; ?>

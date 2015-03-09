@@ -1,0 +1,86 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<?php
+$_product    = $this->getProduct();
+$_attributes = Mage::helper('core')->decorateArray($this->getAllowAttributes());
+?>
+
+<?php
+// Collect options applicable to the configurable product
+$_productAttributeOptions = $_product->getTypeInstance(true)->getConfigurableAttributesAsArray($_product);
+$attributeOptionsArray = array();
+foreach ($_productAttributeOptions as $_productAttribute) {
+    foreach ($_productAttribute['values'] as $attribute) {
+        $attributeOptionsArray[$_productAttribute['label']][$attribute['value_index']] = $attribute['store_label'];
+    }
+}
+?>
+
+<?php if (/*$_product->isSaleable() && */count($_attributes)):?>
+
+	<?php $configurableAttributesCount = count($_attributes); ?>
+	<?php // $attributeArray = array(); ?>
+	<?php foreach($_attributes as $attribute): ?>
+
+		<div class="configurable_attribute_box<?php if($configurableAttributesCount == 1): echo ' last'; endif; ?>">
+
+			<div class="configurable_attribute_options_box<?php if($attribute->decoratedIsLast): echo ' last'; endif; ?>">
+
+				<?php
+				$attributeCode = $attribute->getProductAttribute()->getAttributeCode();
+				$attributeId = $attribute->getProductAttribute()->getAttributeId();
+				$attributeModel = Mage::getModel('eav/entity_attribute')->loadByCode('catalog_product', $attributeCode);
+				?>
+
+				<?php if($attributeModel->usesSource()): ?>
+					<?php $attributeOptions = $attributeModel->getSource()->getAllOptions(false); ?>
+
+					<select name="super_attribute[<?php echo $attributeId ?>]" id="attribute<?php echo $attributeId ?>" class="required-entry super-attribute-select selectStySize">
+						<option value=""><?php echo $attribute->getLabel(); ?></option>
+						<?php foreach($attributeOptions as $attributeOption): ?>
+							<?php if($attributeOptionsArray[$attribute->getLabel()][$attributeOption['value']]): ?>
+								<option value="<?php echo $attributeOption['value']; ?>"<?php if($this->getRequest()->getParam('option') == $attributeOption['label']): ?> selected="selected"<?php endif; ?>>
+									<?php echo trim($attributeOption['label']); ?>
+								</option>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</select>
+
+				<?php endif; ?>
+
+			</div>
+
+		</div>
+
+	<?php endforeach; ?>
+
+<?php endif; ?>
+
+<script type="text/javascript">
+    var spConfig = <?php echo $this->getJsonConfig() ?>;
+</script>

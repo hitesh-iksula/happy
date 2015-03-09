@@ -1,0 +1,13 @@
+<?php $_code = $this->getMethodCode(); ?>
+
+<div class="payment-method-label" id="label-5">
+	<label class="radio" for="p_method_wallet">
+		<img src="<?php echo $this->getSkinUrl('images/onepagecheckout/mobikwik_label.png'); ?>"/>
+	</label>
+</div>
+
+<div class="input-box display-none payment-data-box" id="p_method_<?php echo $_code ?>_data">
+	<p class="payment-note"><span>MobiKwik Wallet</span> is a secure and one click method to pay online. Now store money in your pre-paid wallet and shop without disclosing your bank details.</p>
+
+	<button type="submit" id="place-order" class="button mobikwik_button" onclick="checkout.save(); return false;"></button>
+</div>

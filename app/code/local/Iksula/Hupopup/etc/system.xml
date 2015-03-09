@@ -1,0 +1,77 @@
+<config>
+    <tabs>
+        <helloconfig translate="label" module="hupopup">
+            <label>Email Grabber</label>
+            <sort_order>99999</sort_order>
+        </helloconfig>
+    </tabs> 
+    <sections>
+        <helloworld_options translate="label" module="hupopup">
+            <label>Email Grabber</label>
+            <tab>helloconfig</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <grabber_details translate="label" module="hupopup">
+                    <label>Grabber Details</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <grabber_title translate="label">
+                            <label>Grabber Title: </label>
+                            <comment><![CDATA[ <ol><li><h5>Enter grabber title.</h5></li></ol> ]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </grabber_title>
+                        <grabber_description translate="label comment">
+                            <label>Grabber Description</label>
+                            <comment><![CDATA[ <ol><li><h5>Enter grabber description.</h5></li></ol> ]]></comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </grabber_description>
+                    </fields>
+                </grabber_details>
+            </groups>
+            <groups>
+                <impressions translate="label" module="hupopup">
+                    <label>Impressions count</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <impressions_count translate="label">
+                            <label>No of impressions: </label>
+                            <comment><![CDATA[ <ol><li><h5>No of impressions of the e-mail pop.</h5></li>
+                                <script>
+                                    jQuery( document ).ready(function() {
+                                        jQuery("#helloworld_options_impressions_impressions_count").attr('disabled','disabled');
+                                    });
+                                </script>
+                            </ol> ]]>
+                            </comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </impressions_count>
+                    </fields>
+                </impressions>
+            </groups>
+        </helloworld_options>
+    </sections>   
+</config>

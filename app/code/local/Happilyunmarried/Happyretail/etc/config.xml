@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Happilyunmarried_Happyretail>
+            <version>0.1.0</version>
+        </Happilyunmarried_Happyretail>
+    </modules>
+    
+    <global>
+        <models>
+            <happyretail>
+                <class>Happilyunmarried_Happyretail_Model</class>
+                <resourceModel>happyretail_mysql4</resourceModel>
+            </happyretail>
+            <happyretail_mysql4>
+                <class>Happilyunmarried_Happyretail_Model_Mysql4</class>
+            </happyretail_mysql4>
+        </models>
+        <blocks>
+            <happyretail>
+                <class>Happilyunmarried_Happyretail_Block</class>
+            </happyretail>
+        </blocks>
+        <helpers>
+            <happyretail>
+                <class>Happilyunmarried_Happyretail_Helper</class>
+            </happyretail>  
+        </helpers>
+    </global>
+    
+    <admin>
+        <routers>
+            <happyretail>
+                <use>admin</use>
+                <args>
+                    <module>Happilyunmarried_Happyretail</module>
+                    <frontName>happyretail</frontName>
+                </args>
+            </happyretail>
+        </routers>
+    </admin>
+    
+    <adminhtml>
+        <translate>
+            <modules>
+                <mage_adminhtml>
+                    <files>
+                        <happyretail>Happilyunmarried_Happyretail.csv</happyretail>
+                    </files>
+                </mage_adminhtml>
+            </modules>
+        </translate>
+        
+        <menu>
+            <happilyunmarried>
+                <children>
+                    <happyretail_retail translate="title" module="happyretail">
+                        <title>Retail</title>
+						<children>
+							<happyretail_retailstore>
+								<title>Add Multi Brand Store</title>
+								<action>happyretail/adminhtml_multiretailstore</action>
+							</happyretail_retailstore>
+							<happyretail_managestore>
+								<title>Manage Stores</title>
+								<action>happyretail/adminhtml_managestore</action>
+							</happyretail_managestore>
+							<happyretail_retailcity>
+								<title>Add City</title>
+								<action>happyretail/adminhtml_retailcity</action>
+							</happyretail_retailcity>
+							<happyretail_retailcountry>
+								<title>Add Country</title>
+								<action>happyretail/adminhtml_retailcountry</action>
+							</happyretail_retailcountry>
+						</children>
+                    </happyretail_retail>
+                </children>
+            </happilyunmarried>
+        </menu>
+        
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <happilyunmarried>
+                            <children>
+                                <happyretail_retail>
+                                    <title>Retail</title>
+                                </happyretail_retail>
+                            </children>
+                        </happilyunmarried>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        
+        <layout>
+            <updates>
+                <happyretail>
+                    <file>happyretail.xml</file>
+                </happyretail>
+            </updates>
+        </layout>
+    </adminhtml>
+</config>

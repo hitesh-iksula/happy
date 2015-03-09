@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<tabs>
+		<mobile translate="label" module="mobile">
+			<label>Mobile Page Settings</label>
+			<sort_order>10</sort_order>
+		</mobile>
+	</tabs>
+	<sections>
+		<mobile translate="label" module="mobile">
+			<label>Custom Cache Settings</label>
+			<tab>mobile</tab>
+			<sort_order>300</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+				<mobile_group translate="label" module="mobile">
+					<label>Cache Flush</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>100</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<enable_mobile_homepage_products translate="label">
+							<label>Enable Mobile Homepage Product Cache</label>
+							<frontend_type>select</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+						</enable_mobile_homepage_products>
+						<mobile_homepage_products translate="label">
+							<label>Mobile Homepage Product Cache</label>
+							<comment>Products shown on mobile site homepage.</comment>
+							<frontend_type>button</frontend_type>
+							<frontend_model>mobile/adminhtml_mobile_homeproducts</frontend_model>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</mobile_homepage_products>
+					</fields>
+				</mobile_group>
+			</groups>
+		</mobile>
+	</sections>
+</config>

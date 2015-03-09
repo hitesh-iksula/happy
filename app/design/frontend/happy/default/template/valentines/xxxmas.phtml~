@@ -1,0 +1,185 @@
+<div class="main_container_new valentinespage">
+	<div class="banner_new">
+		<img src="<?php echo Mage::getBaseUrl('media') .'Creativity/'. Mage::getStoreConfig('hubanner/hubanner_group4/image'); ?>" />
+	</div>
+
+	<div class="breadcrumbs_cover breadcrumbs">
+	    <ul>
+	        <li class="home">
+	            <a href="<?php echo $this->getUrl('');?>" title="<?php echo $this->__("Go to Home Page"); ?>"><?php echo $this->__("Happily Unmarried"); ?></a>
+	            <img src="<?php echo $this->getSkinUrl('images/general/breadcrumb_separator.png');?>" class="breadcrumb_separator">
+	        </li>
+	        <li class="category85">
+	            <a href="<?php echo $this->getUrl('');?>KeepItReal" ><?php echo $this->__("KeepItReal"); ?></a>
+	        </li>
+	    </ul>
+	</div>
+
+	<div class="news_div">
+		<p><?php echo $this->__('Tell us how "real" your love is by filling the form below.The three most real and interesting entries shall win Rs 2500 Happily Unmarried vouchers.And We would also send an exciting gift to your (potential) significant other.'); ?></p>
+		<p><?php echo $this->__("So go ahead and #KeepItReal"); ?> </p>
+		
+	</div>
+
+	<form id="xxxmas" method="post">
+
+		<div class="form_div">
+
+				<p><?php echo $this->__("Dearest Happily Unmarried,"); ?></p>
+
+				<div class="form_content">
+
+				<textarea class="form_textarea" name="message" id="message" cols="4" rows="7">Your sinful letter.
+
+For eg. -
+		        "I have been at my naughtiest when I put up a fake wedding card on a co-worker’s Facebook profile. The number of likes he got were the most he ever got. His mom actually called to ask him about it."
+
+(In 50 words maximum, please. We don’t have much of an attention span when drunk! )</textarea>
+				<div class="errorm"><?php echo $this->__("Message can't be left blank!"); ?></div>
+			</div>
+
+			<p><?php echo $this->__("Naughty forever,"); ?></p>
+				<div class="input_field"><input type="text" id="name" name="name" placeholder="Your Name" /></div>
+				<div class="errorn"><?php echo $this->__("Name can't be left blank!"); ?></div>
+				<div class="input_field"><input type="text" id="email" name="email" placeholder="E-mail Address" /></div>
+				<div class="errore"><?php echo $this->__("Email can't be left blank!"); ?></div>
+				<div class="errorev"><?php echo $this->__("Please enter valid email!"); ?></div>
+				<h3><?php echo $this->__("Merry XXXMas!"); ?></h3>
+				<input type="submit" name="submit" value="submit" id="submit" class="submit" />	
+		</div>
+
+	</form>
+
+</div>
+
+<script type="text/javascript">
+
+jQuery(document).ready(function(){
+
+	jQuery("#message").click(function() {
+		 if(jQuery("#message").val().indexOf('Your sinful letter') === -1){
+		 }else{
+		 	jQuery("#message").val('');
+		 }	
+	});
+
+
+	jQuery( "#submit" ).click(function() {
+
+		 if(jQuery("#message").val().indexOf('Your sinful letter') === -1){
+		 	
+		 }else{
+		 	jQuery('#message').css('border','1px solid red');
+			jQuery('.errorm').show();
+			return false;
+		 }
+
+		event.preventDefault();
+
+		var $name          = jQuery("#name").val();
+		var $email         = jQuery("#email").val();
+		var $message       = jQuery("#message").val();
+
+		if($message == ''){
+			jQuery('#message').css('border','1px solid red');
+			jQuery('.errorm').show();
+			return false;
+		}else{
+			jQuery('#message').css('border','1px solid #b6b6b6');
+			jQuery('.errorm').hide();
+		}
+
+		if($name == ''){
+			jQuery('#name').css('border','1px solid red');
+			jQuery('.errorn').show();
+			return false;
+		}else{
+			jQuery('#name').css('border','1px solid #b6b6b6');
+			jQuery('.errorn').hide();
+		}
+
+		if($email == ''){
+			jQuery('#email').css('border','1px solid red');
+			jQuery('.errore').show();
+			return false;
+		}else{
+			jQuery('#email').css('border','1px solid #b6b6b6');
+			jQuery('.errore').hide();
+		}
+
+	    if (!ValidateEmail($email)) {
+  			jQuery('#email').css('border','1px solid red');
+  			jQuery('.errorev').show();
+			return false;
+		}else{
+			jQuery('#email').css('border','1px solid #b6b6b6');
+			jQuery('.errorev').hide();
+		}
+
+		jQuery('#fancybox-loading-overlay').show();
+        jQuery('#fancybox-loading').show();
+        jQuery('#popup_jacket').show();
+        jQuery('#loading_gif').show();
+
+		jQuery.ajax({
+		      url: "<?php echo $this->getUrl('xxxmas/index/xxxmas');?>",
+		      type: 'post',
+		      data: {'name': $name, 'email': $email, 'message': $message},
+		      success: function(data) {
+			      		jQuery("#name").val('');
+						jQuery("#email").val('');
+						jQuery("#message").val('');
+						jQuery('.congrats_page').show();
+						jQuery('.news_div').hide();
+						jQuery('.form_div').hide();
+						jQuery(window).scrollTop(320);
+			      		jQuery('#fancybox-loading-overlay').hide();
+			            jQuery('#fancybox-loading').hide();
+			      		jQuery("#popup_jacket").hide();
+						jQuery("#loading_gif").hide();
+		      }
+	    });
+
+	});
+
+});
+
+function ValidateEmail(email) {
+    var expr = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    return expr.test(email);
+}
+</script>
+
+
+<div class="congrats_page">
+	<h1><?php echo $this->__("CONGRATULATIONS!"); ?></h1>
+
+	<p><?php echo $this->__("You're officially naughty and we love you owned up to it."); ?></p>
+	<p><?php echo $this->__("Remember, naughty and proud!"); ?></p>
+
+	<?php
+			$title="Tell us how Naughty you've been and win our goodies this X'mas.";
+			$url=$this->getUrl('xxxmas');
+			$summary='This Christmas, tell us how naughty you have been. 3 most interesting entries would win Happily Unmarried goodies.';
+			$image= Mage::getBaseUrl('media') .'Creativity/'. Mage::getStoreConfig('hubanner/hubanner_group5/image');
+	?>
+
+	<div class="socila_media_div">
+		<div class="heading"><?php echo $this->__("Spread the Love and Share the Awesomeness!"); ?></div>
+		<div class="sovial_icon_div">
+			<a href="http://www.facebook.com/sharer.php?s=100&p[title]=Shout out to the Naughty Ones from Happily Unmarried.&p[summary]=This Christmas, tell us how naughty you have been. 3 most interesting entries would win Happily Unmarried goodies.&p[url]=<?php echo $url; ?>&p[images][0]=<?php echo $image;?>','sharer','toolbar=0,status=0,width=548,height=325" ><img src="<?php echo $this->getSkinUrl('images/fb-icon.png');?>"></a>
+			<a href="https://twitter.com/intent/tweet?text=Shout out to the Naughty Ones from Happily Unmarried.&url=<?php echo $this->getUrl('');?>xxxmas&via=happilyunmarried"><img src="<?php echo $this->getSkinUrl('images/tw-icon.png');?>"></a>
+			<a href="https://plus.google.com/share?url=<?php echo $this->getUrl('');?>xxxmas"><img src="<?php echo $this-> getSkinUrl('images/google-icon.png');?>"></a>
+		</div>
+	</div>
+
+	<div class="trackyourorder-keepshopping">
+		<div class="proceed_to_payment_box">
+			<div class="happy_button keep_shopping_button">
+				<a href="<?php echo $this->getUrl('');?>" class="happy_button keep_shopping_button">
+				<?php echo $this->__("Keep Shopping"); ?>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

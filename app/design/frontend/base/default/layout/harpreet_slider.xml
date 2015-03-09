@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layout version="0.1.0">
+    <cms_index_index>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/harpreet/slider/slider.css</name></action>
+            <!-- delete the following one line if you have integrated jquery on frontend area by another module -->
+            <!-- <action method="addJs"><script>harpreet/jquery-1-7-1.js</script></action> -->
+			<action method="addItem"><type>skin_js</type><name>js/harpreet/slider/slider.js</name></action>
+        </reference>
+        <reference name="content">
+            <!--<block type="harpreet_slider/slider" name="harpreetslider" as="harpreetslider">
+                <action method="setTemplate">
+                    <template>harpreet/slider/slider.phtml</template>
+                </action>
+            </block>-->
+        </reference>
+    </cms_index_index>
+</layout>

@@ -1,0 +1,26 @@
+<h1 class="cms-page-title">International Shipping</h1>
+<p>We never say no to our customers. So yes, we would definitely ship orders to your country. The only catch is, that you would have to take care of the shipping cost.</p>
+<p>Kindly fill this form and we will get back to you with prices and delivery timelines!</p>
+<div class="international-shipping-formarea">
+	<form action="<?php echo $this->getAction();?>" method="post" id="international_shipping"> 
+		<label for="name" class="required"><em>*</em>Name:</label>
+		<input class="cms-input-text-sty required-entry input-text" name="name" type="text" /> <br/>
+		<label for="email" class="required"><em>*</em>Email:</label>
+		<input class="cms-input-text-sty required-entry validate-email" name="email" type="text" /> <br/>
+		<label for="products" class="required"><em>*</em>List of Products:</label>
+		<textarea class="cms-textarea-sty required-entry" name="products"></textarea> <br/>
+		<label for="shipping_add" class="required"><em>*</em>Shipping Address:</label>
+		<textarea class="cms-textarea-sty1 required-entry" name="shipping_add"></textarea> <br/>
+		<label for="pincode" class="required"><em>*</em>Pincode:</label>
+		<input class="cms-input-text-sty1 required-entry" name="pincode" type="text" /> <br/>
+		<label for="country" class="required"><em>*</em>Country:</label>
+		<input class="cms-input-text-sty2 required-entry" name="country" type="text" /> <br/>
+		<input class="cms-input-submit-sty" name="submit" type="submit"/> 
+	</form>
+</div>
+
+<script type="text/javascript">
+//< ![CDATA[
+  var myForm= new VarienForm('international_shipping', true);
+//]]>
+</script>

@@ -1,0 +1,8 @@
+<config>
+    <modules>
+        <Iksula_Autoinvoice>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Iksula_Autoinvoice>
+    </modules>
+</config>

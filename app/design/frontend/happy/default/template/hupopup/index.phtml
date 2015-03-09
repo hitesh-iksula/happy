@@ -1,0 +1,480 @@
+<a class="fancyTrigger" href="#popup"></a>
+<?php
+$myStatus = Mage::getSingleton('customer/session')->isLoggedIn();
+if($myStatus): 
+$logged = 'true';
+else:
+$logged = 'false';
+endif ?>
+<div class="popup-form" style="display:none;">
+
+
+<div class="popupdiv" id="popup">
+	<div class="leftdiv">
+		<div class="left_wrap">	
+			<div class="headers">
+				<div class="heading"><?php echo $configValue = Mage::getStoreConfig('helloworld_options/grabber_details/grabber_title');?></div>
+				<p><?php echo $configValue = Mage::getStoreConfig('helloworld_options/grabber_details/grabber_description');?></p>
+			</div>
+			<img src="<?php echo Mage::getBaseUrl('media') .'Creativity/'. Mage::getStoreConfig('hubanner/hubanner_group6/image');?>"  />
+		</div>
+		<div class="t_c_wrap">
+			<h3>Terms and Conditions</h3>
+			<ul>
+				<!--<li>This giveaway is valid till 31st January 2015.</li>-->
+				<li>A couple of people will win Happily Unmarried goodies every week.</li>
+				<li>Winners will be notified by e-mail.</li>
+				<li>Email addresses will not be shared with anyone. Strictly no spam. Only love. Promise!</li>
+				<li>By signing up you agree to receive our email updates and special offers.</li>
+				<li>Happily Unmarried reserves the right to modify this offer anytime.</li>
+			</ul>	
+		</div>	
+	</div>
+
+	<div class="rightdiv">
+		<div class="headers">
+			<div class="heading head-title"><?php echo $configValue = Mage::getStoreConfig('helloworld_options/grabber_details/grabber_title');?></div>
+			<p class="head-description"><?php echo $configValue = Mage::getStoreConfig('helloworld_options/grabber_details/grabber_description');?></p>
+			
+			<div class="success_desc_main">
+				<div class="heading success_title">All good and done :)</div>
+				<p class="success_description">Thanks for Signing up.Please check your inbox.</p>
+				<br/>
+				<p class="success_description">This message will self-destruct with-in</p>
+				<div class="success_time"><span id="countdown">05</span> seconds...</div>
+			</div>
+
+		</div>
+		<form id="popups" action='<?php echo $this->getUrl('hupopup/index/postPopup'); ?>' method= "get" style="z-index:100;" >
+			<div class="input-field names">
+				<input type="text" name="name" id="name" class="uname" placeholder="Your Name" />
+			</div>
+			<div class="input-field emails">
+				<input type="text" name="ur-mail" id="urmail" class="email" placeholder="Your Email Address" />
+				<div class="fail-email-u" style="display:none;">Please enter valid email id</div>
+			</div>
+			<div class="input-field emails-f">
+				<input type="text" name="friend-mail" id="friendmail" class="f-email" placeholder="Your Friend's Email Address" />
+				<div class="fail-email-f" style="display:none;">Please enter valid email id</div>
+				<div class="fail-email-d" style="display:none;">Please enter different email id</div>
+			</div>
+
+			<input type="hidden" name="link-verification" id="linkverification" />
+			<input type="hidden" name="popupDate" id="popupDate" />
+			<input type="hidden" name="source" id="source" value="Email Grabber" />
+			<input type="hidden" name="platform" id="platform" value="Desktop" />
+			<a href="#" class="submit_btn validation-passed" id="popup-id">Fingers Crossed</a>		
+
+			<p class="note">Strictly no spam. Only love.</p>
+			<div class="success_msg"></div>
+		</form>
+
+		<p class="note2">By clicking past this page you agree to our <br/><a href="#" id="t_c">Terms and Conditions</a><a href="#" id="t_c_hide" >Hide Terms and Conditions</a></p>
+	</div>
+</div>
+
+</div>
+
+<script>
+    var interval;
+    var minutes = 0;
+    var seconds = 5;
+    // window.onload = function() {
+    //     countdown('countdown');
+    // }
+
+    function countdown(element) {
+        interval = setInterval(function() {
+            var el = document.getElementById(element);
+            if(seconds == 0) {
+                if(minutes == 0) {
+                    el.innerHTML = "";                    
+                    clearInterval(interval);
+                    return;
+                } else {
+                    minutes--;
+                    seconds = 60;
+                }
+            }
+            if(minutes > 0) {
+                var minute_text = minutes + (minutes > 1 ? ' minutes' : ' minute');
+            } else {
+                var minute_text = '';
+            }
+            var second_text = seconds > 1 ? 'seconds' : 'second';
+            el.innerHTML = '0' + seconds;
+            seconds--;
+        }, 1000);
+    }
+</script>
+
+<script type="text/javascript">
+
+	var popupForm = new VarienForm('popup');
+
+	jQuery(document).ready(function(){
+
+		jQuery("#t_c").click(function() {
+			jQuery(".left_wrap").hide();
+			jQuery(".t_c_wrap").show();
+			jQuery("#t_c_hide").show();
+			jQuery("#t_c").hide();
+			jQuery(".leftdiv").addClass("terms-and-conditions");
+		});
+
+		jQuery("#t_c_hide").click(function() {
+			jQuery(".left_wrap").show();
+			jQuery(".t_c_wrap").hide();
+			jQuery("#t_c_hide").hide();
+			jQuery("#t_c").show();
+			jQuery(".leftdiv").removeClass("terms-and-conditions");
+		});
+
+		jQuery( "#fancybox-close" ).click(function() {
+				setTimeout(function() {
+					jQuery( "#fancybox-wrap" ).removeClass( "email-grab-box" );
+				}, 4000);
+		});
+
+		jQuery( "#popup-id" ).click(function() {
+
+			//event.preventDefault();
+
+			var $name             = jQuery("#name").val();
+			var $urmail           = jQuery("#urmail").val();
+			var $friendmail       = jQuery("#friendmail").val();
+			var $linkverification = jQuery("#linkverification").val();
+			var $popupDate        = jQuery("#popupDate").val();
+			var $source           = jQuery("#source").val();
+			var $platform         = jQuery("#platform").val();
+
+			if($name == ''){
+				jQuery("#name").css('border','1px solid red');
+				return false;
+			}else{
+				jQuery("#name").css('border','1px solid #b6b6b6');
+			}
+			if($urmail == ''){
+				jQuery("#urmail").css('border','1px solid red');
+				return false;
+			}else{
+				jQuery("#urmail").css('border','1px solid #b6b6b6');
+			}
+			if($friendmail == ''){
+				jQuery("#friendmail").css('border','1px solid red');
+				return false;
+			}else{
+				jQuery("#friendmail").css('border','1px solid #b6b6b6');
+			}
+
+			if(!validateEmail($urmail)) {
+			 	jQuery("#urmail").css('border','1px solid red');
+			 	jQuery(".fail-email-u").show();
+			 	return false;
+		    }else{
+			 	jQuery("#urmail").css('border','1px solid #b6b6b6');
+			 	jQuery(".fail-email-u").hide();
+			}
+
+			if(!validateEmail($friendmail)) {
+			 	jQuery("#friendmail").css('border','1px solid red');
+			 	jQuery(".fail-email-f").show();
+			 	jQuery(".fail-email-d").hide();
+			 	return false;
+			}else{
+			 	jQuery("#friendmail").css('border','1px solid #b6b6b6');
+			 	jQuery(".fail-email-f").hide();
+			}
+
+			if($urmail == $friendmail) {
+			 	jQuery("#friendmail").css('border','1px solid red');
+			 	jQuery(".fail-email-d").show();
+			 	return false;
+			}else{
+			 	jQuery("#friendmail").css('border','1px solid #b6b6b6');
+			 	jQuery(".fail-email-d").hide();
+			}
+
+			jQuery.ajax({
+			      url: "<?php echo $this->getUrl('hupopup/index/postPopup'); ?>",
+			      type: 'post',
+			      data: {'name': $name, 'ur-mail': $urmail, 'friend-mail': $friendmail, 'link-verification': $linkverification, 'popupDate': $popupDate, 'source': $source, 'platform': $platform},
+			      success: function(data) {
+			      		//console.log(data);
+			      		jQuery(".success_desc_main").show();
+			      		jQuery("#popups").hide();
+			      		jQuery(".head-title").hide();
+			      		jQuery(".head-description").hide();
+			      		jQuery(".note2").hide();
+			      		countdown('countdown');
+						setTimeout(function() {	
+				      		jQuery( "#fancybox-close" ).trigger('click');
+					    }, 5000);
+			      }
+		    });
+
+		    function validateEmail(email) {
+			    var expr = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+			    return expr.test(email);
+			}
+
+		});
+
+	    // record start time
+		var startTime;
+		var DontShowTimer = 'false';
+
+		function display() {
+		    // later record end time
+		    var endTime = new Date();
+
+		    // time difference in ms
+		    var timeDiff = endTime - startTime;
+
+		    //var secs;
+
+		    // strip the miliseconds
+		    timeDiff /= 1000;
+
+		    // get seconds
+		    var seconds = Math.round(timeDiff % 60);
+		    //console.log("time"+getCookie('secs'));
+
+		    // remove seconds from the date
+		    timeDiff = Math.floor(timeDiff / 60);
+
+		    // get minutes
+		    var minutes = Math.round(timeDiff % 60);
+
+		    // remove minutes from the date
+		    timeDiff = Math.floor(timeDiff / 60);
+
+		    // get hours
+		    var hours = Math.round(timeDiff % 24);
+
+		    // remove hours from the date
+		    timeDiff = Math.floor(timeDiff / 24);
+
+		    // the rest of timeDiff is number of days
+		    var days = timeDiff;
+
+				    jQuery("#cart-action").click(function() {
+				    	DontShowTimer = 'true';
+			        });
+
+			        jQuery("#account-action").click(function() {
+			            DontShowTimer = 'true';
+			        });
+			        
+			        jQuery("#fancybox-overlay").click(function() {
+			            DontShowTimer = 'false';
+			        });
+
+			        jQuery("#fancybox-close").click(function() {
+			            DontShowTimer = 'false';
+			        });
+
+			        jQuery(".youama-close").click(function() {
+			            DontShowTimer = 'false';
+			        });
+
+			        jQuery(".ajaxlogin-cover-click").click(function() {
+			            DontShowTimer = 'false';
+			        });
+
+			        jQuery('#search').blur(function(){
+			    		DontShowTimer = 'false';
+			    	})
+
+			        jQuery('#search').focus(function() {		
+			    	        DontShowTimer = 'true';
+			    	});
+
+			        <?php if($logged == 'true'){?>
+			        	DontShowTimer = 'true';
+			        <?php }?>
+
+			        if(getCookie('emailgrab') == 'true'){
+			        	DontShowTimer = 'true';
+			        }
+
+
+				    if(getCookie("hupopup") != 'closed' && DontShowTimer == 'false' && getCookie('secs') > 10)  {
+				    	jQuery('#fancybox-wrap').addClass("email-grab-box");
+						jQuery(".fancyTrigger").fancybox({
+							// 'beforeLoad': function(){
+							//     var top = (jQuery(window).height() / 2) - (jQuery("#fancybox-wrap").outerHeight() / 2);
+							// 	         var left = (jQuery(window).width() / 2) - (jQuery("#fancybox-wrap").outerWidth() / 2);
+							// 	         jQuery("#fancybox-wrap").css({ top: top, left: left});
+							// },
+						  openEffect  : 'fade',
+            			  closeEffect : 'fade',
+            			  'speedIn'    :600,
+   						  'speedOut'   :200,
+					      'hideOnOverlayClick':false,
+					      'hideOnContentClick':false,
+					       helpers: {
+							     overlay: {
+							      opacity : 0.9,
+							      css : {'background-color' : '#fff'},
+							      speedIn: 10000,
+							      speedOut: 10000
+							     } 
+							},
+						    onComplete : function(){
+
+				                	//setTimeout(function() {
+					             //     	 var top = (jQuery(window).height() / 2) - (jQuery("#fancybox-wrap").outerHeight() / 2);
+								          // var left = (jQuery(window).width() / 2) - (jQuery("#fancybox-wrap").outerWidth() / 2);
+								          // jQuery("#fancybox-wrap").css({ top: top, left: left});
+								          // jQuery('#fancybox-wrap').css('visibility','visible').fadeIn('slow');
+							       //}, 1);
+
+				            }
+
+					    }).trigger('click');
+
+						setCookie('emailgrab','true',30);
+						var $impressions = 'true';
+						jQuery.ajax({
+							      url: "<?php echo $this->getUrl('hupopup/index/saveImpressions'); ?>",
+							      type: 'post',
+							      data: {'impressions': $impressions},
+							      success: function(data) {
+						      }
+					    });
+
+					    jQuery.ajax({
+						      url: "<?php echo $this->getUrl('impressionsemail/index'); ?>",
+							      type: 'post',
+							      data: {'impressions': $impressions},
+							      success: function(data) {
+						      }
+					    });
+
+						return false;
+					}
+
+				//console.log("DontShowTimer:"+DontShowTimer);
+				//console.log(seconds);
+
+			    setTimeout(display, 1000);
+			}
+
+			startTime = new Date();
+			setTimeout(display, 1000);
+
+			function cokfunc(){
+				var cookiesinr = +1 + +getCookie('secs');
+			    setCookie('secs',cookiesinr,30);
+			    setTimeout(cokfunc, 1000);
+			};
+			setTimeout(cokfunc, 1000);
+
+			// if(jQuery.cookie('hupopup')){jQuery('.welcome').hide();}else{
+		 //        jQuery("#popup-id").click(function() {
+		 //            jQuery("#popup").fadeOut(1000);
+		 //            document.cookie('hupopup', true);    
+		 //        });
+			// }
+	});
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) != -1) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+</script>
+<style>
+.fail-email-d {
+	color: red;
+}
+
+.email-grab-box {
+/*	top: 50% !important;
+	margin-top: -320px !important;*/
+	max-width: 800px;
+	padding: 20px !important;
+}
+#t_c_hide {
+	display: none;
+}
+input:focus {
+	background-color: #fff;
+}
+.t_c_wrap {
+	display: none;
+	text-align: left;
+	width: 91%;
+}
+.t_c_wrap h3 {
+	color: #545454;
+	text-align: left;
+	margin-left: -18px;
+	font-size: 21px;
+	margin-bottom: 15px;
+}
+.t_c_wrap ul {
+	list-style-type: disc;
+}
+.t_c_wrap ul li {
+	color: #acadad;
+	font-size: 14px;
+	line-height: 22px;
+	padding-bottom: 7px;
+}
+.success_desc_main{
+	display: none;
+	margin-top: 30px;
+}
+.success_description {
+	margin-top: 10px;
+}
+.success_title {
+	font-size: 2.3em;
+}
+#fancybox-close {
+top: -12px;
+right: -10px;
+background: url("<?php echo $this->getSkinUrl('images/close-pop.png'); ?>") no-repeat center;
+width: 31px;
+height: 31px;
+}
+#fancybox-close:hover {
+background-position: 0px 0px;
+}
+.success_msg {
+	color: green;
+	font-size: 16px;
+}
+.fail-email-u , .fail-email-f {
+	color: red;
+	font-size: 12px;
+}
+/*#fancybox-outer {
+	width: 55%;
+}*/
+input:focus {
+	background-color: #fff;
+}
+#fancybox-wrap {
+	right: 0;
+	left: 0 !important;
+	margin: auto;
+}
+</style>

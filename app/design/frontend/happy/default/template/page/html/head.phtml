@@ -1,0 +1,220 @@
+
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<title><?php echo $this->getTitle() ?></title>
+<meta name="description" content="<?php echo htmlspecialchars($this->getDescription()) ?>" />
+<meta name="keywords" content="<?php echo htmlspecialchars($this->getKeywords()) ?>" />
+<meta name="robots" content="<?php echo htmlspecialchars($this->getRobots()) ?>" />
+
+<?php $versionString = $this->helper('jcversioning')->getVersionString(); ?>
+<link rel="icon" href="<?php echo $this->getFaviconFile() . $versionString; ?>" type="image/x-icon" />
+<link rel="shortcut icon" href="<?php echo $this->getFaviconFile() . $versionString; ?>" type="image/x-icon" />
+
+<?php if((bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad')): ?>
+	<meta name="viewport" content="width=device-width"/>
+<?php endif; ?>
+
+<!--[if lt IE 7]>
+<script type="text/javascript">
+//<![CDATA[
+    var BLANK_URL = '<?php echo $this->helper('core/js')->getJsUrl('blank.html') ?>';
+    var BLANK_IMG = '<?php echo $this->helper('core/js')->getJsUrl('spacer.gif') ?>';
+//]]>
+</script>
+<![endif]-->
+<!--[if lte IE 8]>
+<style>
+  input {
+    font-family: Arial !important;
+  }
+</style>
+<![endif]-->
+<!-- added prototype from google cdn in page / head.phtml -->
+<!--script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.2/prototype.js"></script-->
+<?php echo $this->getCssJsHtml() ?>
+<?php echo $this->getChildHtml() ?>
+<?php echo $this->helper('core/js')->getTranslatorScript() ?>
+<?php echo $this->getIncludes() ?>
+
+<link href='http://fonts.googleapis.com/css?family=Roboto:700,500,400,300,100' rel='stylesheet' type='text/css'>
+
+<!-- Code visible only on production -->
+<?php if($this->helper('backdrop')->getIsProduction()): ?>
+	<?php $request = Mage::app()->getRequest(); ?>
+    <?php if($request->getModuleName() == 'onepagecheckout' OR $request->getModuleName() == 'checkout'): ?>
+
+        <?php if($request->getActionName() == 'success'): ?>
+
+			<!-- Facebook Conversion Code for HU Checkout -->
+			<script>(function() {
+			  var _fbq = window._fbq || (window._fbq = []);
+			  if (!_fbq.loaded) {
+			    var fbds = document.createElement('script');
+			    fbds.async = true;
+			    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+			    var s = document.getElementsByTagName('script')[0];
+			    s.parentNode.insertBefore(fbds, s);
+			    _fbq.loaded = true;
+			  }
+			})();
+			window._fbq = window._fbq || [];
+			window._fbq.push(['track', '6018767423663', {'value':'0.00','currency':'INR'}]);
+			</script>
+			<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6018767423663&amp;cd[value]=0&amp;cd[currency]=INR&amp;noscript=1" /></noscript>
+
+
+			<!-- Facebook Conversion Code for Success Checkout -->
+			<script>(function() {
+			  var _fbq = window._fbq || (window._fbq = []);
+			  if (!_fbq.loaded) {
+			    var fbds = document.createElement('script');
+			    fbds.async = true;
+			    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+			    var s = document.getElementsByTagName('script')[0];
+			    s.parentNode.insertBefore(fbds, s);
+			    _fbq.loaded = true;
+			  }
+			})();
+			window._fbq = window._fbq || [];
+			window._fbq.push(['track', '6024008619704', {'value':'0.00','currency':'INR'}]);
+			</script>
+			<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6024008619704&amp;cd[value]=0.00&amp;cd[currency]=INR&amp;noscript=1" /></noscript>
+
+
+			<!-- Facebook Conversion Code for HU_Conversions_myiksula -->
+			<script>(function() {
+			  var _fbq = window._fbq || (window._fbq = []);
+			  if (!_fbq.loaded) {
+			    var fbds = document.createElement('script');
+			    fbds.async = true;
+			    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+			    var s = document.getElementsByTagName('script')[0];
+			    s.parentNode.insertBefore(fbds, s);
+			    _fbq.loaded = true;
+			  }
+			})();
+			window._fbq = window._fbq || [];
+			window._fbq.push(['track', '6020085409290', {'value':'0.00','currency':'INR'}]);
+			</script>
+			<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6020085409290&amp;cd[value]=0.00&amp;cd[currency]=INR&amp;noscript=1" /></noscript>
+
+
+
+			<!-- Facebook Conversion Code for One Page Checkout Stage Tracking Pixel -->
+			<script>(function() {
+			  var _fbq = window._fbq || (window._fbq = []);
+			  if (!_fbq.loaded) {
+			    var fbds = document.createElement('script');
+			    fbds.async = true;
+			    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+			    var s = document.getElementsByTagName('script')[0];
+			    s.parentNode.insertBefore(fbds, s);
+			    _fbq.loaded = true;
+			  }
+			})();
+			window._fbq = window._fbq || [];
+			window._fbq.push(['track', '6021299208707', {'value':'0.00','currency':'INR'}]);
+			</script>
+			<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6021299208707&amp;cd[value]=0.00&amp;cd[currency]=INR&amp;noscript=1" /></noscript>
+
+		<?php endif; ?>
+
+	<?php endif; ?>
+
+			<!-- Facebook tracking code -->
+			<script>(function() {
+			  var _fbq = window._fbq || (window._fbq = []);
+			  if (!_fbq.loaded) {
+			    var fbds = document.createElement('script');
+			    fbds.async = true;
+			    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+			    var s = document.getElementsByTagName('script')[0];
+			    s.parentNode.insertBefore(fbds, s);
+			    _fbq.loaded = true;
+			  }
+			  _fbq.push(['addPixelId', "246868445505670"]);
+			})();
+			window._fbq = window._fbq || [];
+			window._fbq.push(["track", "PixelInitialized", {}]);
+			</script>
+			<noscript><img height="1" width="1" border="0" alt="" style="display:none" src="https://www.facebook.com/tr?id=246868445505670&amp;ev=NoScript"/></noscript>
+
+	<!-- Meta tag for Bing Webmaster -->
+	<meta name="msvalidate.01" content="0E1573C53CF84F049724CAC757048A27" />
+
+	<!-- InMobi verification code -->
+	<meta name="inmobi-site-verification" content="78045e6e7e71f8152d6b68f98abd4ed6">
+
+	<script>(function() {
+		var _fbq = window._fbq || (window._fbq = []);
+		if (!_fbq.loaded) {
+		var fbds = document.createElement('script');
+		fbds.async = true;
+		fbds.src = '//connect.facebook.net/en_US/fbds.js';
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(fbds, s);
+		_fbq.loaded = true;
+		}
+		_fbq.push(['addPixelId', '980393481974182']);
+		})();
+		window._fbq = window._fbq || [];
+		window._fbq.push(['track', 'PixelInitialized', {}]);
+	</script>
+	<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=980393481974182&amp;ev=PixelInitialized" /></noscript>
+
+<?php endif; ?>
+
+<script type="text/javascript">
+	var baseUrl = "<?php echo $this->getBaseUrl(); ?>";
+	var currentUrl = "<?php echo $this->helper('core/url')->getCurrentUrl() ?>";
+	var faqHtmlUrl = "<?php echo $this->getUrl('explore/cart/getFaqToolbarHtml'); ?>";
+</script>
+
+<script type="text/javascript">var hasoffers_domain = "http://iksula.go2cloud.org";</script>
+<script type="text/javascript" src="http://media.go2speed.org/assets/js/dl.js"></script>
+
+<script>(function() {
+  var _fbq = window._fbq || (window._fbq = []);
+  if (!_fbq.loaded) {
+    var fbds = document.createElement('script');
+    fbds.async = true;
+    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(fbds, s);
+    _fbq.loaded = true;
+  }
+  _fbq.push(['addPixelId', '1397820417164548']);
+})();
+window._fbq = window._fbq || [];
+window._fbq.push(['track', 'PixelInitialized', {}]);
+</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=1397820417164548&amp;ev=PixelInitialized" /></noscript>
+
+<!-- start Mixpanel --><script type="text/javascript">(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+mixpanel.init("00dd0c8aedd32148b63bae3d9650fcb1");</script><!-- end Mixpanel -->

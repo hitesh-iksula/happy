@@ -1,0 +1,171 @@
+<?php $_code=$this->getMethodCode() ?>
+
+<ul class="form-list" id="payment_form_<?php echo $_code ?>">
+
+	<input type="hidden" id="payu_payment_method" name="payment[payu_payment_method]" value="CC" />
+	<input type="hidden" id="payu_method_option" name="payment[payu_method_option]" />
+
+	<li class="payu-payment-option-box">
+
+		<div class="input-box display-none">
+			<input class="payu-payment-option" name='payment[payu_card_option]' type="radio" id='p_method_payucheckout_cc' value='CC' />
+		</div>
+
+		<div class="input-box display-none payment-data-box" id="p_method_payucheckout_cc_data">
+			<p class="payment-footnote">Click on the <b>Pay Securely</b> button. You will be redirected to a secure payment gateway page for payment.</p>
+
+			<div class="checkout-final-button">
+				<button type="submit"  id="place-order" class="button happy_button" onclick="checkout.save(); return false;"><?php echo $this->__('Pay Securely') ?></button>
+			</div>
+
+			<!-- <p class="payment-footnote">
+				<b>Shipping & Handling charge:</b><br/>
+				(a) Free shipping for orders above Rs. 2500<br/>
+				(b) For rest, charge would be Rs. 50 OR 10% of the order amount, whichever is higher.
+			</p> -->
+		</div>
+
+	</li>
+
+	<li class="payu-payment-option-box">
+
+		<div class="input-box display-none payment-data-box" id="p_method_payucheckout_nb_data">
+
+			<div class="input-box display-none">
+				<input class="payu-payment-option" name='payment[payu_card_option]' value='NB' id='p_method_payucheckout_nb' type="radio" checked="checked" />
+			</div>
+
+			<div class="short payu_select_bank">
+				<label class="data_area net_banking_featured" for="payu_net_banking_card_radio_1">
+					<div class="checked"></div>
+					<input type="radio" class="payu_featured_banks" id="payu_net_banking_card_radio_1" name="payment[payu_net_banking_cards_radio]" value="ICIB" />
+					<div class="nb_icici nbf"></div>
+				</label>
+			</div>
+			<div class="short odd payu_select_bank">
+				<label class="data_area net_banking_featured" for="payu_net_banking_card_radio_2">
+					<div class="checked"></div>
+					<input type="radio" class="payu_featured_banks" id="payu_net_banking_card_radio_2" name="payment[payu_net_banking_cards_radio]" value="SBIB" />
+					<div class="nb_sbi nbf"></div>
+				</label>
+			</div>
+			<div class="short payu_select_bank">
+				<label class="data_area net_banking_featured" for="payu_net_banking_card_radio_3">
+					<div class="checked"></div>
+					<input type="radio" class="payu_featured_banks" id="payu_net_banking_card_radio_3" name="payment[payu_net_banking_cards_radio]" value="AXIB" />
+					<div class="nb_axis nbf"></div>
+				</label>
+			</div>
+			<div class="short odd payu_select_bank">
+				<label class="data_area net_banking_featured" for="payu_net_banking_card_radio_4">
+					<div class="checked"></div>
+					<input type="radio" class="payu_featured_banks" id="payu_net_banking_card_radio_4" name="payment[payu_net_banking_cards_radio]" value="HDFB" />
+					<div class="nb_hdfc nbf"></div>
+				</label>
+			</div>
+
+			<select class="payu-payment-dropdowns" id="payu_net_banking_cards" size="1" name="payment[payu_net_banking_cards]">
+				<option value="">Any other BANK</option>
+				<!-- <option value="AXIB">AXIS Bank NetBanking</option> -->
+				<option value="ADBB">Andhra Bank</option>
+				<option value="BBCB">Bank of Baroda - Corporate Banking</option>
+				<option value="BBKB">Bank of Bahrain and Kuwait</option>
+				<option value="BBRB">Bank of Baroda - Retail Banking</option>
+				<option value="BOIB">Bank of India</option>
+				<option value="BOMB">Bank of Maharashtra</option>
+				<option value="CABB">Canara Bank</option>
+				<option value="CSBN">Catholic Syrian Bank</option>
+				<option value="CBIB">Central Bank Of India</option>
+				<option value="CITNB">Citi Bank NetBanking</option>
+				<option value="CUBB">CityUnion</option>
+				<option value="CRPB">Corporation Bank</option>
+				<option value="DCBB">Development Credit Bank</option>
+				<option value="DSHB">Deutsche Bank Netbanking</option>
+				<option value="DLSB">Dhanlaxmi Netbanking</option>
+				<option value="FEDB">Federal Bank</option>
+				<!-- <option value="HDFB">HDFC Bank</option> -->
+				<!-- <option value="ICIB">ICICI Netbanking</option> -->
+				<option value="IDBB">Industrial Development Bank of India</option>
+				<option value="INDB">Indian Bank </option>
+				<option value="INIB">IndusInd Bank</option>
+				<option value="INOB">Indian Overseas Bank</option>
+				<option value="INGB">ING Vysya Netbanking</option>
+				<option value="JAKB">Jammu and Kashmir Bank</option>
+				<option value="KRKB">Karnataka Bank</option>
+				<option value="KRVB">Karur Vysya </option>
+				<option value="162B">Kotak Bank Netbanking</option>
+				<option value="LVBD">Lakshmi Vilas Bank</option>
+				<option value="OBCB">Oriental Bank of Commerce</option>
+				<option value="CPNB">Punjab National Bank - Corporate Banking</option>
+				<option value="PNBB">Punjab National Bank - Retail Banking</option>
+				<option value="RYBS">Royal Bank of Scotland</option>
+				<option value="SDCB">Standard Chartered Bank</option>
+				<option value="SBBJB">State Bank of Bikaner and Jaipur</option>
+				<option value="SBHB">State Bank of Hyderabad</option>
+				<!-- <option value="SBIB">State Bank of India</option> -->
+				<option value="SBMB">State Bank of Mysore</option>
+				<option value="SBPB">State Bank of Patiala</option>
+				<option value="SBTB">State Bank of Travancore</option>
+				<option value="SOIB">South Indian Bank</option>
+				<option value="SYDB">Syndicate Bank</option>
+				<option value="TMBB">Tamilnad Mercantile Bank</option>
+				<option value="UBIB">Union Bank of India</option>
+				<option value="UNIB">United Bank Of India</option>
+				<option value="VJYB">Vijaya Bank</option>
+				<option value="YESB">Yes Bank</option>
+
+
+			</select>
+
+			<p class="payment-footnote">Choose your bank and click on the <b>Pay Securely</b> button. You will be redirected to a secure payment gateway page for payment.</p>
+
+			<div class="checkout-final-button">
+				<button type="submit"  id="place-order" class="button happy_button" onclick="checkout.save(); return false;"><?php echo $this->__('Pay Securely') ?></button>
+			</div>
+
+			<!-- <p class="payment-footnote">
+				<b>Shipping & Handling charge:</b><br/>
+				(a) Free shipping for orders above Rs. 2500<br/>
+				(b) For rest, charge would be Rs. 50 OR 10% of the order amount, whichever is higher.
+			</p> -->
+		</div>
+
+	</li>
+
+	<li class="payu-payment-option-box">
+
+		<div class="input-box display-none">
+			<input class="payu-payment-option" name='payment[payu_card_option]' type="radio" id='p_method_payucheckout_pm' value='WALLET' />
+			<input type="hidden" class="payu-payment-dropdowns" name="PAYUW" value="PAYUW"/>
+		</div>
+
+		<div class="input-box display-none payment-data-box" id="p_method_payucheckout_pm_data">
+			<p>PAYUMONEY</p>
+			<p class="payment-footnote">Click on the <b>Pay Securely</b> button. You will be redirected to a secure payment gateway page for payment.</p>
+
+			<div class="checkout-final-button">
+				<button type="submit"  id="place-order" class="button happy_button" onclick="checkout.save(); return false;"><?php echo $this->__('Pay Securely') ?></button>
+			</div>
+		</div>
+
+	</li>
+
+	<li class="payu-payment-option-box">
+
+		<div class="input-box display-none">
+			<input class="payu-payment-option" name='payment[payu_card_option]' type="radio" id='p_method_payucheckout_am' value='CASH' />
+			<input type="hidden" class="payu-payment-dropdowns" name="AMON" value="AMON"/>
+		</div>
+
+		<div class="input-box display-none payment-data-box" id="p_method_payucheckout_am_data">
+			<p>AIRTEL MONEY</p>
+			<p class="payment-footnote">Click on the <b>Pay Securely</b> button. You will be redirected to a secure payment gateway page for payment.</p>
+
+			<div class="checkout-final-button">
+				<button type="submit"  id="place-order" class="button happy_button" onclick="checkout.save(); return false;"><?php echo $this->__('Pay Securely') ?></button>
+			</div>
+		</div>
+
+	</li>
+
+</ul>

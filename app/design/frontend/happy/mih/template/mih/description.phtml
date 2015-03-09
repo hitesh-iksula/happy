@@ -1,0 +1,66 @@
+<style type="text/css">
+.mih_content_area { width: 100%; font: 14px/1.4em 'Roboto', arial;}
+h1.content-page-title, h2.content-page-title1 { display: block; font-weight: normal; font-size: 40px; line-height: 48px; text-align: left; font-family: 'Roboto'; font-weight: 300; color: #c51200; margin: 2% 8%; }
+h2.content-page-title1 { font-size: 18px; line-height: 26px; margin-bottom: 20px; }
+.mih_content_innerarea { width:82%; margin: 0 auto; border-bottom: 1px solid #d6d6d6; padding: 40px 0 20px; }
+.mih_content_innerarea p { margin-bottom: 20px; padding: 0 0 0 10px; line-height: 22px;}
+.mih_content_innerarea .bx-wrapper .bx-viewport { box-shadow: none; border: none; left: 0; background: #fff; }
+.mih_content_innerarea .bx-wrapper .bx-controls-direction a { width: 20px; }
+.mih_content_innerarea .bx-wrapper .bx-prev { left: -24px; background: url(<?php echo $this->getSkinUrl()?>../default/images/cmspages/music-slider-controls.png) no-repeat 0 -32px; }
+.mih_content_innerarea .bx-wrapper .bx-next { right: -19px; background: url(<?php echo $this->getSkinUrl()?>../default/images/cmspages/music-slider-controls.png) no-repeat -52px -32px; }
+.cms-music-slider-area { width: 86%; margin: auto; margin-top: 30px; }
+.cms-music-slider-area .bx-wrapper .bx-controls { padding-top: 5px; }
+.mih_banner_area { width: 72%; margin: auto; padding: 30px 0; }
+.mih_banner_area img { width: 100%; margin: 15px 0; }
+.include_content { width: 40%; border-right: 1px solid #d6d6d6; padding: 20px 4% 10px 4%; display: inline-block; *display: inline; zoom:1; vertical-align: top;  }
+.include_content_no_border { border-right: none; border: none; }
+.mih_content_area ul { padding-left: 18px; margin:5px 0 10px; }
+.mih_content_area ul li {list-style: disc; line-height: 22px; }
+
+</style>
+
+<link rel="stylesheet" href="<?php echo $this->getSkinUrl('css/jquery.bxslider_og.css') ?>" />
+<script src="<?php echo $this->getSkinUrl('js/jquery.bxslider.min.js') ?>"></script>
+
+<div class="mih_content_area">
+	<h1 class="content-page-title">Music in the Hills</h1>
+
+	<div class="mih_content_innerarea" style="padding-top:5px;">
+		<p>At MiH 1, half the guests were trying to organise the wood for the bonfire. In MiH 2, we asked someone to volunteer as a MC, and the tradition stuck. In MiH 4, about 20 guests were trying to cover the stage because it rained and nobody was prepared. At the MiH 7 guests sat through 2 hours in the pouring rain waiting for the performances to start not one person complained. We had a couple of musicians come and tell us they have never seen an audience like this. These are the people who make up audiences at the MiH. They can forgive everything except a bad performance.</p>
+		<p>	Come be an audience at MIH. It will be the most fun thing that you have done in a long time!
+		</p>
+
+		<div class="cms-music-slider-area">
+			<ul class="cms-music-items">						
+					<li>								
+						<img src="<?php echo $this->getSkinUrl('images/cmspages') . '/music-slider-img1.jpg' ?>" alt="" style="width:100%;"/>
+					</li>
+					<li>								
+						<img src="<?php echo $this->getSkinUrl('images') . '/MiH 1.jpg' ?>" alt="" style="width:100%;"/>
+					</li>
+					<li>								
+						<img src="<?php echo $this->getSkinUrl('images') . '/MiH 2.jpg' ?>" alt="" style="width:100%;"/>
+					</li>
+					<li>								
+						<img src="<?php echo $this->getSkinUrl('images') . '/MiH 3.jpg' ?>" alt="" style="width:100%;"/>
+					</li>
+			</ul>
+		</div>
+	</div>
+	<div class="mih_banner_area">
+			<img src="<?php echo $this->getSkinUrl('images/mih_banner.gif')?>" alt="Music in the Hills" />
+	</div>
+
+</div>
+
+
+<script>
+jQuery(document).ready(function($) {
+
+	$('.cms-music-items').bxSlider({
+	pager: true,		
+
+	}); 
+
+});
+</script>

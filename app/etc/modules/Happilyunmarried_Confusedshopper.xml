@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Happilyunmarried_Confusedshopper>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Happilyunmarried_Confusedshopper>
+    </modules>
+</config>

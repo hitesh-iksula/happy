@@ -1,0 +1,326 @@
+<!--style>
+/*.product-options { max-height: 150px; overflow: auto;}*/
+</style-->
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+<script type="text/javascript">
+	var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="product-view">
+	<div class="product-essential">
+	<form action="<?php  echo $this->getAddToCartUrl($_product)//echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?> onSubmit="return false;">
+
+		<div class="product-options-container">
+			<?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+		</div>
+
+		<div class="no-display">
+			<input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+			<input type="hidden" name="related_product" id="related-products-field" value="" />
+		</div>
+
+		<div class="product-shop">
+			
+			<div class="product-description-box<?php if(!count($_product->getUpSellProductCollection()->getItems())): echo ' product-description-box-long'; endif; ?>">
+				<div class="product-name">
+					<h1 class="product-name-heading-main"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+				</div>
+				<div class="product-short-desc">
+					<?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?>
+				</div>
+
+				<?php echo $this->getTierPriceHtml() ?>
+				
+				<div class="product-shop-content-area" id="product-shop-new">
+					<div class="product-desc">
+						<?php if ($_product->getDescription()):?>
+							<div class="short-description">
+								<div class="std"><?php echo $_helper->productAttribute($_product, nl2br($_product->getDescription()), 'description') ?></div>
+								<?php if($_product->getDesignedBy()): ?>
+									<div class="designed_by"><?php echo $this->__('Designed By: '); echo strip_tags($_product->getDesignedBy()); ?></div>
+								<?php endif; ?>
+								<?php $session = Mage::getSingleton('core/session'); ?>
+							</div>
+						<?php endif;?>
+					</div>
+				</div>
+
+				<?php echo $this->getChildHtml('other');?>
+
+				<?php if ($_product->isSaleable() && $this->hasOptions()):?>
+					<?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+				<?php endif;?>
+			</div>
+
+			<?php echo $this->getChildHtml('upsell_products'); ?>
+						
+		</div>
+
+		<div class="product-img-box">
+			<?php echo $this->getChildHtml('media') ?>
+		</div>
+		
+		<div class="clearer"></div>
+		
+	</form>
+	<script type="text/javascript">
+	//<![CDATA[
+		var productAddToCartForm = new VarienForm('product_addtocart_form');
+
+		/* Default code has been removed in favor of AJAX ADD TO CART */
+		
+		/* AJAX ADD TO CART CODE */
+		productAddToCartForm.submit = function(button, url) {
+			if (this.validator.validate()) {
+				var form = this.form;
+				var oldUrl = form.action;
+ 
+				if (url) {
+				   form.action = url;
+				}
+				var e = null;
+				//Start of our new ajax code
+				if(!url){
+					url = jQuery('#product_addtocart_form').attr('action');
+				}
+				var data = jQuery('#product_addtocart_form').serialize();
+				data += '&isAjax=1';
+				jQuery('#fancybox-loading').show();
+				try {
+					jQuery.ajax({
+						url: url,
+						dataType: 'json',
+						type : 'post',
+						data: data,
+						success: function(data){
+							if(data.status == 'ERROR') {
+								jQuery('#fancybox-loading').hide();
+								alert('Sorry, the requested quantity for this product is not available.');
+							} else {
+								if(mode_of_view == 'modal') {
+									jQuery('#fancybox-loading').hide();
+									if(jQuery('.block-cart')){
+										var sidebar = data.sidebar;
+										var margin_left = jQuery('.block-cart').css('margin-left');
+										if(jQuery(sidebar).html() == null) {
+											sidebar = sidebar.replace('class="block block-cart home-cart-sidebar"',"");
+											sidebar = sidebar.replace('id="block-cart-sidebar"',"");
+											document.getElementById("block-cart-sidebar").innerHTML = sidebar;
+										} else {
+											jQuery('.block-cart').empty().replaceWith(sidebar);
+											jQuery('.block-cart').css("margin-left",margin_left);
+										}
+									}
+									jQuery('.modal_tailbar .carton_logo_and_amount span').html(data.cartitemqty);
+									jQuery('#add_cart_activity').val('1');
+									setTimeout(function() {
+										jQuery('#fancybox-loading-overlay').show();
+										jQuery('#fancybox-loading').show();
+										jQuery.fancybox.close();
+									}, 500);
+								} else {
+									window.location.replace(cart_url);
+								}								
+							}
+						}
+					});
+				} catch (e) {
+				}
+				this.form.action = oldUrl;
+				if (e) {
+					throw e;
+				}
+			}
+		}.bind(productAddToCartForm);
+
+		productAddToCartForm.submitLight = function(button, url){
+			if(this.validator) {
+				var nv = Validation.methods;
+				delete Validation.methods['required-entry'];
+				delete Validation.methods['validate-one-required'];
+				delete Validation.methods['validate-one-required-by-name'];
+				// Remove custom datetime validators
+				for (var methodName in Validation.methods) {
+					if (methodName.match(/^validate-datetime-.*/i)) {
+						delete Validation.methods[methodName];
+					}
+				}
+
+				if (this.validator.validate()) {
+					if (url) {
+						this.form.action = url;
+					}
+					this.form.submit();
+				}
+				Object.extend(Validation.methods, nv);
+			}
+		}.bind(productAddToCartForm);
+	//]]>
+	</script>
+
+	</div>
+	<div class="social-like-thumbnails-area">
+   		<!--div class="pinit_pinit_button">
+   			<?php // $pinitUrl = '?url=' . $this->getUrl() . '&media=' . $_product->getImageUrl() . '&description=' . 'Happily%20Unmarried'; ?>
+			<a href="https://pinterest.com/pin/create/button/<?php // echo $pinitUrl; ?>" data-pin-do="buttonPin" ddata-pin-config="none" target="_blank">
+				<img src="<?php // echo $this->getSkinUrl('images/product_modal/pinit.jpg'); ?>" />
+			</a>
+			<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js" data-pin-hover="true"></script>
+		</div>
+		<a href="#" onclick=" window.open( 'https://www.facebook.com/sharer/sharer.php?u=<?php // echo $this->getUrl(); ?>', 'facebook-share-dialog', 'width=626,height=436' ); return false;">
+			<img src="<?php // echo $this->getSkinUrl('images/product_modal/likefb.jpg')?>" border="0" style="margin:3px 0 0 0;"/>
+		</a-->
+	</div>
+</div>
+
+<script type="text/javascript">
+/**
+ * 
+ * 
+ * Global variables
+ * 
+ * 
+ */
+var options = {};
+var out_of_stock_product_info = {};
+var p_id = "<?php echo $_product->getId(); ?>";
+
+var zoom_status = 0;
+selected_option_label = "<?php echo $this->getRequest()->getParam('option'); ?>";
+
+var mode_of_view = '<?php echo $this->getRequest()->getParam("type"); ?>';
+var cart_url = "<?php echo $this->getUrl('checkout/cart'); ?>";
+
+var pinit_base_url = 'https://pinterest.com/pin/create/button/?url=' + '<?php echo $this->getUrl() ?>' + '&media=';
+var pinit_image_url = '<?php echo $_product->getImageUrl(); ?>';
+var pinit_trailing_url = '&description=Happily%20Unmarried';
+
+var scooso_url = "<?php echo $this->getUrl('scooso/index/prequantity'); ?>";
+var product_image_url = "<?php echo $_product->getImageUrl() ?>";
+var social_share_url = "<?php echo $this->getUrl('explore/cover/getSocialSharingBlock'); ?>";
+
+jQuery(document).ready(function($){
+
+	options['pid'] = p_id;
+
+	/**
+	 * 
+	 * 
+	 * Retrieve quantities of all the options
+	 * 
+	 * 
+	 */
+	try {
+		jQuery.ajax({
+			url: scooso_url,
+			dataType: 'json',
+			type : 'get',
+			data: options,
+			success: function(response){
+				options = response;
+				check_stock_status();
+			}
+		});
+	} catch (e) {
+	}
+
+	/**
+	 * 
+	 * 
+	 * Retrieve social sharing block
+	 * 
+	 * 
+	 */
+	try {
+		jQuery.ajax({
+			url: social_share_url,
+			dataType: 'json',
+			type : 'get',
+			data: {'product_image_url' : product_image_url},
+			success: function(response){
+				$('.social-like-thumbnails-area').html(response['html']);
+			}
+		});
+	} catch (e) {
+	}
+
+	/**
+	 * 
+	 * 
+	 * Notify Me When Available- Send AJAX Call to backend with the details
+	 * 
+	 * 
+	 */
+	$('.notify_me_button').click(function() {
+		var out_of_stock_product_info_options = {};
+		out_of_stock_product_info.id = p_id;
+		out_of_stock_product_info.email_id = $('#notify_email_id').val();
+		$('.super-attribute-select').each(function() {
+			if(!$(this).hasClass('selectboxit')) {
+				out_of_stock_product_info_options[$(this).attr('id')] = $(this).val();
+			}
+		});
+		out_of_stock_product_info.options = out_of_stock_product_info_options;
+		out_of_stock_product_info.label = selected_option_label;
+
+		try {
+			$('#notify_email_id').attr('disabled', 'disabled');
+			$('#notify_email_id').addClass('notify_email_id_is_disabled');
+			jQuery.ajax({
+				url: "<?php echo $this->getUrl() . 'scooso/index/notifyme'; ?>",
+				dataType: 'json',
+				type: 'get',
+				data: out_of_stock_product_info,
+				success: function(response){
+					alert(response.response);
+					$('#notify_email_id').removeAttr('disabled');
+					$('#notify_email_id').removeClass('notify_email_id_is_disabled');
+					if(response.error == 1) {
+						$('#notify_email_id').addClass('validation-failed');
+					} else {
+						$('#notify_email_id').removeClass('validation-failed');
+						$('#notify_email_id').val("Email ID");
+					}
+				}
+			});
+		} catch (e) {
+		}
+	});
+	/* Notify Me When Available ENDS */
+
+	/**
+	 * 
+	 * 
+	 * Check the stock status of the current configurable option
+	 * 
+	 * 
+	 */
+	$('.super-attribute-select').change(check_stock_status);
+
+	function check_stock_status() {
+
+		var option_string = '';
+		$('.super-attribute-select').each(function() {
+			if(!$(this).hasClass('selectboxit')) {
+				option_string = option_string + "-" + $(this).val();
+			}
+		});
+		option_string = option_string.slice(1);
+		
+		if(options[option_string] == 0) {
+			$('.large-buy-cart-button').hide();
+			$('.notify-me-when-available').show();
+			$('#notify_email_id').addClass('validate-email, required-entry');
+		} else {
+			$('.large-buy-cart-button').show();
+			$('.notify-me-when-available').hide();
+			$('#notify_email_id').removeClass('validate-email, required-entry');
+		}
+
+	}
+	/* Stock status check ends */
+
+});
+
+</script>

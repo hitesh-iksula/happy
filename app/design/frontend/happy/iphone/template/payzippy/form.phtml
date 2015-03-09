@@ -1,0 +1,27 @@
+<?php
+$_code=$this->getMethodCode();
+$methods= $this->getAllowedMethods();
+$emiBanks= $this->getBankNames('emi_bank_names');
+$netBanks= $this->getBankNames('net_bank_names');
+?>
+<!-- <ul class="form-list" id="payment_form_<?php // echo $_code ?>" style="display:none;">
+    <li class="message">
+        <?php // echo $this->getRedirectMessage();?>
+    </li>
+</ul> -->
+
+<div class="payment-method-label" id="label-9">
+	<label class="radio" for="p_method_payzippy">
+		<img src="<?php echo $this->getSkinUrl('images/onepagecheckout/payzippy_label.png'); ?>"/>
+	</label>
+</div>
+
+<div class="input-box display-none payment-data-box" id="p_method_<?php echo $_code ?>_data">
+    <p class="payment-note"><?php echo $this->getRedirectMessage();?></p>
+
+    <button type="submit" id="place-order" class="button payzippy_button" onclick="checkout.save(); return false;">
+		<p><?php echo $this->__('PAY WITH') ?></p>
+		<img src="<?php echo $this->getSkinUrl('images/onepagecheckout/payzippy_label.png'); ?>"/>
+		<em></em>
+    </button>
+</div>

@@ -1,0 +1,366 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Shoping cart sidebar
+ *
+ * @see Mage_Checkout_Block_Cart_Sidebar
+ */
+date_default_timezone_set('Asia/Kolkata');
+$currentTime = date('H', time());
+$currentDay = date('D', $time);
+$offDelivery = '';
+$mydate = date('d/m/Y');
+$t=date('d-m-Y');
+$myday1 = date("D",strtotime($t));
+$myday = date("l",strtotime($t));
+$nextday = Date('l', strtotime("+1 days"));
+$nextday1 = Date('l', strtotime("+2 days"));
+?>
+
+<?php if ($this->getIsNeedToDisplaySideBar()): ?>
+
+	<div class="block block-cart checkout-cart-sidebar">
+
+		<?php $_cartQty = $this->getSummaryCount(); ?>
+
+		<?php $qty = $_cartQty <= 9 ? '0' . $_cartQty : $_cartQty; ?>
+		<div class="block-title">
+			<!-- <a href="<?php // echo $this->getUrl() . 'explore/cart/cartmodal' ?>" class="cart_page" id="opens-cart-modal">Edit</a> -->
+			<span class="cart-title"><span id="title-my-carto"><?php echo $this->__("Order Summary"); ?></span><?php /*echo $this->__(" ($qty)") */ ?></span>
+		</div>
+
+		<div class="block-content">
+
+			<?php $_items = $this->getRecentItems(); ?>
+			<?php
+			$itemsInCart = count($_items);
+			?>
+
+			<?php if(count($_items)): ?>
+			<div class="inventory-wrapper">
+					
+					<div class="checkout_table_heading">
+							<div class=" item_heading">
+								<p class="product-name"></p>
+								<div class="product-quantity-val">
+									<div class="price">PRICE</div>
+									<div class="quantity">QUANTITY</div>
+								</div>
+							</div>
+
+							<div class="delivery-time">DELIVERY TIME</div>
+					</div>
+
+					<?php
+						$NonInventory = 0;
+						$Inventory = 0;
+						foreach($_items as $_item):
+							$product = Mage::getModel('catalog/product')->load($_item->getProduct()->getId());
+							if($product->getNonInventoryProducts() != 1){
+								$Inventory = 1;
+							 }else{
+							 	$NonInventory = 1;
+							 } 
+						endforeach;
+					?>
+
+					<?php if($Inventory == 1){?>
+					<div class="inventory-top">
+						<ol id="cart-sidebar" class="mini-products-list" >
+
+							<?php foreach($_items as $_item): ?>
+								<?php
+								$session = Mage::getSingleton('core/session');
+								$session->setCurrentPage('onepagecheckout');
+								$product = Mage::getModel('catalog/product')->load($_item->getProduct()->getId());
+								//$ids = $_item->getProduct()->getCategoryIds();
+								//$categoryId = (isset($ids[1]) ? $ids[1] : null);
+								if($product->getNonInventoryProducts() != 1){
+								?>
+								<?php echo $this->getItemHtml($_item); ?>
+								<?php }?>
+								<?php $session->unsCurrentPage(); ?>
+							<?php endforeach; ?>
+						</ol>
+						
+						<div class="inventory-products">
+								<?php $delivery_rate=Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getShippingMethod();?>
+					            <?php if($delivery_rate == 'tablerate_bestway'): ?>
+					                 3 - 4 working days
+					            <?php else: ?>
+					                 <!-- Tommorrow</p> -->
+					                    <?php $nextshipmentday = 'Monday' ?>
+					                    <?php if(($myday1 == 'Fri') && ($currentTime >= 16) ): ?>
+					                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+3 days")); ?> 
+					                        <?php echo $nextshipmentday; ?> ,
+					                        <?php echo $nextshipmentdate; ?>
+					                    <?php elseif($myday1 == 'Sat'): ?>
+					                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+2 days")); ?> 
+					                        <?php echo $nextshipmentday; ?>,
+					                        <?php echo $nextshipmentdate; ?>
+					                    <?php elseif(($myday1 == 'Sun') && ($currentTime <= 16) ): ?>
+					                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+1 days")); ?> 
+					                        <?php echo $nextshipmentday; ?>,
+					                        <?php echo $nextshipmentdate; ?>
+					                    <?php elseif(($myday1) && ($currentTime >= 16)  && ($myday1 != 'Fri') && ($myday1 != 'Sat')): ?>
+					                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+2 days")); ?> 
+					                        <?php echo $nextday1; ?>,
+					                        <?php echo $nextshipmentdate; ?>
+					                    <?php else: ?>
+					                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+1 days")); ?> 
+					                        <?php echo $nextday; ?>,
+					                        <?php echo $nextshipmentdate; ?>
+					                    <?php endif; ?>
+					            <?php endif; ?>
+
+							</div>
+					</div>
+					<?php } ?>
+
+					<?php if($NonInventory == 1){?>
+					<div class="inventory-bottom">
+						<ol id="cart-sidebar" class="mini-products-list miniproducts" >
+
+							<?php foreach($_items as $_item): ?>
+								<?php
+								$session = Mage::getSingleton('core/session');
+								$session->setCurrentPage('onepagecheckout');
+								$product = Mage::getModel('catalog/product')->load($_item->getProduct()->getId());
+								//$ids = $_item->getProduct()->getCategoryIds();
+								//$categoryId = (isset($ids[1]) ? $ids[1] : null);
+								if($product->getNonInventoryProducts() == 1){
+								?>
+								<div class="secondshop">
+								<?php echo $this->getItemHtml($_item); ?>
+								</div>
+								<?php }?>
+								<?php $session->unsCurrentPage(); ?>
+							<?php endforeach; ?>
+
+						</ol>
+						<div class="uninventory-products">
+							<div class="ship-date">Within<br>10 Days</div>
+						</div>
+					</div>
+					<?php } ?>
+			</div>
+			<?php endif; ?>
+
+			<?php if ($_cartQty>0): ?>
+			<?php $shipping_price = Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getShippingAmount(); ?>
+			<?php $totals = Mage::getSingleton('checkout/session')->getQuote()->getTotals(); ?>
+			<?php $coupon_code = Mage::getSingleton('checkout/session')->getQuote()->getCouponCode(); ?>
+
+	        <div class="summary">
+        	    <p class="subtotal">
+	                <?php if ($this->canApplyMsrp()): ?>
+	                    <span class="map-cart-sidebar-total"><?php echo $this->__('ORDER TOTAL WILL BE DISPLAYED BEFORE YOU SUBMIT THE ORDER'); ?></span>
+	                <?php else: ?>
+	                	<?php if($coupon_code): ?>
+	                		<span class="label"><?php echo $this->__('Order Amt') ?></span> <span class="pricerupees">
+	                	<?php elseif($shipping_price): ?>
+	                    	<span class="label text_change"><?php echo $this->__('Order Amt') ?></span> <span class="pricerupees">
+	                    <?php else: ?>
+	                    	<span class="label "><?php echo $this->__('Total') ?></span> <span class="pricerupees">
+	                    <?php endif; ?> 
+	                    <?php echo Mage::helper('explore')->formatPrice($this->getSubtotal()) ?></span>
+	                    <?php if ($_subtotalInclTax = $this->getSubtotalInclTax()): ?>
+	                        <br />(<?php echo Mage::helper('checkout')->formatPrice($_subtotalInclTax) ?> <?php echo Mage::helper('tax')->getIncExcText(true) ?>)
+	                    <?php endif; ?>
+	                <?php endif; ?>
+	            </p>
+
+	            <?php if($coupon_code): ?>
+		            <p class="subtotal" id="sidebar_discount_amount">
+		                <?php if ($this->canApplyMsrp()): ?>
+		                    <span class="map-cart-sidebar-total"><?php echo $this->__('ORDER TOTAL WILL BE DISPLAYED BEFORE YOU SUBMIT THE ORDER'); ?></span>
+		                <?php else: ?>
+		                    <span class="label"><?php echo $this->__('( - ) Discount') ?></span>
+		                    <?php $discount = $totals['discount']->getValue() ?>
+		                    <span class="pricerupees"><?php echo Mage::helper('explore')->formatPrice(abs($discount)) ?></span>
+		                <?php endif; ?>
+		            </p>
+
+		            <p class="subtotal" id="sidebar_total_after_discount_amount">
+		                <?php if ($this->canApplyMsrp()): ?>
+		                    <span class="map-cart-sidebar-total"><?php echo $this->__('ORDER TOTAL WILL BE DISPLAYED BEFORE YOU SUBMIT THE ORDER'); ?></span>
+		                <?php else: ?>
+		                    <span class="label"><?php echo $this->__('Total') ?></span>
+		                    <?php $totalAfterDiscount = $this->getSubtotal() + $totals['discount']->getValue() ?>
+		                    <span class="pricerupees"><?php echo Mage::helper('explore')->formatPrice(abs($totalAfterDiscount)) ?></span>
+		                <?php endif; ?>
+		            </p>
+	            <?php endif; ?>
+	        <?php endif; ?>
+
+	        <?php if(Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getShippingMethod()): ?>
+
+		        <?php if($shipping_price >= 0): ?>
+	         		<div class="subtotal" id="sidebar_shipping_amount">
+		                <?php if ($this->canApplyMsrp()): ?>
+		                    <span class="map-cart-sidebar-total"><?php echo $this->__('ORDER TOTAL WILL BE DISPLAYED BEFORE YOU SUBMIT THE ORDER'); ?></span>
+		                <?php else: ?>
+		                	<?php if($shipping_price != 0) : ?>
+			                	<span class="label"><?php echo $this->__('(+) Shipping') ?></span>
+			                	<span class="pricerupees"><?php echo Mage::helper('explore')->formatPrice(Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getShippingAmount()) ?></span>
+			                <?php else : ?>
+			                	<span class="label"><?php echo $this->__('(+) Shipping') ?></span>
+			        			<span class="pricerupees"><?php echo "FREE"; ?></span>
+			                <?php endif; ?>
+		                <?php endif; ?>
+		            </div>
+		        <?php endif; ?>
+
+		        <?php if($shipping_price >= 0) : ?>
+		            <p class="subtotal" id="sidebar_grand_total">
+		                <?php if ($this->canApplyMsrp()): ?>
+		                    <span class="map-cart-sidebar-total"><?php echo $this->__('ORDER TOTAL WILL BE DISPLAYED BEFORE YOU SUBMIT THE ORDER'); ?></span>
+		                <?php else: ?>
+		                    <span class="label"><strong><?php echo $this->__('Grand Total') ?></strong></span>
+		                    <?php // $grandTotal = $this->getSubtotal() + Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getShippingAmount() ?>
+		                    <?php $grandTotal = $totals['grand_total']->getValue() ?>
+		                    <span class="pricerupees"><?php echo Mage::helper('explore')->formatPrice($grandTotal) ?></span>
+		                    <span class="price-tax-info">including taxes</span>
+		                <?php endif; ?>
+		            </p>
+		        <?php endif ?>
+		        
+	        <?php endif ?>
+	        </div>
+
+		</div>
+
+	</div>
+
+<?php endif; ?>
+
+<style type="text/css">
+
+#sidebar_grand_total .price-tax-info {float: left;padding: 0px;}
+	
+.summary{
+	clear: both;
+}	
+
+.checkout_table_heading, .inventory-top, .inventory-bottom{
+	display: table;
+	width: 100%;
+}
+
+.item_heading, .delivery-time{
+	display: table-cell;
+	float: none;
+	font-size: 10px;
+	line-height: 18px;
+	text-align: center;
+}
+
+.checkout_table_heading .item_heading{
+	width: 71%;
+	border-right: 1px solid #ddd;
+}
+
+.checkout_table_heading .delivery-time{
+	width: 29%;
+}
+
+.checkout_table_heading .product-quantity-val .price{
+	width: 55%;
+	float: left;
+	text-align: center;
+}
+
+.checkout_table_heading .product-quantity-val .quantity{
+	width: 45%;
+	float: left;
+	text-align: center;
+}
+
+.mini-products-list, .inventory-products{
+	display: table-cell;
+	float: none;
+	min-height: 10px;
+}
+
+.inventory-products{
+	vertical-align: middle;
+	text-align: center;
+}
+
+.inventory-products .ship-date{
+	margin-top:0; 
+	margin-left: 0 
+}
+
+.uninventory-products{
+	float: none;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.inventory-bottom .ship-date{
+	margin-top:0;
+	text-align: center; 
+	margin-left: 0 
+}
+
+.block-cart .subtotal .pricerupees{
+	margin-right: 46%
+}
+
+</style>
+
+<script type="text/javascript">
+jQuery(document).ready(function($){
+
+	// Initiate Scroll Bar for Cart Sidebar
+	"use strict";
+
+	$('.summary .subtotal>span.label.text_change').html('Total');
+
+	$('#login-step').click(function(){
+		if($("#sidebar_discount_amount").find("span.label")){
+	 	$('.summary .subtotal>span.label.text_change').html('Total');
+	 }
+
+	});	
+	/*$('#login-step-continue').click(function(){
+	 	$('.summary .subtotal>span.label.text_change').html('Order Amt');
+	});
+	if($('#checkout-shipping-method-load').is(":visible")){
+		$('.summary .subtotal>span.label.text_change').html('Order Amt');
+	}*/
+
+	$("#cart-sidebar").mCustomScrollbar({
+		//autoHideScrollbar:true,
+		advanced:{
+			updateOnBrowserResize:true,
+			updateOnContentResize:false
+		}
+	});
+});
+</script>

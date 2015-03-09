@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Iksula_Autoinvoice>
+            <version>0.1.0</version>
+        </Iksula_Autoinvoice>
+    </modules>
+    <global>
+        <models>
+            <Autoinvoice>
+                <rewrite>
+                    <observer>Iksula_Autoinvoice_Model_Observer</observer>
+                </rewrite>
+            </Autoinvoice>
+        </models>
+        <events>
+            <sales_order_save_commit_after>
+                <observers>
+                    <Autoinvoice>
+                        <class>Iksula_Autoinvoice_Model_Observer</class>
+                        <method>afterSalesOrderSaveCommitAfter</method>
+                    </Autoinvoice>
+                </observers>
+            </sales_order_save_commit_after>
+        </events>
+        <helpers>
+            <Autoinvoice>
+                <class>Iksula_Autoinvoice_Helper</class>
+            </Autoinvoice>
+        </helpers>
+    </global>
+</config>

@@ -1,0 +1,5 @@
+<div class="quickview-main cart-modal-main">
+	<?php Mage::getSingleton('core/session')->setCartViewType('modal'); ?>
+	<?php echo $this->getChildHtml('content') ?>
+	<?php echo Mage::getSingleton('core/session')->unsCartViewType(); ?>
+</div>

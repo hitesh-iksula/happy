@@ -1,0 +1,52 @@
+<div class="main_container_new xmaspage valentines">
+	<div class="offer_info">
+		<form method="POST" id="paytmpromo" name="paytmpromo" action="<?php echo $this->getUrl('paytmpromo/index/redirect'); ?>">
+			<div class="group">
+				<input type="email" name="email_id" id="email_id" class="input-text required-entry validate-email">
+				<span class="highlight"></span>
+				<span class="bar"></span>
+				<label>Email (Coupon will be mailed to you!)</label>
+			</div>
+
+			<div class="group">
+				<input type="text" name="phone_number" id="phone_number" class="input-text required-entry validate-number validate-length minimum-length-10 maximum-length-13">
+				<span class="highlight"></span>
+				<span class="bar"></span>
+				<label>Phone NO.</label>
+			</div>
+
+			<div class="group">
+				<button type="submit">Pay Re. 1 via Paytm Wallet</button>
+			</div>
+		</form>
+	</div>
+
+	<div class="offer_detail">
+		<ul>
+			<h2>Offer Details:</h2>
+			<li>You shall receive a Happily Unmarried 20% off discount coupon instantly in your inbox.</li>
+			<li>Rs.3 Cash Back will be credited automatically to your Paytm wallet account.</li>
+			<li>Get 20% cashback on Paytm marketplace when you do a min. transaction of Rs 500. Max cashback Rs 250.<br>
+				Valid for both new and existing users. 1 transaction per code.
+				For Marketplace Click Here http://bit.ly/1AFzzl4 <br>
+				(Marketplace Coupon Code will be sent only on your registered mail id within 3 working days)
+			</li>
+			<li>Valid upto 3 transactions per user.</li>
+		</ul>
+	</div>
+</div>
+
+<script type="text/javascript">
+//< ![CDATA[
+	var customForm = new VarienForm('paytmpromo');
+//]]>
+</script>
+
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		if($('ul.messages').length > 0) {
+			// $('.messages').prependTo('.main_container_new');
+			$('.messages').insertAfter('.category-image');
+		}
+	});
+</script>

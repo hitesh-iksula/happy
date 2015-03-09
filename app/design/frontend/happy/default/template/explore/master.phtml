@@ -1,0 +1,89 @@
+<div class="master">
+	<div class="side-block">
+		<div class= "banner-block">
+			<a href="<?php echo Mage::getStoreConfig('hubanner/hubanner_group1/link'); ?>"><img title="<?php echo Mage::getStoreConfig('hubanner/hubanner_group1/title'); ?>" src="<?php echo Mage::getBaseUrl('media') .'Creativity/'. Mage::getStoreConfig('hubanner/hubanner_group1/image'); ?>" class="banner-block" > </a>
+		</div>
+		<div class = "banner-block">
+			<a href="<?php echo Mage::getStoreConfig('hubanner/hubanner_group2/link'); ?>"><img title="<?php echo Mage::getStoreConfig('hubanner/hubanner_group2/title'); ?>" src="<?php echo Mage::getBaseUrl('media') . 'Creativity/'. Mage::getStoreConfig('hubanner/hubanner_group2/image'); ?>" class="banner-block"> </a>
+		</div>
+		<div class = "banner-block">
+			<a href="<?php echo Mage::getStoreConfig('hubanner/hubanner_group3/link'); ?>"><img title="<?php echo Mage::getStoreConfig('hubanner/hubanner_group3/title'); ?>" src="<?php echo Mage::getBaseUrl('media') .'Creativity/'. Mage::getStoreConfig('hubanner/hubanner_group3/image'); ?>"  class="banner-block"> </a>
+		</div>
+	</div>
+
+	<div class="harpreet-slider-wrapper">
+		<div class="container">
+			<div id="homepage-slider">
+				<a class="image image1" id="image1" href="<?php echo Mage::getStoreConfig('harpreetslider/slideritem1/link'); ?>"><img title="<?php echo Mage::getStoreConfig('harpreetslider/slideritem1/title'); ?>" src="<?php echo Mage::getBaseUrl('media') . 'harpreet/'. 'slider/'  . Mage::getStoreConfig('harpreetslider/slideritem1/image'); ?>" >
+				 </a>
+
+				<a class="image image2" id="image2"  href="<?php echo Mage::getStoreConfig('harpreetslider/slideritem2/link'); ?>"><img title="<?php echo Mage::getStoreConfig('harpreetslider/slideritem2/title'); ?>" src="<?php echo Mage::getBaseUrl('media') . 'harpreet/'. 'slider/'  . Mage::getStoreConfig('harpreetslider/slideritem2/image'); ?>" >
+				 </a>
+
+				<a class="image image3" id="image3"  href="<?php echo Mage::getStoreConfig('harpreetslider/slideritem3/link'); ?>"><img title="<?php echo Mage::getStoreConfig('harpreetslider/slideritem3/title'); ?>" src="<?php echo Mage::getBaseUrl('media') . 'harpreet/'. 'slider/'  . Mage::getStoreConfig('harpreetslider/slideritem3/image'); ?>"  >
+				</a>
+			</div>
+		</div>
+
+		<table class="tab">
+			<tr>
+				<td class="menu" id="menu1">
+				<a href= '<?php echo Mage::getStoreConfig('harpreetslider/slideritem1/link'); ?>'>
+					<div class="tab-title" ><?php echo Mage::getStoreConfig('harpreetslider/slideritem1/title'); ?></div>
+					<div class="probe probe1"></div>
+				</a>
+				</td>
+
+
+				<td class="menu" id="menu2">
+				<a href= "<?php echo Mage::getStoreConfig('harpreetslider/slideritem2/link'); ?>">
+					<div class="tab-title"><?php echo Mage::getStoreConfig('harpreetslider/slideritem2/title'); ?></div>
+					<div class="probe probe2"></div>
+				</a>
+				</td>
+
+
+				<td class="menu" id="menu3">
+				<a href= "<?php echo Mage::getStoreConfig('harpreetslider/slideritem3/link'); ?>">
+					<div class="tab-title"><?php echo Mage::getStoreConfig('harpreetslider/slideritem3/title'); ?></div>
+					<div class="probe probe3"></div>
+				</a>
+				</td>
+
+			</tr>
+		</table>
+
+	</div>
+	<!-- <div style="height: 39px;"></div> -->
+	<div class="main-social" >
+		<span>Hey Good looking! Thanks for hittin on us!</span>
+	    <a href="https://www.facebook.com/Like.HU" target="_blank">
+	    	<div id="slider-facebook" class="slider-social-button"></div>
+	    </a>
+	    <a href="https://twitter.com/happlyunmarried/" target="_blank">
+	    	<div id="slider-twitter" class="slider-social-button"></div>
+	    </a>
+	    <a href="http://instagram.com/Happily_Unmarried/" target="_blank">
+	    	<div id="slider-instagram" class="slider-social-button"></div>
+	    </a>
+	</div>
+
+	<?php if($urlKey = $this->getUrlParam('p')): ?>
+		<?php // $productId = $this->getProductId($urlKey); ?>
+		<input type="hidden" name="show_modal_of_product" id="show_modal_of_product" value="<?php echo $this->getProductId($urlKey); ?>" />
+		<script type="text/javascript">
+		window.onload = function() {
+		    window.scrollTo(0, 0); // set x and y position to 0 and 0 respectively.
+		};
+		</script>
+	<?php endif; ?>
+
+	<?php
+	echo $this->getCategoryProducts();
+	?>
+
+	<input type="hidden" id="url_for_swatches" value="<?php echo $this->getBaseUrl() . "solidswatches/frontend/retrieve"; ?>" />
+	<input type="hidden" id="visible_products_per_grid" value="<?php echo Mage::getStoreConfig('explore/explore_group/explore_grid_size', Mage::app()->getStore()); ?>" />
+	<input type="hidden" id="add_cart_activity" value="0" />
+
+</div>

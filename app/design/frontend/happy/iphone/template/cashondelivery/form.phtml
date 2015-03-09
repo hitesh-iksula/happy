@@ -1,0 +1,71 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   Phoenix
+ * @package    Phoenix_CashOnDelivery
+ * @copyright  Copyright (c) 2010 Phoenix Medien GmbH & Co. KG (http://www.phoenix-medien.de)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<?php
+$_code		= $this->getMethodCode();
+$_extra_fee	= $this->getMethod()->getAddressCosts($this->getShippingAddress());
+
+$_extra_fee_excl = $this->convertPrice(Mage::helper('cashondelivery')->getCodPrice($_extra_fee, $this->helper('cashondelivery')->displayCodFeeIncludingTax(), $this->getShippingAddress()), true);
+$_extra_fee_incl = $this->convertPrice(Mage::helper('cashondelivery')->getCodPrice($_extra_fee, true, $this->getShippingAddress()), true);
+
+$_codFeeStr = $_extra_fee_excl;
+if ($this->helper('cashondelivery')->displayCodBothPrices() && ($_extra_fee_incl != $_extra_fee_excl)) {
+	$_codFeeStr .= ' ('.$this->__('Incl. Tax').' '.$_extra_fee_incl.')';
+}
+?>
+<?php if($this->getMethod()->getCustomText() || $_extra_fee || Mage::getStoreConfig('payment/cashondelivery/display_zero_fee')): ?>
+<fieldset class="form-list">
+	<ul id="payment_form_<?php echo $_code ?>" style="display:none;">
+		<?php if($_extra_fee || Mage::getStoreConfig('payment/cashondelivery/display_zero_fee')): ?>
+		<li><?php echo $this->__('You will be charged an extra fee of %s.', $_codFeeStr) ?></li>
+		<?php endif; ?>
+		<?php if ($this->getMethod()->getCustomText()): ?>
+		<li>
+			<?php echo $this->getMethod()->getCustomText() ?>
+		</li>
+		<?php endif; ?>
+	</ul>
+</fieldset>
+<?php endif; ?>
+
+<!-- COD if enabled -->
+<?php if(Mage::helper('backdrop')->isCodEnabled()): ?>
+	<div class="no-display">
+		<input type="hidden" id="cod_enabled" value="1"/>
+		<?php if(!$this->helper('mih')->isMihInCart()): ?>
+			<div class="payment-method-label" id="label-4">
+				<label class="radio" for="p_method_cashondelivery">Cash On Delivery</label>
+			</div>
+		<?php endif; ?>
+	</div>
+<?php else: ?>
+	<input type="hidden" id="cod_enabled" value="0"/>
+<?php endif; ?>
+
+<?php // if(Mage::helper('checkout/cart')->getQuote()->getGrandTotal() > 500): ?>
+	<div class="input-box display-none payment-data-box" id="p_method_cashondelivery_data">
+		<h2>Pay with Cash-On-Delivery</h2>
+		<div class="address-final" id="checkout-shipping_info_cod-load">
+
+		</div>
+		<p class="payment-footnote">Shipping charge for Cash-on-Delivery orders - Rs. 75 + 10% of the order amount.</p>
+		<button type="submit" id="place-order" class="button happy_button" onclick="checkout.save(); return false;"><?php echo $this->__('Pay Securely') ?></button>
+	</div>
+<?php // endif; ?>

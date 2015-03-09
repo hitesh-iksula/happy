@@ -1,0 +1,218 @@
+<?php $_code = $this->getMethodCode(); ?>
+
+<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+
+	<input type="hidden" id="ccavenue_payment_method" name="payment[ccavenue_payment_method]" value="netBanking" />
+	<input type="hidden" id="ccavenue_method_option" name="payment[ccavenue_method_option]" />
+
+	<li class="ccavenue-payment-option-box">
+
+		<div class="input-box display-none">
+			<input class="ccavenue-payment-option" name='payment[ccavenue_card_option]' type="radio" id='ccavenue_card_option_0' value='CreditCard' />
+		</div>
+
+		<div class="input-box display-none payment-data-box" id="ccavenue_card_option_0_data">
+			<p class="payment-footnote">Click on the Pay Securely button. You will be redirected to a secure payment gateway for payment. After successful payment authorization, you will be redirected to Happily Unmarried's order confirmation page.</p>
+
+			<div class="payment-images">
+				<div class="payment-img-1"></div>
+				<div class="payment-img-3"></div>
+				<div class="payment-img-2"></div>
+				<!-- <div class="payment-img-4"></div> -->
+			</div>
+
+			<div class="checkout-final-button">
+                <button type="submit"  id="place-order" class="button happy_button red_button" onclick="checkout.save(); return false;"><?php echo $this->__('Pay Securely') ?></button>
+                <!--<div id="review-please-wait" style="display: none;">
+		            <div>
+		            	<img src="<?php // echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php // echo $this->__('Submitting order information...') ?>" title="<?php // echo $this->__('Submitting order information...') ?>" class="v-middle" /> <?php // echo $this->__('Submitting order information...') ?>
+		            </div>
+		        </div>-->
+            </div>
+
+			<p class="payment-footnote">
+				Shipping for pre-paid orders:<br/>
+				(a) Free shipping for orders above Rs. 2500<br/>
+				(b) For rest, charge would be Rs. 50 OR 10% of the order amount, whichever is higher.
+			</p>
+		</div>
+
+	</li>
+
+	<li class="ccavenue-payment-option-box">
+
+		<div class="input-box display-none">
+			<input class="ccavenue-payment-option" name='payment[ccavenue_card_option]' type="radio" id='ccavenue_card_option_1' value='NonMoto' />
+		</div>
+
+		<div class="input-box display-none payment-data-box" id="ccavenue_card_option_1_data">
+			<!--select class="ccavenue-payment-dropdowns" id="ccavenue_non_moto_card_type" name="payment[ccavenue_non_moto_card_type]">
+				<option value="">Select your Bank</option>
+				<option value ="SBMDBV_Y" >VISA Debit Card Issued in India (VBV)</option>
+				<option value ="CANVIS_N" >Canara Bank Debit Card (ATM PIN)</option>
+				<option value ="CBIDEB_N" >Citibank Debit Card (IPIN)</option>
+				<option value ="IOBDB_N" >Indian Overseas Bank Debit Card (ATM PIN)</option>
+				<option value ="PNBM_N" >Punjab National Bank Debit Card (ATM PIN)</option>
+				<option value ="UNIDB_N" >Union Bank of India Debit Card (ATM PIN)</option>
+				<option value ="SBMDB_Y" >State Bank of India Debit Card</option>
+			</select-->
+
+			<p class="payment-footnote">Choose your card and click on the Pay Securely button. You will be redirected to a secure payment gateway for payment. After successful payment authorization, you will be redirected to Happily Unmarried's order confirmation page.</p>
+
+			<div class="payment-images">
+				<div class="payment-img-1"></div>
+				<!-- <div class="payment-img-2"></div> -->
+				<div class="payment-img-3"></div>
+				<div class="payment-img-4"></div>
+			</div>
+
+			<div class="checkout-final-button">
+                <button type="submit" id="place-order" class="button happy_button red_button" onclick="checkout.save(); return false;"><?php echo $this->__('Pay Securely') ?></button>
+                <!--<div id="review-please-wait" style="display: none;">
+		            <div>
+		            	<img src="<?php // echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php // echo $this->__('Submitting order information...') ?>" title="<?php // echo $this->__('Submitting order information...') ?>" class="v-middle" /> <?php // echo $this->__('Submitting order information...') ?>
+		            </div>
+		        </div>-->
+            </div>
+
+            <p class="payment-footnote">
+				Shipping for pre-paid orders:<br/>
+				(a) Free shipping for orders above Rs. 2500<br/>
+				(b) For rest, charge would be Rs. 50 OR 10% of the order amount, whichever is higher.
+			</p>
+		</div>
+
+	</li>
+
+	<li class="ccavenue-payment-option-box">
+
+		<div class="input-box display-none">
+			<input class="ccavenue-payment-option" name='payment[ccavenue_card_option]' value='netBanking' id='ccavenue_card_option_2' type="radio" checked="checked" />
+		</div>
+
+		<div class="input-box display-none payment-data-box" id="ccavenue_card_option_2_data">
+			<div class="short ccavenue_select_bank">
+				<input type="radio" id="ccavenue_net_banking_card_radio_1" name="payment[ccavenue_net_banking_cards_r1]" value="IDEB_N" />
+				<div class="data_area">
+					<label  class="net_banking_featured t1" for="ccavenue_net_banking_card_radio_1">ICICI Bank</label>
+				</div>
+			</div>
+			<div class="short odd ccavenue_select_bank">
+				<input type="radio" id="ccavenue_net_banking_card_radio_2" name="payment[ccavenue_net_banking_cards_r2]" value="SBI_N" />
+				<div class="data_area">
+					<label  class="net_banking_featured t1" for="ccavenue_net_banking_card_radio_2">State Bank of India</label>
+				</div>
+			</div>
+			<div class="short ccavenue_select_bank">
+				<input type="radio" id="ccavenue_net_banking_card_radio_3" name="payment[ccavenue_net_banking_cards_r3]" value="UTI_N" />
+				<div class="data_area">
+					<label  class="net_banking_featured t1" for="ccavenue_net_banking_card_radio_3">AXIS Bank</label>
+				</div>
+			</div>
+			<div class="short odd ccavenue_select_bank">
+				<input type="radio" id="ccavenue_net_banking_card_radio_4" name="payment[ccavenue_net_banking_cards_r4]" value="HDEB_N" />
+				<div class="data_area">
+					<!-- <label  class="net_banking_featured t1" for="ccavenue_net_banking_card_radio_4">Citibank Online</label> -->
+					<label  class="net_banking_featured t1" for="ccavenue_net_banking_card_radio_4">HDFC Bank</label>
+				</div>
+			</div>
+			<select class="ccavenue-payment-dropdowns" id="ccavenue_net_banking_cards" size="1" name="payment[ccavenue_net_banking_cards]">
+				<option value="">Any other BANK</option>
+				<option value ="AND_N" >Andhra Bank</option>
+				<!-- <option value ="UTI_N" >AXIS Bank</option> -->
+				<option value ="BBK_N" >Bank of Bahrain & Kuwait</option>
+				<option value ="BOBCO_N" >Bank of Baroda Corporate Accounts</option>
+				<option value ="BOB_N" >Bank of Baroda Retail Accounts</option>
+				<option value ="BOI_N" >Bank of India</option>
+				<option value ="BOM_N" >Bank of Maharashtra</option>
+				<option value ="CAN_N" >Canara Bank</option>
+				<option value ="CSB_N" >Catholic Syrian Bank</option>
+				<option value ="CEN_N" >Central Bank of India</option>
+				<option value ="CBIBAN_N" >Citibank Bank Account Online</option>
+				<option value ="CITIUB_N" >City Union Bank</option>
+				<option value ="COP_N" >Corporation Bank</option>
+				<option value ="DCB_N" >DCB Bank ( Development Credit Bank )</option>
+				<option value ="DEUNB_N" >Deutsche Bank</option>
+				<option value ="DLB_N" >Dhanlaxmi Bank</option>
+				<option value ="FDEB_N" >Federal Bank</option>
+				<!-- <option value ="HDEB_N" >HDFC Bank</option> -->
+				<!-- <option value ="IDEB_N" >ICICI Bank</option> -->
+				<option value ="IDBI_N" >IDBI Bank</option>
+				<option value ="INB_N" >Indian Bank</option>
+				<option value ="IOB_N" >Indian Overseas Bank</option>
+				<option value ="NIIB_N" >IndusInd Bank</option>
+				<option value ="ING_N" >ING Vysya Bank</option>
+				<option value ="JKB_N" >Jammu & Kashmir Bank</option>
+				<option value ="KTKB_N" >Karnataka Bank</option>
+				<option value ="KVB_N" >Karur Vysya Bank</option>
+				<option value ="NKMB_N" >Kotak Mahindra Bank</option>
+				<option value ="LVB_N" >Lakshmi Vilas Bank NetBanking</option>
+				<option value ="OBC_N" >Oriental Bank of Commerce</option>
+				<option value ="PNBCO_N" >Punjab National Bank Corporate Accounts</option>
+				<option value ="NPNB_N" >Punjab National Bank Retail Accounts</option>
+				<option value ="SIB_N" >South Indian Bank</option>
+				<option value ="SCB_N" >Standard Chartered Bank</option>
+				<option value ="SBJ_N" >State Bank of Bikaner and Jaipur</option>
+				<option value ="SBH_N" >State Bank of Hyderabad</option>
+				<!-- <option value ="SBI_N" >State Bank of India</option> -->
+				<option value ="SBM_N" >State Bank of Mysore</option>
+				<option value ="SBP_N" >State Bank of Patiala</option>
+				<option value ="SBT_N" >State Bank of Travancore</option>
+				<option value ="SYNBK_N" >Syndicate Bank</option>
+				<option value ="TNMB_N" >Tamilnad Mercantile Bank</option>
+				<option value ="UNI_N" >Union Bank of India</option>
+				<option value ="UBI_N" >United Bank of India</option>
+				<option value ="VJYA_N" >Vijaya Bank</option>
+				<option value ="YES_N" >YES Bank</option>
+			</select>
+
+			<p class="payment-footnote">Choose your bank and click on the Pay Securely button. You will be redirected to a secure payment gateway for payment. After successful payment authorization, you will be redirected to Happily Unmarried's order confirmation page.</p>
+
+			<!--div class="payment-images">
+				<div class="payment-img-1"></div>
+				<div class="payment-img-2"></div>
+				<div class="payment-img-3"></div>
+				<div class="payment-img-4"></div>
+			</div-->
+
+			<div class="checkout-final-button">
+                <button type="submit"  id="place-order" class="button happy_button red_button" onclick="checkout.save(); return false;"><?php echo $this->__('Pay Securely') ?></button>
+                <!--<div id="review-please-wait" style="display: none;">
+		            <div>
+		            	<img src="<?php // echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php // echo $this->__('Submitting order information...') ?>" title="<?php // echo $this->__('Submitting order information...') ?>" class="v-middle" /> <?php // echo $this->__('Submitting order information...') ?>
+		            </div>
+		        </div>-->
+            </div>
+
+            <p class="payment-footnote">
+				Shipping for pre-paid orders:<br/>
+				(a) Free shipping for orders above Rs. 2500<br/>
+				(b) For rest, charge would be Rs. 50 OR 10% of the order amount, whichever is higher.
+			</p>
+		</div>
+
+	</li>
+
+	<li class="ccavenue-payment-option-box">
+
+		<div class="input-box display-none">
+			<input class="ccavenue-payment-option" name='payment[ccavenue_card_option]' value='CCRD' id='ccavenue_card_option_3' type="radio" />
+		</div>
+
+		<div class="input-box display-none payment-data-box">
+			<select class="ccavenue-payment-dropdowns" id="ccavenue_ccrdtype" size="1" name="payment[ccavenue_ccrdtype]">
+				<option value=''></option>
+				<option value ="CCI_N" >ICash Card</option>
+				<option value ="ITZ_N" >Itz Cash / noQ 24x7</option>
+				<option value ="OXIG_N" >OxiCash Card</option>
+				<option value ="PCC_N" >PayCash Card</option>
+			</select>
+		</div>
+
+	</li>
+
+</ul>
+
+<div>
+	<?php echo $this->getMethod()->getConfigData('message'); ?>
+</div>

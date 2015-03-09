@@ -1,0 +1,15 @@
+<?php $_code = $this->getMethodCode(); ?>
+
+<div class="payment-method-label" id="label-11">
+    <label class="radio" for="p_method_paytm_cc">
+       <img src="<?php echo $this->getSkinUrl('images/Paytm-Logo.png'); ?>"/>
+       <span class="mo-paytm">Wallet</span>
+    </label>
+</div>
+
+<div class="input-box display-none payment-data-box" id="p_method_<?php echo $_code ?>_data">
+    <?php echo Mage::helper('paytm')->__('You will be redirected to PAYTM Payment Gateway when you place an order.') ?>
+    <button type="submit"  id="place-order" class="button happy_button" onclick="checkout.save(); return false;"><?php echo $this->__('Pay Securely') ?></button>
+</div>
+
+

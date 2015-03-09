@@ -1,0 +1,38 @@
+<div class="home_category_wrapper" id="home_category_wrapper">
+
+	<div class="shop_by_category">SHOP BY CATEGORIES</div>
+
+	<ul class="home_category_slider">
+		<?php $childCategories = $this->getCategories(); ?>
+		<?php foreach($childCategories as $childCategory): ?>
+			<?php $category = Mage::getModel('catalog/category')->load($childCategory); ?>
+			<?php $categoryModel = Mage::getModel('catalog/category')->load($category->getId()); ?>
+			<?php if(($categoryModel->getCategorychooser()==1) || ($categoryModel->getCategorychooser()==3)): ?>
+				<?php $categorychooser = $categoryModel->getCategorychooser(); ?>
+				<?php if(isset($categorychooser)):?>
+					<?php if($category->getData('is_active') == '1'): ?>
+						<li>
+							<a href="<?php echo $category->getUrl(); ?>" class="sidebar_category_label">
+								<img src="<?php echo $this->helper('mobile')->getUrlFromThumbnailAttr($category->getInactiveThumbnail()); ?>" />
+								<span><?php echo $category->getData('name'); ?></span>
+							</a>
+						</li>
+					<?php endif; ?>
+				<?php endif; ?>
+			<?php endif; ?>
+		<?php endforeach; ?>
+	</ul>
+
+</div>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+
+	var content_width = $('.home_category_wrapper').width();
+	$(".home_category_slider li").css('width', content_width * 0.35);
+	var span_height = $(".home_category_slider li span").height();
+	var home_category_slider_height = span_height + content_width * 0.35 * 0.84;
+	$('.home_category_slider').height(home_category_slider_height);
+
+});
+</script>

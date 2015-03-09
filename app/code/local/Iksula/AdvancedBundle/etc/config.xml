@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Iksula_AdvancedBundle>
+			<version>0.1.0</version>
+		</Iksula_AdvancedBundle>
+	</modules>
+	<frontend>
+		<routers>
+			<advancedbundle>
+				<use>standard</use>
+				<args>
+					<module>Iksula_AdvancedBundle</module>
+					<frontName>beforecheckout</frontName>
+				</args>
+			</advancedbundle>
+		</routers>
+		<layout>
+			<updates>
+				<advancedbundle>
+					<file>advancedbundle.xml</file>
+				</advancedbundle>
+			</updates>
+		</layout>
+	</frontend>
+	<global>
+		<fieldsets>
+			<sales_convert_quote>                           
+				<scheduled_delivery><to_order>*</to_order></scheduled_delivery>
+			</sales_convert_quote>
+
+			<sales_convert_order>                                              
+				<scheduled_delivery><to_quote>*</to_quote></scheduled_delivery>
+			</sales_convert_order>
+		</fieldsets>
+		<helpers>
+			<advancedbundle>
+				<class>Iksula_AdvancedBundle_Helper</class>
+			</advancedbundle>
+		</helpers>
+		<!-- <blocks>
+			<checkout>
+				<rewrite>
+					<cart>Iksula_AdvancedBundle_Block_Cart</cart>
+				</rewrite>
+			</checkout>
+		</blocks> -->
+		<models>
+			<advancedbundle>
+				<class>Iksula_AdvancedBundle_Model</class>
+				<resourceModel>advancedbundle_mysql4</resourceModel>
+			</advancedbundle>
+		</models>
+		<resources>
+			<advancedbundle_setup>
+				<setup>
+					<module>Iksula_AdvancedBundle</module>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</advancedbundle_setup>
+			<advancedbundle_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</advancedbundle_write>
+			<advancedbundle_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</advancedbundle_read>
+		</resources>
+		<events>
+			<sales_order_place_after>
+				<observers>
+					<iksula_advancedbundle_observer>
+						<type>singleton</type>
+						<class>advancedbundle/observer</class>
+						<method>saveScheduledDeliveryDate</method>
+					</iksula_advancedbundle_observer>
+				</observers>
+			</sales_order_place_after>
+			<!-- <sales_order_save_commit_after>
+				<observers>
+					<iksula_advancedbundle_observer>
+						<type>singleton</type>
+						<class>advancedbundle/observer</class>
+						<method>changeOrderStatus</method>
+					</iksula_advancedbundle_observer>
+				</observers>
+			</sales_order_save_commit_after> -->
+		</events>
+	</global>
+	<!-- <crontab>
+		<jobs>
+			<advancedbundle>
+				<schedule><cron_expr>0 12 * * *</cron_expr></schedule>
+				<run><model>advancedbundle/observer::runEveryday</model></run>
+			</advancedbundle>
+		</jobs>
+	</crontab> -->
+	<stores>
+		<admin>
+			<design>
+				<package>
+					<name>default</name>
+				</package>
+				<theme>
+					<default>custom</default>
+				</theme>
+			</design>
+		</admin>
+	</stores>
+</config>

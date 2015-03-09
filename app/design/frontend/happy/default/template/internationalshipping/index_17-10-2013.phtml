@@ -1,0 +1,23 @@
+<div class="cms-image-area"><img src="<?php echo $this->getSkinUrl('images/cmspages/international-shipping1.jpg');?>" alt="" /></div>
+<div class="cms-content-area">
+<h1 class="cms-page-title">International Shipping</h1>
+<p>We never say no to our customers. So yes, we would definitely ship orders to your country. The only catch is, that you would have to take care of the shipping cost.</p>
+<p>Kindly fill this form and we will get back to you with prices and delivery timelines!</p>
+	<div class="international-shipping-formarea">
+		<form action="<?php echo $this->getAction();?>" method="post" id="international_shipping"> 
+			<input class="cms-input-text-sty required-entry" name="name" type="text" value="Name" /> 
+			<input class="cms-input-text-sty required-entry validate-email" name="email" type="text" value="Email Address" /> 
+			<textarea class="cms-textarea-sty required-entry" name="products">List of Products</textarea> 
+			<textarea class="cms-textarea-sty1 required-entry" name="shipping_add">Shipping Address</textarea> 
+			<input class="cms-input-text-sty1 required-entry" name="pincode" type="text" value="Pincode" /> 
+			<input class="cms-input-text-sty2 required-entry" name="country" type="text" value="Country" /> 
+			<input class="cms-input-submit-sty required-entry" name="submit" type="submit" value="SUBMIT" /> 
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+//< ![CDATA[
+  var myForm= new VarienForm('international_shipping', true);
+//]]>
+</script>

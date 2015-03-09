@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Iksula_Scooso>
+			<version>0.1.0</version>
+		</Iksula_Scooso>
+	</modules>
+	<global>
+		<blocks>
+			<catalog>
+				<rewrite>
+					<product_view_type_configurable>Iksula_Scooso_Block_Product_View_Type_Configurable</product_view_type_configurable>
+				</rewrite>
+			</catalog>
+		</blocks>
+
+		<helpers>
+			<scooso>
+				<class>Iksula_Scooso_Helper</class>
+			</scooso>
+		</helpers>
+
+		<models>
+			<scooso>
+				<class>Iksula_Scooso_Model</class>
+				<resourceModel>scooso_mysql4</resourceModel>
+			</scooso>
+
+			<scooso_mysql4>
+				<class>Iksula_Scooso_Model_Mysql4</class>
+				<entities>
+					<scooso>
+						<table>scooso</table>
+					</scooso>
+				</entities>
+			</scooso_mysql4>
+		</models>
+
+		<resources>
+			<scooso_setup>
+				<setup>
+					<module>Iksula_Scooso</module>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</scooso_setup>
+			<scooso_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</scooso_write>
+			<scooso_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</scooso_read>
+		</resources>
+
+		<events>
+			<catalog_product_save_after>
+				<observers>
+					<scooso_observer>
+						<type>singleton</type>
+						<class>scooso/observer</class>
+						<method>productSave</method>
+					</scooso_observer>
+				</observers>
+			</catalog_product_save_after>
+		</events>
+	</global>
+
+	<frontend>
+		<routers>
+			<scooso>
+				<use>standard</use>
+				<args>
+					<module>Iksula_Scooso</module>
+					<frontName>scooso</frontName>
+				</args>
+			</scooso>
+		</routers>
+	</frontend>
+
+	<crontab>
+		<jobs>
+			<iksula_scooso>
+				<schedule><cron_expr>0 0 18 * *</cron_expr></schedule>
+				<run><model>scooso/observer::checkStock</model></run>
+			</iksula_scooso>
+		</jobs>
+	</crontab>
+
+</config>

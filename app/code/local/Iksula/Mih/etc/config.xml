@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Iksula_Mih>
+			<version>0.1.0</version>
+		</Iksula_Mih>
+	</modules>
+	<global>
+		<helpers>
+			<mih>
+				<class>Iksula_Mih_Helper</class>
+			</mih>
+		</helpers>
+		<blocks>
+			<mih>
+				<class>Iksula_Mih_Helper</class>
+			</mih>
+			<catalog>
+				<rewrite>
+					<product_view_options_type_select>Iksula_Mih_Block_Select</product_view_options_type_select>
+				</rewrite>
+			</catalog>
+		</blocks>
+		<models>
+			<mih>
+				<class>Iksula_Mih_Model</class>
+			</mih>
+			<sales>
+                <rewrite>
+                    <order>Iksula_Mih_Model_Order</order>
+                </rewrite>
+            </sales> 
+		</models>
+		<template>
+			<email>
+				<custom_template>
+					<label>MIH Ticket Order Email Template</label>
+					<file>mih/mih_template.html</file>
+					<type>html</type>
+				</custom_template>
+			</email>
+		</template>
+		<events>
+            <!--controller_action_layout_load_before--> <!-- replace this with checkout_onepage_controller_success_action -->
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <sales_order_place_after_observer>
+                        <class>Iksula_Mih_Model_Observer</class>
+                        <method>handleOrder</method>
+                    </sales_order_place_after_observer>
+                </observers>
+            </checkout_onepage_controller_success_action>
+            <!--/controller_action_layout_load_before-->  <!-- replace this with checkout_onepage_controller_success_action -->
+        </events>
+	</global>
+</config> 

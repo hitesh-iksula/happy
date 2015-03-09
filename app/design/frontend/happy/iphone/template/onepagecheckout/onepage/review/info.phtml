@@ -1,0 +1,221 @@
+<?php echo $this->getChildHtml('items_before'); ?>
+<?php
+date_default_timezone_set('Asia/Kolkata');
+$currentTime = date("H", strtotime("now"));
+$currentDay = date('D', $time);
+$offDelivery = '';
+$mydate = date('d/m/Y');
+$t=date('d-m-Y');
+$myday1 = date("D",strtotime($t));
+$myday = date("l",strtotime($t));
+$nextday = Date('l', strtotime("+1 days"));
+$nextday1 = Date('l', strtotime("+2 days"));
+?>
+<div id="checkout-review-table-wrapper">
+<!--     <h2 class="opc_title">
+        <?php //echo $this->__('Your Order Summary') ?>
+    </h2> -->
+
+
+
+
+
+<?php
+    $NonInventory = 0;
+    $Inventory = 0;
+    foreach($this->getItems() as $_item):
+        $product = Mage::getModel('catalog/product')->load($_item->getProduct()->getId());
+        if($product->getNonInventoryProducts() != 1){
+            $Inventory = 1;
+         }else{
+            $NonInventory = 1;
+         } 
+    endforeach;
+?>
+
+
+<div class="checkout_table_main">
+    <div class="heading_main">
+        <div class="heading_in">
+            <div class="heading">
+                <div class="product_head">Product</div>
+                <div class="qty_head">Quantity</div>
+                <div class="price_head">Price</div>
+            </div>
+        </div>
+        <div class="delivery_head">Delivery Time</div>
+    </div>
+    
+<?php if($Inventory == 1){?>
+    <div class="top_product_main">
+        <div class="top_product">
+
+            <?php foreach($this->getItems() as $_item): ?>
+                <?php
+                    $product = Mage::getModel('catalog/product')->load($_item->getProduct()->getId());
+                    //$ids = $_item->getProduct()->getCategoryIds();
+                    //$categoryId = (isset($ids[1]) ? $ids[1] : null);
+                    if($product->getNonInventoryProducts() != 1){
+                ?>
+                <?php //echo get_class($this); ?>
+                <?php echo $this->getItemHtml($_item); ?>
+                <?php } ?>
+            <?php endforeach; ?>
+
+        </div>
+        <div class="delivery_time_top">
+            <?php $delivery_rate=Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getShippingMethod();?>
+            <?php if($delivery_rate == 'tablerate_bestway'): ?>
+                 3 - 4 working days
+            <?php else: ?>
+                 <!-- Tommorrow</p> -->
+                    <?php $nextshipmentday = 'Monday' ?>
+                    <?php if(($myday1 == 'Fri') && ($currentTime >= 16) ): ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+3 days")); ?> 
+                        <?php echo $nextshipmentday; ?> ,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php elseif($myday1 == 'Sat'): ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+2 days")); ?> 
+                        <?php echo $nextshipmentday; ?>,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php elseif(($myday1 == 'Sun') && ($currentTime <= 16) ): ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+1 days")); ?> 
+                        <?php echo $nextshipmentday; ?>,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php elseif(($myday1) && ($currentTime >= 16)  && ($myday1 != 'Fri') && ($myday1 != 'Sat')): ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+2 days")); ?> 
+                        <?php echo $nextday1; ?>,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php else: ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+1 days")); ?> 
+                        <?php echo $nextday; ?>,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php endif; ?>
+            <?php endif; ?>
+
+        </div>
+    </div>
+<?php } ?>
+
+<?php if($NonInventory == 1){?>
+    <div class="bottom_product_main">
+        <div class="bottom_product">
+            <?php foreach($this->getItems() as $_item): ?>
+                <?php
+                    $product = Mage::getModel('catalog/product')->load($_item->getProduct()->getId());
+                    //$ids = $_item->getProduct()->getCategoryIds();
+                    //$categoryId = (isset($ids[1]) ? $ids[1] : null);
+                    if($product->getNonInventoryProducts() == 1){
+                ?>
+                <?php //echo get_class($this); ?>
+                <?php echo $this->getItemHtml($_item); ?>
+                <?php } ?>
+            <?php endforeach; ?>
+        </div>
+        <div class="delivery_date">Within<br>10 Days</div>
+    </div> 
+<?php } ?>
+
+<!--     <div class="final_total_main">
+        <div class="leftDiv">Order Amount</div>
+        <div class="rightDiv">7000</div>
+    </div>
+    <div class="final_total_main">
+        <div class="leftDiv">Discount</div>
+        <div class="rightDiv">10%</div>
+    </div>
+    <div class="final_total_main">
+        <div class="leftDiv">Total</div>
+        <div class="rightDiv">5000</div>
+    </div>
+    <div class="final_total_main">
+        <div class="leftDiv">Shipping charges</div>
+        <div class="rightDiv">10000</div>
+    </div>
+    <div class="final_total_main">
+        <div class="leftDiv">Grand Total</div>
+        <div class="rightDiv">10000000</div>
+    </div> -->
+</div>
+
+
+
+<!--     <table class="order-products-table" id="checkout-review-table">
+        <col />
+        <col width="1" />
+        <col width="1" />
+        <?php
+        //$colspan = 1;
+        //if ($this->helper('tax')->displayCartBothPrices()):
+            //$colspan = 2;
+        ?>
+        <col width="1" />
+        <?php //endif; ?>
+        <thead>
+            <tr>
+                <th>PRODUCT</th>
+                <th class="a-right opc_review_total_column">QUANTITY</th>
+                <th class="a-right opc_review_qty_column">PRICE</th>
+                <th class="a-right opc_review_total_column">DELIVERY TIME</th>
+         </tr>
+        </thead>
+        <tbody>
+        <?php //foreach($this->getItems() as $_item): ?>
+            <?php //echo get_class($this); ?>
+            <?php //echo $this->getItemHtml($_item); ?>
+        <?php //endforeach; ?>
+        </tbody>
+    </table> -->
+
+    <?php echo $this->getChildHtml('totals'); ?>
+
+    
+    <div class="review-step-bottom-bar">
+         <div class="delivery_date_box">
+            <h4 class="delivery_date">Delivery Date : 
+            <?php $delivery_rate=Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getShippingMethod();?>
+            <?php if($delivery_rate == 'tablerate_bestway'): ?>
+                 3 - 4 working days
+            <?php else: ?>
+                 <!-- Tommorrow</p> -->
+                    <?php $nextshipmentday = 'Monday' ?>
+                    <?php if(($myday1 == 'Fri') && ($currentTime >= 16) ): ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+3 days")); ?> 
+                        <?php echo $nextshipmentday; ?> ,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php elseif($myday1 == 'Sat'): ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+2 days")); ?> 
+                        <?php echo $nextshipmentday; ?>,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php elseif(($myday1 == 'Sun') && ($currentTime <= 16) ): ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+1 days")); ?> 
+                        <?php echo $nextshipmentday; ?>,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php elseif(($myday1) && ($currentTime >= 16)  && ($myday1 != 'Fri') && ($myday1 != 'Sat')): ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+2 days")); ?> 
+                        <?php echo $nextday1; ?>,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php else: ?>
+                        <?php $nextshipmentdate = Date('d/m/Y', strtotime("+1 days")); ?> 
+                        <?php echo $nextday; ?>,
+                        <?php echo $nextshipmentdate; ?>
+                    <?php endif; ?>
+            <?php endif; ?>
+        </h4>
+        </div>
+    </div>
+
+    <div>
+        <div class="proceed_to_payment_box">
+            <button class="continue button happy_button" id="review-step-continue">Proceed To Payment</button>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+    decorateTable('checkout-review-table');
+    truncateOptions();
+//]]>
+</script>

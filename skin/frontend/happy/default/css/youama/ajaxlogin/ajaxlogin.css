@@ -1,0 +1,114 @@
+.youama-ajaxlogin-cover { display:none; background:#000; opacity:0.5; -moz-opacity:0.5; filter:alpha(opacity = 50); left:0; top:0; width:100%; height:100%; float:left; position:fixed; z-index:9997; }
+.youama-showhideme { display:none; margin:0px 0px 1px 0px; }
+
+.youama-register-window, .youama-login-window {display:none; width:41%; background-color:#fff; position:fixed !important; margin-top:0; top:80px !important; /*top:100px !important;*/ min-width:489px; left:29.5%; height: auto; z-index:9998; box-shadow: #666362 0px 0px 10px 3px; max-width: 624px; }
+
+.youama-window-outside { margin:20px; position:relative; margin-top: 10px; }
+.youama-close {right: -15px; top: -5px; cursor: pointer; position: absolute; background: url('../../../images/product_modal/modal_close_button.png') no-repeat center; width: 15px; height: 19px; }
+.youama-window-title h3 { color: #858585;font-size: 20px;font-weight: 300;text-align: left;}
+.youama-window-box { }
+.youama-window-subtitle p { text-align: center; float:left; width:100%; font-size:14px; font-weight:bold; color:#aaa; margin: 0px;}
+.youama-ajaxlogin-error { text-align: center; color:#eb340a; }
+.err-licence { float:left; }
+.err-newsletter { float:left; }
+.youama-window-box .input-fly-checkbox label { width: auto; margin: 8px 0px 0px 0px; }
+.youama-window-box .input-fly .youama-ajaxlogin-error { text-align:left;margin: 0px 0px 0px 123px; }
+.youama-window-box .input-fly-checkbox .youama-ajaxlogin-error { text-align:left; float:left; }
+.youama-window-box .box-contents { margin-bottom:12px; text-align: center; }
+.youama-window-box .box-contents-button { width:100%; margin-top:20px; text-align: center; }
+.youama-window-box .box-contents-button .youama-ajaxlogin-button-signin {background: #306f76; color: #FFFFFF; border-radius: 4px; margin-bottom: 14px; transition:0.2s; margin: 0 auto;}
+.youama-window-box .box-contents-button .youama-ajaxlogin-button-signin:hover{background:#294b4c; }
+.youama-window-box .youama-ajaxlogin-button-createaccount{background: #969a50; color: #FFFFFF; border-radius: 4px; margin-bottom: 5px; transition:0.2s; }
+.youama-window-box .youama-ajaxlogin-button-createaccount:hover{background: #969A0A; }
+.youama-window-box .youama-forgot-password { float:left; margin-top:10px; }
+
+.youama-window-box button { font-size: 18px; height: 34px; font-family: "Roboto"; font-size: 300; padding: 0 30px; margin: 0 auto;}
+
+.youama-ajaxlogin-loader { background: none; width:46px; height:54px; position:absolute; display:none; margin-left:-110px; margin-top:-10px; top:66%; left:57%; z-index:9999; border-radius: 50%; border: 4px solid grey; }
+.register-tab, .login-tab {text-decoration: none; cursor: pointer; background-color: #306f76; color: #FFF; font-size: 18px; font-weight: 300; border-radius: 5px 6px 0px 0px; height: 33px; width: 150px; text-align: center; position: absolute; top: -33px; line-height: 33px; box-shadow: inset 0 -10px 10px -15px #000000; left: 0px; transition: 0.2s; text-transform: uppercase; }
+.login-tab:hover{background-color:#294b4c; }
+.register-tab:hover{background-color:#294b4c; }
+.register-tab { margin: 0px 0px 0px 165px; }
+
+.inactive_element{background-color: #999999; color: #FFF; transition:0.2s; }
+.inactive_element:hover{background-color: #373737; }
+.register-tab-forced-class{background-color: #515151; }
+.login-tab-forced-class{background-color: #515151; }
+.be_asured_lock{float: left; background: url("../../../images/homepage/hu_myaccount_lock.jpg") 0px 0px no-repeat; text-indent: -999em; width: 20px; height: 20px; margin: 3px 0; }
+.be_asured{color: #696969; font-size: 13px; line-height: 26px; text-align: left; }
+.login_or_label1{padding: 0; font-size: 15px; color: #696969; position: relative; top: -10px; background: #ffffff; margin: auto; text-align: center; width: 55px; }
+.login_or_dashes{border-bottom: 1px solid #d6d6d6; text-indent: -999em; }
+.forgot_password_link{text-decoration: none; color: #4b868e; transition:0.2s; }
+.forgot_password_link:hover{color:#294b4c; }
+.forgot_password{text-align: center; padding: 10px 0 5px; clear: both; width: 100%; }
+.remember_me{text-align: center; color: #9d9d9d }
+.login_or_label2, .login_or_label3{ font-size: 15px; color: #696969; position: relative; background: #ffffff; margin: 0 auto 5px; text-align: center; width: 55px; }
+.youama-window-content .firstname{float: left ; margin:0px 0px 0px 0px; display: inline-block; width: 100px; padding-bottom: 0px; font-size: 14px; color: #696969; }
+.youama-window-content .lastname{margin:0px 128px 0px 0px; display: inline-block; width: 100px; font-size: 14px; color: #696969; }
+.register_take_names{padding-bottom: 0px !important; }
+.youama-window-content .register_email, .register_password, .register_confirmpassword{font-size: 14px; width: 100%; color: #B4B4B4; display: block; margin: 0px; }
+.register_firstname_error{float: left; margin: 2px 0px 0px 18px !important; }
+.register_firstname_error{float: right; }
+.youama-login-window .full{text-align: left; margin:12px 0px 0px 0px; }
+.youama-login-window .form_fields{margin: auto; text-align: left; width: 63%; }
+.youama-login-window .full input{width: 94%; padding:8px; }
+.youama-login-window .short input{width: 170px; }
+.youama-register-window .full, .short{text-align: left; padding: 5px 0px 1px 0px; }
+.youama-register-window .form_fields{margin: auto; text-align: center; width: 390px; margin-top: -8px; }
+.youama-register-window .full input{width: 360px; padding:8px; }
+.youama-register-window .short input{padding:8px; }
+.youama-register-window .full{text-align: left; clear: both; margin:0px 0px 1px 0px; }
+.youama-register-window .short .data_area .t1{width: 160px; }
+.youama-register-window .odd .data_area .t1{width: 160px; }
+.youama-register-window .full .data_area {text-align:left; margin: 0; }
+.youama-register-window .short.odd {margin: 0; margin-left: 2%; width: 170px; width: 47%; }
+.youama-register-window .sign-up-button{background: #306f76; margin:auto; color: #d5d5d5; transition:0.2s; margin-top: 4px; }
+.youama-register-window .sign-up-button:hover{background: #294b4c; }
+.youama-register-window .short {width: 49%; float: left; margin:0px 12px 6px 38px; }
+.youama-register-window .short-pass {margin: 0 !important; }
+.youama-register-window .user_checkboxes{width: 98%; padding: 1% 1% 0% 1%; clear: both; margin: 0; text-align: left; }
+.youama-register-window .user_checkboxes label, .youama-register-window .user_checkboxes input{padding:8px 0px 2px 0px; line-height: 25px; }
+.youama-window-box .already_registered{text-align: center; font-size: 13px; }
+.youama-window-box .already_registered a{text-decoration: none; color: #306f76; transition:0.2s; }
+.youama-window-box .already_registered a:hover{color:#294b4c; }
+.already_registered_redirect label{cursor: pointer; }
+.form_fields label, .full label, .short label {color: #696969; float: none; }
+
+.facebook_twitter_google { overflow: hidden; margin: 10px 0; }
+.facebook_twitter_google .happy_facebook_login, .facebook_twitter_google .happy_twitter_login , .facebook_twitter_google .happy_google_login { float: left; width: 33%; }
+
+.checkout_steps .facebook_twitter_google { width: 65%;float: left; }
+
+.checkout_steps .login_with_text_onepagecheckout { text-align: left; color: #696969; line-height: 32px; float: left; margin: 22px 28px 0 22px;clear: both; }
+.checkout_steps .be_asured_lock{margin:12px 0px 0px 0px; }
+.checkout_steps .be_asured{line-height: 44px; }
+
+.checkout_steps .facebook_twitter_google a img { vertical-align: middle; }
+
+.forgotpassword_hu input{border: 2px solid #E6E6E6; border-radius: 3px; background-color: #F4F4F4; width: 94% !important; padding: 8px; }
+.forgotpassword_hu .forgotpass_email{margin: 0px; }
+.forgotpassword_hu p{color: #858585; font-size: 16px; margin: 18px 0px 27px 0px; }
+.forgotpassword_hu .forgot-pass-submit-button{background: #306f76; color: #FFFFFF; border-radius: 4px; margin-bottom: 14px; transition: 0.2s; padding: 11px 28px 6px 28px; float: none !important; }
+.forgotpassword_hu .forgot-pass-submit-button:hover{background: #294b4c; }
+.forgotpassword_hu .fieldset{margin:auto; padding:0px; display: block; text-align: left; width: 63%; }
+.forgotpassword_hu .buttons-set{text-align: center; border: none; margin: 0px; }
+.forgotpassword_hu .back-link-tologin{color: #4b868e; text-decoration: none; transition:0.2s; }
+.forgotpassword_hu .back-link-tologin:hover{color: #294b4c; }
+.login_or_dashes { height: 14px; }
+
+@media screen and (max-height: 620px) {
+	.youama-window-box input { padding: 3px 6px; }
+	.youama-register-window, .youama-login-window { top: 40px !important; }
+}
+
+@media screen and (min-height: 780px) {
+	.youama-register-window, .youama-login-window { top: 20% !important; }
+}
+
+.forgotpassword_hu .buttons-set button.forgot-pass-submit-button {
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0 24px;
+	background: #306f76;
+	color: #d5d5d5;
+}

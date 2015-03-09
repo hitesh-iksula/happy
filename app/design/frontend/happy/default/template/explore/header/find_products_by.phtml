@@ -1,0 +1,138 @@
+<?php
+/**
+ * 
+ * Find Products By
+ * Header Functionality
+ * 
+ */
+
+?>
+
+<?php
+$genderFilter = Mage::getStoreConfig('explore/explore_group/explore_gender', Mage::app()->getStore());
+$occasionFilter = Mage::getStoreConfig('explore/explore_group/explore_occasion', Mage::app()->getStore());
+$personalityFilter = Mage::getStoreConfig('explore/explore_group/explore_personality', Mage::app()->getStore());
+?>
+
+<?php if(($genderFilter + $occasionFilter + $personalityFilter) > 0): ?>
+
+	<div class="mask-area"></div>
+	<div class="header" id="find_products_by">
+		<div class="findproductbyarea">
+		<div class="findproductcontentarea findbytAlignr">
+			<span>FIND PRODUCTS BY:</span>
+		</div>
+		
+		<?php if($genderFilter == 1): ?>
+			<!-- GENDER DROP DOWN -->
+			<div class="findproductcontentarea">
+				<div class="filterArea" id="gender">
+					<div class="filter-dropdown-area">
+						
+						<?php // Load Explore Gender Model to retrieve data ?>
+						<?php $genderModel = Mage::getModel('explore/gender')->getCollection()->setOrder('gender_name', 'ASC'); ?>
+						<?php foreach($genderModel as $gender): ?>
+							<div class="filter-dropdown-imgArea" id="gen<?php echo $gender->getData('gender_id'); ?>">
+								<div class="active_option_image">
+									<img
+										id="gen<?php echo $gender->getData('gender_id'); ?>" 
+										class="active_filter_image_image" 
+										src="<?php echo $this->getSkinUrl() . 'images/homepage/cart_placeholder.png' ?>" 
+										data-original="<?php echo $this->getBaseUrl() . 'media/explore/gender/' . $gender->getData('gender_logo_1'); ?>" 
+										alt="<?php echo $gender->getData('occasion_name'); ?>" 
+									/>
+								</div>
+								<img class="active_filter_active_image" src="<?php echo $this->getSkinUrl() . 'images/homepage/cart_placeholder.png' ?>" data-original="<?php echo $this->getBaseUrl() . 'media/explore/gender/' . $gender->getData('gender_logo_2'); ?>" alt="<?php echo $gender->getData('gender_name'); ?>" />
+								<div class="dropdownimg-title"><?php echo $gender->getData('gender_name'); ?></div>
+							</div>
+						<?php endforeach; ?>
+
+					</div>
+				
+					<span class="active_filter_image"></span><span class="filter-selected-textfield">Gender</span>
+					
+				</div>
+			</div>
+		<?php endif; ?>
+
+		<?php if($occasionFilter == 1): ?>
+			<!-- OCCASION DROP DOWN -->
+			<div class="findproductcontentarea">
+				<div class="filterArea" id="occasion">
+					<div class="filter-dropdown-area">
+						
+						<?php // Load Explore Occasion Model to retrieve data ?>
+						<?php $occasionModel = Mage::getModel('explore/occasion')->getCollection()->setOrder('occasion_name', 'ASC'); ?>
+						<?php foreach($occasionModel as $occasion): ?>
+							<div class="filter-dropdown-imgArea" id="occ<?php echo $occasion->getData('occasion_id'); ?>">
+								<div class="active_option_image">
+									<img
+										id="occ<?php echo $occasion->getData('occasion_id'); ?>" 
+										class="active_filter_image_image" 
+										src="<?php echo $this->getSkinUrl() . 'images/homepage/cart_placeholder.png' ?>" 
+										data-original="<?php echo $this->getBaseUrl() . 'media/explore/occasion/' . $occasion->getData('occasion_logo_1'); ?>" 
+										alt="<?php echo $occasion->getData('occasion_name'); ?>"
+									/>
+								</div>
+								<img class="active_filter_active_image" src="<?php echo $this->getSkinUrl() . 'images/homepage/cart_placeholder.png' ?>" data-original="<?php echo $this->getBaseUrl() . 'media/explore/occasion/' . $occasion->getData('occasion_logo_2'); ?>" alt="<?php echo $occasion->getData('occasion_name'); ?>" />
+								<div class="dropdownimg-title"><?php echo $occasion->getData('occasion_name'); ?></div>
+							</div>
+						<?php endforeach; ?>
+
+					</div>
+
+					<span class="active_filter_image"></span><span class="filter-selected-textfield">Occasion</span>
+
+				</div>
+			</div>
+		<?php endif; ?>
+		
+		<?php if($personalityFilter == 1): ?>
+			<!-- PERSONALITY DROP DOWN -->
+			<div class="findproductcontentarea">
+				<div class="filterArea" id="personality">
+					<div class="filter-dropdown-area">
+						
+						<?php // Load Explore Personality Model to retrieve data ?>
+						<?php $personalityModel = Mage::getModel('explore/personality')->getCollection()->setOrder('personality_name', 'ASC'); ?>
+						<?php foreach($personalityModel as $personality): ?>
+							<div class="filter-dropdown-imgArea" id="per<?php echo $personality->getData('personality_id'); ?>">
+								<div class="active_option_image">
+									<img
+										id="per<?php echo $personality->getData('personality_id'); ?>" 
+										class="active_filter_image_image" 
+										src="<?php echo $this->getSkinUrl() . 'images/homepage/cart_placeholder.png' ?>" 
+										data-original="<?php echo $this->getBaseUrl() . 'media/explore/personality/' . $personality->getData('personality_logo_1'); ?>" 
+										alt="<?php echo $personality->getData('personality_name'); ?>"
+									/>
+								</div>
+								<img class="active_filter_active_image" src="<?php echo $this->getSkinUrl() . 'images/homepage/cart_placeholder.png' ?>" data-original="<?php echo $this->getBaseUrl() . 'media/explore/personality/' . $personality->getData('personality_logo_2'); ?>" alt="<?php echo $personality->getData('personality_name'); ?>" />
+								<div class="dropdownimg-title"><?php echo $personality->getData('personality_name'); ?></div>
+							</div>
+						<?php endforeach; ?>
+
+					</div>
+
+					<span class="active_filter_image"></span><span class="filter-selected-textfield">Personality</span>
+					
+				</div>
+			</div>
+		<?php endif; ?>
+
+		<div class="findproductcontentarea findbytAlignr">
+			<div class="findproductbysearchi" title="Find"></div>
+			<div class="findproductbyrefreshi" title="Reset"></div>
+			
+			<div class="tooltip_box result_tooltip_box">
+				<div class="tooltip_arrow tooltip_arrow_top"></div>
+				<div class="tooltip click_to_see_results">Click to see results</div>
+			</div>
+
+			<div class="tooltip_box reset_tooltip_box">
+				<div class="tooltip_arrow tooltip_arrow_top"></div>
+				<div class="tooltip click_to_see_results">Products in each category are shown as per your chosen filters. Click to reset the filters.</div>
+			</div>
+		</div>
+	</div>
+
+<?php endif; ?>

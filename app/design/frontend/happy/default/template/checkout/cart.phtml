@@ -1,0 +1,182 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Shopping cart template
+ *
+ * @see Mage_Checkout_Block_Cart
+ */
+?>
+<?php $cartViewType = Mage::getSingleton('core/session')->getCartViewType(); ?>
+
+<?php if($cartViewType != 'modal'): ?><div class="quickview-main cart-modal-main"><?php endif; ?>
+
+	<div class="page-title cart-title-bar">
+		<?php
+		$totalItemsInCart = Mage::helper('checkout/cart')->getCart()->getItemsCount();
+		if($totalItemsInCart < 10) {
+			$totalItemsInCart = '0' . $totalItemsInCart;
+		}
+		?>
+		<div class="modal_tailbar">
+			<div class="carton_logo_and_amount"><?php echo $this->__('My Carton'); echo " (<span>" . $totalItemsInCart . "</span>)"; ?></div>
+		</div>
+
+		<div class="cart-flag">
+			<?php echo $this->getChildHtml('flag') ?>
+		</div>
+	</div>
+
+	<div class="cart cart-modal-main"<?php if($cartViewType != 'modal'): ?> id="cart-page-main"<?php endif; ?>>
+
+		<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+		<?php echo $this->getChildHtml('form_before') ?>
+
+		<div id="shopping-cart-table-container">
+			<form action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post">
+				<fieldset>
+					<table id="shopping-cart-table" class="data-table cart-table">
+						<col width="1" />
+						<col />
+						<col width="1" />
+					<?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
+						<col width="1" />
+					<?php endif ?>
+					<?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+						<col width="1" />
+					<?php endif; ?>
+					<?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+						<col width="1" />
+					<?php endif; ?>
+						<col width="1" />
+					<?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+						<col width="1" />
+					<?php endif; ?>
+					<?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+						<col width="1" />
+					<?php endif; ?>
+						<col width="1" />
+
+					<?php $mergedCells = ($this->helper('tax')->displayCartBothPrices() ? 2 : 1); ?>
+						<thead>
+							<?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+							<tr>
+								<th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+								<th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+								<th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+								<th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+							</tr>
+							<?php else: ?>
+							<tr class="heading">
+								<td></td>
+								<td class="a-left">Product</td>
+								<td class="a-center">Price</td>
+								<td class="a-center">Quantity</td>
+								<td class="a-center">Amount</td>
+							</tr>
+							<?php endif; ?>
+						</thead>
+						<tbody class="cart-items">
+						<?php foreach($this->getItems() as $_item): ?>
+							<?php echo $this->getItemHtml($_item) ?>
+						<?php endforeach ?>
+						</tbody>
+					</table>
+
+				</fieldset>
+			</form>
+		</div>
+
+		<div class="cart-collaterals">
+			<div class="totals">
+				<?php echo $this->getChildHtml('totals'); ?>
+			</div>
+		</div>
+	</div>
+
+<?php if($cartViewType != 'modal'): ?></div><?php endif; ?>
+
+<div class="modal_tailbar_container cart_modal_tailbar">
+	<div class="modal_tailbar">
+		<div class="cart-coupon">
+			<div id="custom-coupon-form">	
+				<?php echo $this->getChildHtml('coupon') ?>
+			</div>
+		</div>
+		<div class="proceed_to_payment_box">
+			<?php $referer = $this->getRequest()->getParam('referer'); ?>
+			<?php if($referer == 'onepagecheckout'): ?>
+				<a class="happy_button keep_shopping_button green" href="<?php echo $this->getUrl(); ?>"><?php echo $this->__('Keep Shopping'); ?></a>
+				<div class="happy_button proceed_to_payment_button"><?php echo $this->__('Proceed To Payment'); ?></div>
+			<?php else: ?>
+				<div class="happy_button keep_shopping_button green"><?php echo $this->__('Keep Shopping'); ?></div>
+				<a class="happy_button proceed_to_payment_button" href="<?php echo Mage::helper('checkout/url')->getCheckoutUrl(); ?>"><?php echo $this->__('Proceed To Payment'); ?></a>
+			<?php endif; ?>
+		</div>
+		<table class="cart-modal-footer">
+			<tbody>
+				<tr>
+					<td>
+						<div class="cp-cart-modal first">
+							<span></span>
+							<div>Next day<br/>Delivery!</div>
+						</div>
+					</td>
+					<td>
+						<div class="cp-cart-modal center">
+							<span></span>
+							<div>100% Secure Payments</div>
+						</div>
+					</td>
+					<td>
+						<div class="cp-cart-modal last">
+							<span></span>
+							<div>Easy return &<br/>replacement!</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!-- Facebook Conversion Code for Carton Page/Pop-Up Tracking Pixel -->
+<script>(function() {
+  var _fbq = window._fbq || (window._fbq = []);
+  if (!_fbq.loaded) {
+    var fbds = document.createElement('script');
+    fbds.async = true;
+    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(fbds, s);
+    _fbq.loaded = true;
+  }
+})();
+window._fbq = window._fbq || [];
+window._fbq.push(['track', '6021299179307', {'value':'0.00','currency':'INR'}]);
+</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6021299179307&amp;cd[value]=0.00&amp;cd[currency]=INR&amp;noscript=1" /></noscript>

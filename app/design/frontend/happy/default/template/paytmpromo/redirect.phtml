@@ -1,0 +1,74 @@
+<?php
+
+$promoEntry = $this->getPromoEntry();
+$const = (string)Mage::getConfig()->getNode('global/crypt/key');
+$mid = Mage::helper('paytm')->decrypt_e(Mage::getStoreConfig('payment/paytm_cc/inst_id'), $const);
+
+$params = array(
+	"MID"              => $mid,
+	"TXN_AMOUNT"       => "1",
+	"CHANNEL_ID"       => "WEB",
+	"INDUSTRY_TYPE_ID" => Mage::getStoreConfig('payment/paytm_cc/industrytype'),
+	"WEBSITE"          => Mage::getStoreConfig('payment/paytm_cc/website'),
+	"CUST_ID"          => Mage::getSingleton('customer/session')->getCustomer()->getId(),
+	"ORDER_ID"         => $promoEntry->getOrderId(),
+	"CALLBACK_URL"     => $this->getUrl('paytmpromo/index/response')
+);
+
+if(!$params['CUST_ID']) {
+	$resource = Mage::getSingleton('core/resource');
+	$read= $resource->getConnection('core_read');
+	$query = "SELECT * FROM paytm ORDER BY paytm_id DESC";
+	$data = $read->fetchAll($query);
+	if(!$data)
+	{
+		//if table is empty initially
+		$resource = Mage::getSingleton('core/resource');
+		$write= $resource->getConnection('core_write');
+		$write->query("insert into paytm (cust_id) values('1g')");
+		$params['CUST_ID']='1g';
+	}
+	else
+	{
+		//get last max id,generate new id and insert in table
+		$resource = Mage::getSingleton('core/resource');
+		$read= $resource->getConnection('core_read');
+		$write= $resource->getConnection('core_write');
+		$data = $read->fetchAll($query);
+		$maxid = $data[0]['paytm_id'];
+		$newid = ((int)$maxid)+1;
+		$query_str = "insert into paytm (cust_id) values('".$newid."g')";
+		$write->query($query_str);
+		$params['CUST_ID']=$newid."g";
+	}
+}
+
+$mer = Mage::helper('paytm')->decrypt_e(Mage::getStoreConfig('payment/paytm_cc/inst_key'), $const);
+$checksum = Mage::helper('paytm')->getChecksumFromArray($params, $mer);
+$params['CHECKSUMHASH'] = $checksum;
+
+$redirectUrl = NULL;
+if(Mage::getStoreConfig('payment/paytm_cc/mode') == 1) {
+	$redirectUrl = Mage::helper('paytm/Data2')->PAYTM_PAYMENT_URL_PROD;
+} else {
+	$redirectUrl = Mage::helper('paytm/Data2')->PAYTM_PAYMENT_URL_TEST;
+}
+
+?>
+
+<b><?php echo Mage::helper('paytm')->__('You will be redirected to Paytm Payment Gateway in a few seconds.'); ?></b>
+
+<form name="paytm_checkout" id="paytm_checkout" action="<?php echo $redirectUrl; ?>" method="POST">
+	<?php if (is_array($params)): ?>
+		<?php foreach ($params as $name => $value): ?>
+			<input type="hidden" name="<?php echo $name; ?>" value="<?php echo $value; ?>"/>
+		<?php endforeach; ?>
+	<?php endif; ?>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+	// var paymentform = document.getElementById('paytm_checkout');
+	// window.onload = paymentform.submit();
+//]]>
+</script>

@@ -1,0 +1,69 @@
+<?php
+
+$currentCategoryId = Mage::getSingleton('core/session')->getCurrentCategory();
+$currentCategory = Mage::getModel('catalog/category')->load($currentCategoryId);
+
+?>
+
+<div class="category_head<?php if($currentCategory->getData('children_count') > 0): echo ' category_has_subcategories'; endif; ?>">
+
+	<div class="category_label" id="<?php echo 'category' . $currentCategory->getData('entity_id') ?>">
+		<img class="category_thumbnail" src="<?php echo Mage::getBaseUrl('media') . 'catalog' . DS . 'category' . DS . $currentCategory->getActiveThumbnail(); ?>" />
+		<?php if($currentCategory->getData('name') == 'UFO'): ?>
+			<span><?php echo $this->__('Unidentified Funny Objects') ?></span>
+		<?php else: ?>
+			<span><?php echo $currentCategory->getData('name') ?></span>
+		<?php endif; ?>
+	</div>
+
+	<?php $subcategories = explode(',', $currentCategory->getChildren()); ?>
+	<?php if($currentCategory->getData('children_count') > 0): ?>
+
+		<ul class="subacategory_labels" id="label_master_<?php echo $currentCategoryId; ?>">
+			<li class="subcategory_label active_label" id="<?php echo 'cat' . $currentCategoryId; ?>"><?php echo $this->__('All'); ?></li>
+			<?php foreach($subcategories as $subcategoryId): ?>
+
+				<?php $subcategory = Mage::getSingleton('catalog/category')->load($subcategoryId); ?>
+				<li class="subcategory_label" id="<?php echo 'cat' . $subcategory->getData('entity_id'); ?>"><?php echo $subcategory->getData('name'); ?></li>
+
+			<?php endforeach; ?>
+		</ul>
+
+	<?php endif; ?>
+
+</div>
+
+<?php if($currentCategory->getData('subcategory_colors')): ?>
+	<?php $colorCodes = explode(',', $currentCategory->getData('subcategory_colors')); ?>
+	<style type="text/css">
+	#category<?php echo $currentCategoryId; ?> .category_head .category_description { color: #<?php echo trim($colorCodes[0]); ?>; }
+
+	<?php if(count($colorCodes) > 1): ?>
+		#label_master_<?php echo $currentCategoryId; ?> .subcategory_label { }
+		#label_master_<?php echo $currentCategoryId; ?> .subcategory_label:hover { background-color: #<?php echo trim($colorCodes[2]); ?>; }
+		#label_master_<?php echo $currentCategoryId; ?> .active_label {}
+		#label_master_<?php echo $currentCategoryId; ?> .active_label:hover { background-color: #<?php echo trim($colorCodes[3]); ?>; }
+	<?php endif; ?>
+
+	</style>
+<?php endif; ?>
+
+<!-- Facebook Conversion Code for Category Page Tracking Pixel -->
+<script>(function() {
+    var _fbq = window._fbq || (window._fbq = []);
+    if (!_fbq.loaded) {
+    var fbds = document.createElement('script');
+    fbds.async = true;
+    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(fbds, s);
+    _fbq.loaded = true;
+  }
+})();
+window._fbq = window._fbq || [];
+window._fbq.push(['track', '6021299175107', {'value':'0.00','currency':'INR'}]);
+</script>
+
+<noscript>
+    <img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6021299175107&amp;cd[value]=0.00&amp;cd[currency]=INR&amp;noscript=1" />
+</noscript>

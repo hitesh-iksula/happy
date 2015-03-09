@@ -1,0 +1,157 @@
+<?php
+
+function showForm() {
+	?>
+	<h2>Create Coupons from CSV File</h2>
+	<form action="<?php echo Mage::getUrl('bank_coupons') ?>" method="post" id="post_coupons">
+		<div class="field">
+			<input type="hidden" name="create" value="yes" />
+			<input type="submit" name="submit" />
+		</div>
+	</form>
+	<?php
+}
+
+function readCodes() {
+
+	global $generatedCoupons;
+	$fileName = 'axis_new_sheet_of_bincodes.csv';
+	$filePath = Mage::getBaseDir() . '/app/design/frontend/happy/default/template/misc/coupons/';
+	// echo $filePath . "<pre>";
+	$file = fopen($filePath . $fileName, 'r') or die('error');
+	while (($line = fgetcsv($file)) !== FALSE) {
+		//$line is an array of the csv elements
+		// print_r($line);
+		applyCoupon($line[0]);
+	}
+	fclose($file);
+	showSuccessMsg();
+}
+
+function test() {
+
+	applyCoupon('234567');
+
+}
+
+function applyCoupon($code) {
+
+	global $generatedCoupons;
+	// $generatedCoupons['price'] = $price;
+	// for($n=1; $n<=$quantity; $n++) {
+
+		// $random = Mage::helper('core')->getRandomString(8);
+	$formattedCode = 'HUAXIS' . $code;
+	array_push($generatedCoupons, $formattedCode);
+	$data = array(
+		'product_ids' => null,
+		'name' => sprintf('AXIS Discount Bin Code: %s', $formattedCode),
+		'description' => '15% off on purchases above Rs. 500.',
+		'is_active' => 1,
+		'website_ids' => array(1),
+		'customer_group_ids' => array(0, 1, 2, 3),
+		'coupon_type' => 2,
+		'coupon_code' => $formattedCode,
+		'uses_per_coupon' => null,
+		'uses_per_customer' => null,
+		'from_date' => null,
+		'to_date' => '03-31-2014',
+		'sort_order' => 0,
+		'is_rss' => 0,
+		'rule' => array(
+			'conditions' => array(
+				'1' => array(
+					'type' => 'salesrule/rule_condition_combine',
+					'aggregator' => 'all',
+					'value' => 1,
+					'new_child' => null
+				),
+				'1--1' => array(
+					'type' => 'salesrule/rule_condition_address',
+					'attribute' => 'base_subtotal',
+					'operator' => '>=',
+					'value' => '500'
+				)
+			),
+			'actions' => array(
+				'1' => array(
+					'type' => 'salesrule/rule_condition_product_combine',
+					'aggregator' => 'all',
+					'value' => 0,
+					'new_child' => null
+				)
+			)
+		),
+		'simple_action' => 'by_percent',
+		'discount_amount' => '15',
+		'discount_qty' => 0,
+		'discount_step' => 0,
+		'apply_to_shipping' => 0,
+		'simple_free_shipping' => 0,
+		'stop_rules_processing' => 0,
+	);
+
+	// echo "<pre>"; print_r($data); exit;
+
+	$model = Mage::getModel('salesrule/rule');
+	$validateResult = $model->validateData(new Varien_Object($data));
+	if ($validateResult == true) {
+		if (isset($data['simple_action']) && $data['simple_action'] == 'by_percent'
+				&& isset($data['discount_amount'])) {
+			$data['discount_amount'] = min(100, $data['discount_amount']);
+		}
+		if (isset($data['rule']['conditions'])) {
+			$data['conditions'] = $data['rule']['conditions'];
+		}
+		if (isset($data['rule']['actions'])) {
+			$data['actions'] = $data['rule']['actions'];
+		}
+		unset($data['rule']);
+		$model->loadPost($data);
+		$model->save();
+	}
+
+	// }
+
+	// createCSV($generatedCoupons, $price);
+}
+
+function createCSV($generatedCoupons, $price) {
+	$path = 'var/export/coupon_codes_' . $price . '_2.csv';
+	$filepointer = fopen($path, 'w');
+	fputcsv($filepointer, array("Amount", "Coupon Code"));
+	$temp = array();
+	foreach ($generatedCoupons as $code) {
+		$temp[2] = "Rs. " . $price;
+		$temp[1] = $code;
+		fputcsv($filepointer, $temp);
+	}
+	fclose($filepointer);
+}
+
+function showSuccessMsg() {
+	?>
+	<p>Your Coupons have been Successfully created.</p>
+	<!-- <a href="<?php //echo Mage::getUrl('icici_coupons') ?>">Create More</a> -->
+	<?php
+	global $generatedCoupons;
+	echo "<pre>"; print_r($generatedCoupons);
+}
+
+$generatedCoupons = array();
+// readCodes();
+// test();
+
+/*$request = $this->getRequest()->getParam('create');
+if ($request == "yes") {
+	readCodes();
+	// break;
+	// applyCoupon($quantity, $price);
+}
+else {
+	showForm();
+}*/
+
+?>
+
+Coupon Generator.

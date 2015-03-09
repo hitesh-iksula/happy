@@ -1,0 +1,56 @@
+<div class="<?php echo $this->getContainerClassName()?>">
+<?php if ($this->showPrefix()): ?>
+    <div class="full name-prefix">
+        <label for="<?php echo $this->getFieldId('prefix')?>"<?php if ($this->isPrefixRequired()) echo ' class="required"' ?>>
+        	<?php echo $this->__('Prefix'); ?>
+            <?php if ($this->isPrefixRequired()) echo '<sup>*</sup>'; ?>
+        </label>
+        <div class="data_area">
+            <?php if ($this->getPrefixOptions()===false): ?>
+                <input type="text" id="<?php echo $this->getFieldId('prefix')?>" name="<?php echo $this->getFieldName('prefix')?>" value="<?php echo $this->htmlEscape($this->getObject()->getPrefix()) ?>"class="t1<?php if ($this->isPrefixRequired()):?> required-entry<?php endif; ?>" <?php echo $this->getFieldParams() ?> />
+            <?php else: ?>
+                <select id="<?php echo $this->getFieldId('prefix')?>" name="<?php echo $this->getFieldName('prefix')?>" title="<?php echo $this->__('Prefix') ?>"<?php if ($this->isPrefixRequired()):?> class="required-entry"<?php endif; ?> <?php echo $this->getFieldParams() ?>>
+                <?php foreach ($this->getPrefixOptions() as $_option): ?>
+                    <option __value="<?php echo $_option?>"<?php if ($this->getObject()->getPrefix()==$_option):?> selected="selected"<?php endif; ?>><?php echo $this->__($_option)?></option>
+                <?php endforeach ?>
+                </select>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>
+    <div class="full name-firstname">
+        <div class="data_area checkout_address_first_name_field">
+            <input type="text" id="<?php echo $this->getFieldId('firstname')?>" name="<?php echo $this->getFieldName('firstname')?>" value="<?php echo $this->htmlEscape($this->getObject()->getFirstname()) ?>" class="t1 required-entry" <?php echo $this->getFieldParams() ?> maxlength="40" placeholder="First Name *" />
+        </div>
+        <div class="data_area checkout_address_last_name_field">
+            <input type="text" id="<?php echo $this->getFieldId('lastname')?>" name="<?php echo $this->getFieldName('lastname')?>" value="<?php echo $this->htmlEscape($this->getObject()->getLastname()) ?>" class="t1 required-entry" <?php echo $this->getFieldParams() ?> maxlength="40" placeholder="Last Name *" />
+        </div>
+    </div>
+<?php if ($this->showMiddlename()): ?>
+    <div class="full name-middlename">
+        <label for="<?php echo $this->getFieldId('middlename')?>"><?php echo $this->__('M.I.') ?></label>
+        <div class="data_area">
+            <input type="text" id="<?php echo $this->getFieldId('middlename')?>" name="<?php echo $this->getFieldName('middlename')?>" value="<?php echo $this->htmlEscape($this->getObject()->getMiddlename()) ?>" class="t1" <?php echo $this->getFieldParams() ?> />
+        </div>
+    </div>
+<?php endif; ?>
+<?php if ($this->showSuffix()): ?>
+    <div class="full name-suffix">
+        <label for="<?php echo $this->getFieldId('suffix')?>"<?php if ($this->isSuffixRequired()) echo ' class="required"' ?>>
+        	<?php echo $this->__('Suffix') ?>
+            <?php if ($this->isSuffixRequired()) echo '<sup>*</sup>'; ?>
+        </label>
+        <div class="data_area">
+        <?php if ($this->getSuffixOptions()===false): ?>
+            <input type="text" id="<?php echo $this->getFieldId('suffix')?>" name="<?php echo $this->getFieldName('suffix')?>" value="<?php echo $this->htmlEscape($this->getObject()->getSuffix()) ?>" class="t1<?php if ($this->isSuffixRequired()):?> required-entry<?php endif; ?>" <?php echo $this->getFieldParams() ?> />
+        <?php else: ?>
+            <select id="<?php echo $this->getFieldId('suffix')?>" name="<?php echo $this->getFieldName('suffix')?>" title="<?php echo $this->__('Suffix') ?>"<?php if ($this->isSuffixRequired()):?> class="required-entry"<?php endif; ?> <?php echo $this->getFieldParams() ?>>
+            <?php foreach ($this->getSuffixOptions() as $_option): ?>
+                <option __value="<?php echo $_option?>"<?php if ($this->getObject()->getSuffix()==$_option):?> selected="selected"<?php endif; ?>><?php echo $this->__($_option)?></option>
+            <?php endforeach ?>
+            </select>
+        <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>
+</div>

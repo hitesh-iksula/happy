@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Iksula_Override>
+			<version>0.1.0</version>
+		</Iksula_Override>
+	</modules>
+	<!-- <admin>
+		<routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<Iksula_Override before="Mage_Adminhtml">Iksula_Override</Iksula_Override>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin> -->
+	<frontend>
+		<routers>
+	    	<customer>
+				<use>standard</use>
+				<args>
+					<modules>
+						<Iksula_Override before="Mage_Customer">Iksula_Override</Iksula_Override>
+					</modules>
+				</args>
+			</customer>
+		</routers>
+	</frontend>
+	<!-- <global>
+    	<models>
+    		<sales>
+    			<rewrite>
+    				<order_shipment_api>Iksula_Override_Sales_Order_Shipment_Api</order_shipment_api>
+    			</rewrite>
+    		</sales>
+    	</models>
+	</global> -->
+	<global>
+		<!-- <models>
+			<directory>
+				<rewrite>
+					<currency>Iksula_Override_Model_Currency</currency>
+				</rewrite>
+			</directory>
+		</models> -->
+		<blocks>
+            <catalogsearch>
+                <rewrite>
+					<result>Iksula_Override_Block_Result</result>
+				</rewrite>
+            </catalogsearch>
+        </blocks>
+		<events>
+			<controller_action_layout_generate_blocks_after>
+				<observers>
+					<override>
+						<class>Iksula_Override_Model_Observer</class>
+						<method>beforePageLoad</method>
+					</override>
+				</observers>
+			</controller_action_layout_generate_blocks_after>
+		</events>
+		<models>
+            <sales>
+                <rewrite>
+                    <order>Iksula_Override_Model_Order</order>
+                </rewrite>
+            </sales>
+        </models>
+	</global>
+
+</config>

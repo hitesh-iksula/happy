@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<img src="/abc.jpeg">
+
+	<form id="popup" action='#' method= "get">
+		name:<br>
+		<input type="text" name="name" class="input-text required-entry">
+		<br>
+		Your Email:<br>
+		<input type="text" name="ur-mail" class="input-text required-entry validate-email">
+		<br>
+
+		Friend Email:<br>
+		<input type="text" name="friend-mail" class="input-text required-entry validate-email">
+
+		<br>
+		<input type="submit" value="Submit" class="submitbtn validation-passed" id="popup-id">
+	</form>
+</body>
+</html>
+
+<script type="text/javascript">
+var customForm = new VarienForm('popup');
+</script>

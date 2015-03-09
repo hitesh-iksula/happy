@@ -1,0 +1,95 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_product = $this->getProduct(); ?>
+<?php $buttonTitle = $this->__('Buy'); ?>
+<?php $_category = Mage::getSingleton('catalog/layer')->getCurrentCategory(); ?>
+<?php $_item = $_product->getItem(); ?>
+
+<div class="add-to-cart custom-add-to-cart">
+
+	<?php if($_product->isSaleable() OR (!$_product->isSaleable() AND $this->hasOptions())): ?>
+	
+		<button type="button" title="<?php echo $buttonTitle ?>" class="button btn-cart large-buy-cart-button productClick" onclick="productAddToCartForm.submit(this)">
+			<span><span><?php echo $buttonTitle ?></span></span>
+		</button>
+		<?php echo $this->getChildHtml('', true, true) ?>
+		<?php $cart = Mage::getModel('checkout/cart')->getQuote();
+		foreach ($cart->getAllItems() as $item) {
+		    $productName = $item->getProduct()->getName();
+		    $productPrice = $item->getProduct()->getPrice();
+		    if($item->getSku() == $_product->getSku()){
+		    	$orderedQty = $item->getQty();
+		    	break;
+		    }
+		}?>
+	<?php endif; ?>
+
+	<?php if(!$_product->isSaleable() OR $this->hasOptions()): ?>
+
+		<div class="notify-me-when-available<?php if(!$_product->isSaleable()) { echo ' persistent-notify-me-when-available'; } ?>">
+			<div class="skull-image"></div>
+			<div class="out-of-stock-text">Out of stock!</div>
+			<div class="notify-me-box">
+				<div class="notify-label">Notify me when available!</div>
+				<div class="notify-input">
+					<input type="text" name="notify_email_id" id="notify_email_id" value="Email ID" onfocus="if(this.value == 'Email ID') this.value='';" onblur="if(this.value == '') this.value='Email ID';" />
+					<input type="hidden" name="product_id_for_notify_me" id="product_id_for_notify_me" />
+					<div class="happy_button notify_me_button">OK</div>
+				</div>
+			</div>
+		</div>
+
+	<?php endif; ?>
+</div>
+
+<a href="<?php echo $this->getUrl('refund-and-replacement')?>" target="_blank"><div class="replaement-link-buy">Easy return and replacement policy</div></a>
+
+<div id="add-to-cart-error-message"></div>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery(".productClick" ).click(function() {
+		/*alert("<?php echo $_category->getName(); ?>");*/
+		ga('require', 'ec');
+
+		ga('ec:addProduct', {
+		'id': '<?php echo $_product->getSku(); ?>',		// Required
+		'name': '<?php echo str_replace("'", "\\'", $_product->getName()); ?>',	
+		'category': '<?php echo $_category->getName(); ?>',
+		'brand': '<?php echo "Happily Unmarried"; ?>',
+		'variant': '<?php "" ?>',
+		'price':'<?php echo round($_product->getPrice()); ?>',
+		'quantity': '<?php echo $orderedQty; ?>'
+		});
+		
+		/*ga('ec:setAction', 'add');    */
+		ga('ec:setAction', 'add', {list: "<?php echo $_category->getName(); ?>"});    
+		ga('send', 'event', 'UX', 'click', 'add to cart');     // Send data using an event.
+		/*alert();*/
+	});
+});
+</script>

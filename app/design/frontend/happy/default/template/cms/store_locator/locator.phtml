@@ -1,0 +1,200 @@
+<style>
+	.store-subcategory-area { width: 18%; padding: 0; }
+	.store-inner-page-content-area { width: 82%; margin:0 0 0 18%;  }
+	.storecontainer { width:98%; float: left; color: #878787; border-left: 2px solid #ccc; padding: 0 20px 0;  }
+	.countryheader { width:97%; padding: 4px 8px ; background-color: #77b2e3; color: #fff; font-size: 30px; margin: 0 0 10px; line-height: 30px; }
+	.stateheader { width:97%; padding: 4px 8px ; background-color: #666; color: #fff; font-size: 26px; margin: 0 0 10px; line-height: 26px; }
+	.cityheader { width:97%; padding: 4px 8px ; background-color: #ccc; color: #fff; font-size: 20px; margin: 0 0 10px; line-height: 26px; }
+	.storearea { margin: 0 0 10px; float: left; width: 100%;  padding: 5px 0 0 0;}
+	.storethumb { width:32.8%; float:left; border-right: 1px solid #ccc; color: #696969; border-bottom: 3px solid #77b2e3; text-align: center; font-size: 14px; line-height: 20px; margin-bottom: 20px}
+	.storethumb h3  { display: block; font-size: 16px; line-height: 24px;  border-bottom: 1px solid #ccc; padding: 0 10px;  color: #696969;   }
+	.storethumb p { margin: 20px 0 0 10px ; }
+	.storethumb span { font-weight: bold; }
+	.storefiltersarea { position: absolute; width: 100%; } 
+	.storefilters { border-bottom: 1px solid #ccc; line-height: 16px; text-indent: 5px; width: 100%; padding-bottom: 5px; margin-bottom: 10px; font-size: 13px; cursor: pointer; }
+	.storefilters.active { font-weight: bold; }
+	.storefilters span { display: inline-block;  word-break:break-all; width: 80%;}
+	.storefilters span span { font-size: 11px; line-height: 14px; width: 100%}
+	/*label { display: inline-block; *display: inline; zoom:1 ; cursor: pointer; word-break:break-all;}*/
+	.storefilters input { margin:  0 5px 0 0 ;  display: inline-block; *display: inline; zoom:1 ; vertical-align: top; }	
+	.storefilters .filter-form {display: none; }
+	.storefilters.active .filter-form { display:block; }
+	.storefilters select { width: 90%; margin: 5px 0;  display: block ;  }
+	.storefilters .btnsubmit {   display: inline-block; *display: inline; zoom:1 ; background: none; border: none; width: auto; height: 22px; text-transform: uppercase; font-size: 19px; padding: 0 2px; margin: 0 5px 10px; 0; text-decoration: none; background-color: #ae2b2b; border-radius: 4px; box-shadow: 2px 2px 6px #555; cursor: pointer; color: #fff !important; display: inline-block; zoom: 1; margin-top: 8px; font-family: 'BentonSansF-Book', arial; width: 40%;}
+	.storefilters .btnsubmit span { background: none; border:  none; font-family: 'BentonSansF-Book', arial;  }
+</style>
+
+<script>
+	jQuery(document).ready(function($){
+		$(".storefilters:first").addClass("active");		
+		$(".storefilters:first input").attr("checked","checked");	
+		$(".storecontainer").hide();
+		$(".storecontainer:first").fadeIn();
+		$(".storefilters").click(function(){
+			var store_filter_id = ("label",$(this)).attr("rel");
+			//alert(store_filter_id);
+			$(".storefilters").removeClass("active");
+			$(this).addClass("active");
+			$(".storefilters input").attr("checked","");
+			$("input",$(this)).attr("checked","checked");			
+			$(".storecontainer").hide();
+			$("#"+store_filter_id).show();
+		})
+
+	});
+</script>
+
+<div class="cms-subcategory-area store-subcategory-area">
+	<div class="storefiltersarea">
+		<div class="storefilters"  rel="huStore">
+			
+			<input type="radio" name="stores" value="hubrandstore"/>
+			<span>
+				HU BRAND STORE
+			</span>
+		</div>
+		<div class="storefilters" rel="huOutlet">
+			
+			<input type="radio"  name="stores" value="hustoreoutlets"/>
+			<span>
+				M.B.O<br/>
+				<span>(Multi Brand Outlets)</span>
+			</span>		
+			<div class="filter-form">
+				<select>
+					<option>1</option>
+					<option>1</option>
+					<option>1</option>
+				</select>
+				<select>
+					<option>1</option>
+					<option>1</option>
+					<option>1</option>
+				</select>
+				<select>
+					<option>1</option>
+					<option>1</option>
+					<option>1</option>
+				</select>				
+				<button type="button" title="Checkout" class="button btnsubmit"><span><span>Submit</span></span></button>
+				<button type="reset" title="Checkout" class="button btnsubmit"><span><span>Clear</span></span></button>
+
+			</div>	
+		</div>
+	</div>
+</div>
+
+<div class="cms-inner-page-content-area store-inner-page-content-area">
+	<div class="storecontainer" id="huStore">
+		<div class="countryheader">Country</div>
+		<!-- <div class="cityheader">City</div>  -->
+		<div class="storearea">
+			<div class="storethumb">
+				<h3>T3 Airport: International Departure</h3>
+				<p>Gate no 39, <br/>
+				   Zone 1<br/>
+				   SHA piers<br/>
+				   Domestic Departure Terminal<br/>
+				   T3 IGI Airport, New Delhi.
+				</p>
+				<p>
+					<span>Contact</span><br/>
+					Abhijit: 8527322155
+				</p>
+
+			</div>
+			<div class="storethumb">
+				<h3>T3 Airport: International Departure</h3>
+				<p>Gate no 39, <br/>
+				   Zone 1<br/>
+				   SHA piers<br/>
+				   Domestic Departure Terminal<br/>
+				   T3 IGI Airport, New Delhi.
+				</p>
+				<p>
+					<span>Contact</span><br/>
+					Abhijit: 8527322155
+				</p>
+
+			</div>
+			<div class="storethumb">
+				<h3>T3 Airport: International Departure</h3>
+				<p>Gate no 39, <br/>
+				   Zone 1<br/>
+				   SHA piers<br/>
+				   Domestic Departure Terminal<br/>
+				   T3 IGI Airport, New Delhi.
+				</p>
+				<p>
+					<span>Contact</span><br/>
+					Abhijit: 8527322155
+				</p>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="storecontainer" id="huOutlet">
+		<div class="countryheader">India</div>
+		<div class="stateheader">State</div>
+		<div class="cityheader">City</div>
+		<div class="storearea">
+			<div class="storethumb">
+				<h3>T3 Airport: International Departure</h3>
+				<p>Gate no 39, <br/>
+				   Zone 1<br/>
+				   SHA piers<br/>
+				   Domestic Departure Terminal<br/>
+				   T3 IGI Airport, New Delhi.
+				</p>
+				<p>
+					<span>Contact</span><br/>
+					Abhijit: 8527322155
+				</p>
+
+			</div>
+			<div class="storethumb">
+				<h3>T3 Airport: International Departure</h3>
+				<p>Gate no 39, <br/>
+				   Zone 1<br/>
+				   SHA piers<br/>
+				   Domestic Departure Terminal<br/>
+				   T3 IGI Airport, New Delhi.
+				</p>
+				<p>
+					<span>Contact</span><br/>
+					Abhijit: 8527322155
+				</p>
+
+			</div>
+			<div class="storethumb">
+				<h3>T3 Airport: International Departure</h3>
+				<p>Gate no 39, <br/>
+				   Zone 1<br/>
+				   SHA piers<br/>
+				   Domestic Departure Terminal<br/>
+				   T3 IGI Airport, New Delhi.
+				</p>
+				<p>
+					<span>Contact</span><br/>
+					Abhijit: 8527322155
+				</p>
+
+			</div>
+			<div class="storethumb">
+				<h3>T3 Airport: International Departure</h3>
+				<p>Gate no 39, <br/>
+				   Zone 1<br/>
+				   SHA piers<br/>
+				   Domestic Departure Terminal<br/>
+				   T3 IGI Airport, New Delhi.
+				</p>
+				<p>
+					<span>Contact</span><br/>
+					Abhijit: 8527322155
+				</p>
+
+			</div>
+		</div>
+	</div>
+</div>

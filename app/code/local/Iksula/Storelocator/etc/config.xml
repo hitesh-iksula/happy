@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Iksula_Storelocator>
+      <version>0.1.1</version>
+    </Iksula_Storelocator>
+  </modules>
+  <frontend>
+    <routers>
+      <storelocator>
+        <use>standard</use>
+          <args>
+            <module>Iksula_Storelocator</module>
+            <frontName>storelocator</frontName>
+          </args>
+      </storelocator>
+    </routers>
+		<layout>
+		  <updates>
+			<storelocator>
+			  <file>storelocator.xml</file>
+			</storelocator>
+		  </updates>
+		</layout>
+  </frontend>
+  <global>
+    <helpers>
+      <storelocator>
+        <class>Iksula_Storelocator_Helper</class>
+      </storelocator>
+    </helpers>
+	<blocks>
+	  <storelocator>
+		<class>Iksula_Storelocator_Block</class>
+	  </storelocator>
+	</blocks>
+	<models>
+	  <storelocator>
+		<class>Iksula_Storelocator_Model</class>
+		<resourceModel>storelocator_mysql4</resourceModel>
+	  </storelocator>
+	  <storelocator_mysql4>
+		<class>Iksula_Storelocator_Model_Mysql4</class>
+		<entities>		  
+			  <storelocator>
+				<table>stores</table>
+			  </storelocator>		  
+			  <country>
+				<table>country</table>
+			  </country>		  
+			  <state>
+				<table>state</table>
+			  </state>		  
+			  <city>
+				<table>city</table>
+			  </city>
+        </entities>
+	  </storelocator_mysql4>
+	</models>
+	<resources>
+	  <storelocator_setup>
+		<setup>
+		  <module>Iksula_Storelocator</module>
+		</setup>
+		<connection>
+		  <use>core_setup</use>
+		</connection>
+	  </storelocator_setup>
+	  <storelocator_write>
+		<connection>
+		  <use>core_write</use>
+		</connection>
+	  </storelocator_write>
+	  <storelocator_read>
+		<connection>
+		  <use>core_read</use>
+		</connection>
+	  </storelocator_read>
+	</resources>
+  </global>
+  <admin>
+	<routers>
+	  <storelocator>
+	    <use>admin</use>
+		<args>
+		  <module>Iksula_Storelocator</module>
+		  <frontName>storelocator</frontName>
+		</args>
+	  </storelocator>
+	</routers>
+  </admin>
+  <adminhtml>
+	<menu>
+	  <storelocator module="storelocator">
+		<title>Storelocator</title>
+		<sort_order>100</sort_order>
+		<children>
+		  <storelocator module="storelocator">
+		    <title>Manage Storelocator</title>
+			<sort_order>0</sort_order>
+			<action>storelocator/adminhtml_storelocator</action>
+		  </storelocator>
+		  <country module="storelocator">
+		    <title>Manage Country</title>
+			<sort_order>10</sort_order>
+			<action>storelocator/adminhtml_country</action>
+		  </country>
+		  <state module="storelocator">
+		    <title>Manage State</title>
+			<sort_order>20</sort_order>
+			<action>storelocator/adminhtml_state</action>
+		  </state>
+		  <city module="storelocator">
+		    <title>Manage City</title>
+			<sort_order>30</sort_order>
+			<action>storelocator/adminhtml_city</action>
+		  </city>
+		</children>
+	  </storelocator>
+	</menu>
+	<acl>
+	  <resources>
+		<all>
+		  <title>Allow Everything</title>
+		</all>
+		<admin>
+		  <children>
+			<storelocator translate="title" module="storelocator">
+			  <title>Storelocator</title>
+			  <sort_order>1000</sort_order>
+			  <children>
+		  <storelocator translate="title">
+			<title>Manage Storelocator</title>
+			<sort_order>0</sort_order>
+		  </storelocator>
+		  <country translate="title">
+			<title>Manage Country</title>
+			<sort_order>10</sort_order>
+		  </country>
+		  <state translate="title">
+			<title>Manage State</title>
+			<sort_order>20</sort_order>
+		  </state>
+		  <city translate="title">
+			<title>Manage City</title>
+			<sort_order>30</sort_order>
+		  </city>
+			  </children>
+			</storelocator>
+		  </children>
+		</admin>
+	  </resources>
+	</acl>
+	<layout>
+	  <updates>
+		<storelocator>
+		  <file>storelocator.xml</file>
+		</storelocator>
+	  </updates>
+	</layout>
+  </adminhtml>
+</config> 

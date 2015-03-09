@@ -1,0 +1,281 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <hutab translate="label" module="creativity">
+            <label>Banner</label>
+            <sort_order>1</sort_order>
+        </hutab>
+    </tabs>
+    <sections>
+        <hubanner translate="label" module="creativity">
+            <label>HU Banner</label>
+            <tab>hutab</tab>
+            <sort_order>130</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <hubanner_group9 translate="label" module="creativity">
+                    <label>Manage Valentines Confirmation Banner</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>9</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <image translate="label">
+                            <label>Valentines Banner Confirmation Image</label>
+                            <comment>Upload an image from your computer</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media/Creativity" scope_info="1">Creativity</upload_dir>
+                            <base_url type="media" scope_info="1">Creativity</base_url>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image>
+                    </fields>
+                </hubanner_group9>
+
+                <hubanner_group8 translate="label" module="creativity">
+                    <label>Manage Valentines Banner</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>8</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <image translate="label">
+                            <label>Valentines Banner Image</label>
+                            <comment>Upload an image from your computer</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media/Creativity" scope_info="1">Creativity</upload_dir>
+                            <base_url type="media" scope_info="1">Creativity</base_url>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image>
+                    </fields>
+                </hubanner_group8>
+
+                <hubanner_group7 translate="label" module="creativity">
+                    <label>Manage Email Grabber Banner - Mobile</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>7</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <image translate="label">
+                            <label>Manage Email Grabber Banner - Mobile</label>
+                            <comment>Upload an image from your computer</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media/Creativity" scope_info="1">Creativity</upload_dir>
+                            <base_url type="media" scope_info="1">Creativity</base_url>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image>
+                    </fields>
+                </hubanner_group7>
+
+                <hubanner_group6 translate="label" module="creativity">
+                    <label>Manage Email Grabber Banner - Desktop</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>6</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <image translate="label">
+                            <label>Manage Email Grabber Banner - Desktop</label>
+                            <comment>Upload an image from your computer</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media/Creativity" scope_info="1">Creativity</upload_dir>
+                            <base_url type="media" scope_info="1">Creativity</base_url>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image>
+                    </fields>
+                </hubanner_group6>
+
+                <hubanner_group5 translate="label" module="creativity">
+                    <label>Manage XXXmas Confirmation Banner</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <image translate="label">
+                            <label>XXXmas Banner Confirmation Image</label>
+                            <comment>Upload an image from your computer</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media/Creativity" scope_info="1">Creativity</upload_dir>
+                            <base_url type="media" scope_info="1">Creativity</base_url>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image>
+                    </fields>
+                </hubanner_group5>
+
+                <hubanner_group4 translate="label" module="creativity">
+                    <label>Manage XXXmas Banner</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <image translate="label">
+                            <label>XXXmas Banner Image</label>
+                            <comment>Upload an image from your computer</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media/Creativity" scope_info="1">Creativity</upload_dir>
+                            <base_url type="media" scope_info="1">Creativity</base_url>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image>
+                    </fields>
+                </hubanner_group4>
+
+                <hubanner_group3 translate="label" module="creativity">
+                    <label>Block # 3</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <title translate="label">
+                            <label>Title</label>
+                            <comment>Text on the Image - HTML allowed</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <link translate="label">
+                            <label>Link</label>
+                            <comment>Link on the Image</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </link>
+                        <image translate="label">
+                            <label>Image</label>
+                            <comment>Upload an image from your computer</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media/Creativity" scope_info="1">Creativity</upload_dir>
+                            <base_url type="media" scope_info="1">Creativity</base_url>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image>
+                    </fields>
+                </hubanner_group3>
+
+                <hubanner_group2 translate="label" module="creativity">
+                    <label>Block # 2</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <title translate="label">
+                            <label>Title</label>
+                            <comment>Text on the Image - HTML allowed</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <link translate="label">
+                            <label>Link</label>
+                            <comment>Link on the Image</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </link>
+                        <image translate="label">
+                            <label>Image</label>
+                            <comment>Upload an image from your computer</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media/Creativity" scope_info="1">Creativity</upload_dir>
+                            <base_url type="media" scope_info="1">Creativity</base_url>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image>
+                    </fields>
+                </hubanner_group2>
+
+                <hubanner_group1 translate="label" module="creativity">
+                    <label>Block # 1</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <title translate="label">
+                            <label>Title</label>
+                            <comment>Text on the Image - HTML allowed</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <link translate="label">
+                            <label>Link</label>
+                            <comment>Link on the Image</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </link>
+                        <image translate="label">
+                            <label>Image</label>
+                            <comment>Upload an image from your computer</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media/Creativity" scope_info="1">Creativity</upload_dir>
+                            <base_url type="media" scope_info="1">Creativity</base_url>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image>
+                    </fields>
+                </hubanner_group1>
+            </groups>
+        </hubanner>
+    </sections>
+</config>

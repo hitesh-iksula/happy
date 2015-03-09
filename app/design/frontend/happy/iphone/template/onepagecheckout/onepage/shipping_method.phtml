@@ -1,0 +1,23 @@
+<?php $has_addr  = $this->customerHasAddresses(); ?>
+<?php if ($this->getQuote()->isVirtual()) : return; endif; ?>
+
+
+<div id="shipping-method" class="onepagecheckout_block<?php if ($has_addr): echo ' logged_in';  else: echo ' address_box'; endif; ?>">
+    <h2 class="opc_title"><?php echo $this->__('Delivery Options') ?></h2>
+    <div id="checkout-shipping-method-load">
+        <?php echo $this->getChildHtml('available') ?>
+    </div>
+    <script type="text/javascript">
+    //<![CDATA[
+        var shippingMethod = new ShippingMethod('shipping-method');
+    //]]>
+    </script>
+    <div id="onepage-checkout-shipping-method-additional-load">
+        <?php echo $this->getChildHtml('additional') ?>
+    </div>
+    <div class="address_step_continue<?php if($logged && $has_addr) echo ' logged_in'; ?>">
+        <div class="data_area">
+            <button class="continue button happy_button" id="address-step-continue" onClick="validate_form($('onepagecheckout_orderform'))">continue</button>
+        </div>
+    </div>
+</div>

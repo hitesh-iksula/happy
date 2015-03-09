@@ -1,0 +1,320 @@
+
+<?php $_category = Mage::getSingleton('catalog/layer')->getCurrentCategory(); ?>
+<?php $_categoryId = $_category->getId(); ?>
+<?php $searchString = $this->helper('explore')->checkAndReturnSearchString(); ?>
+<?php
+    $_cat = new Mage_Catalog_Block_Navigation();
+    $curent_cat = $_cat->getCurrentCategory();
+    $category_ids = $_cat->getCurrentCategory()->getParentCategory()->getPath();
+    $cat_id = explode('/',$category_ids);
+    $top_parent_id = $cat_id[3];
+    $top_parent_model_id = $cat_id[4];
+
+    $theme = Mage::getSingleton('core/design_package')->getTheme('frontend');
+?>
+
+<script type="text/javascript">
+/*var productList = {};
+
+function onProductClick(element) {
+    var productId = jQuery(element).parent().attr('id');
+    productId = parseInt(productId.replace('product_id_', ''));
+
+    ga('ec:addProduct', productList[productId]);
+    ga('ec:setAction', 'click', { list: "<?php echo $_category->getName(); ?>" });
+    ga('send', 'event', 'UX', 'click', 'Results', {
+        'hitCallback': function() {
+            document.location = jQuery(element).attr('href');
+        }
+    });
+}*/
+</script>
+
+
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+?>
+
+<?php
+   $_category = Mage::getModel('catalog/category')->load($top_parent_id);
+?>
+
+<?php if($_category['featured_category_parent'] != 1){?>
+
+<?php if(!$_productCollection->count()): ?>
+
+    <p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+
+<?php else: ?>
+
+    <div class="category-products">
+
+        <?php // Grid Mode ?>
+        <?php $_collectionSize = $_productCollection->count() ?>
+        <?php $_columnCount = $this->getColumnCount(); ?>
+
+        <ul class="products-grid" id="<?php echo 'container' . $_categoryId; ?>">
+            <?php $product_counter = 1; ?>
+            <?php $i=0; foreach ($_productCollection as $_product): $i++; ?>
+
+                <li class="item" id="product_id_<?php echo $_product->getId(); ?>">
+
+                    <a href="<?php echo $_product->getProductUrl() . $searchString ?>">
+
+                        <div class="product-image" id="<?php echo 'product_' . $_product->getId(); ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>">
+                            <img class="item-image" src="<?php echo $this->getSkinUrl('images/homepage/lazyloader_placeholder.png') ?>" data-original="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(256); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                            <noscript>
+                                <img class="item-image" src="<?php echo $this->getSkinUrl() . 'images/homepage/lazyloader_placeholder.png' ?>" data-original="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(256); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                            </noscript>
+                        </div>
+
+                        <h2 class="product-name">
+                                <?php $name = $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>
+                                <?php $thresholdSize = 20; ?>
+                                <?php $nameLength = strlen($name); ?>
+                                <?php $title = 0; ?>
+                                <?php if($nameLength > $thresholdSize) { $name = substr($name, 0, ($thresholdSize - 1)) . '...'; $title = 1; } ?>
+                            <span class="product_name_title" <?php if($title == 1): ?>title="<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>"<?php endif; ?>>
+                                <?php echo $name ?>
+                            </span>
+                        </h2>
+                        <?php echo $this->getPriceHtml($_product, true) ?>
+                    </a>
+
+                </li>
+                <script type="text/javascript">
+
+                   /* var productId = parseInt("<?php echo $_product->getId(); ?>");
+
+
+                    productList[productId] = {
+                        'id': '<?php echo $_product->getSku(); ?>',
+                        'name': '<?php echo str_replace("'", "\\'", $_product->getName()); ?>',
+                        'category': '<?php echo $_category->getName(); ?>',
+                        'brand': '<?php echo "Happily Unmarried"; ?>',
+                        'variant': '<?php '' ?>',
+                        'list': '<?php echo $_category->getName(); ?>',
+                        'position': '<?php echo $product_counter; ?>'
+                    };
+
+                    ga('require', 'ec');
+                    ga('ec:addImpression', productList[productId]);
+                    ga('send', 'pageview');*/
+                </script>
+
+                <?php $product_counter = $product_counter+1; ?>
+            <?php endforeach; ?>
+
+        </ul>
+
+    </div>
+
+<?php endif; ?>
+<?php echo $this->getChildHtml('product_list_toolbar');?>
+
+
+<?php }else{ ?>
+
+
+
+<div class="wrap_cover">
+
+    <div class="container_cover">
+
+        <!--Breadcrumbs-->
+        <div class="breadcrumbs_cover breadcrumbs">
+            <ul>
+                <li class="home">
+                    <a href="<?php echo $this->getUrl('');?>" title="Go to Home Page"><?php echo $this->__('Happily Unmarried') ?></a>
+                    <img src="<?php echo $this->getSkinUrl('images/general/breadcrumb_separator.png');?>" class="breadcrumb_separator">
+                </li>
+                <li class="category85">
+                    <a><?php echo $this->__('PHONE COVERS') ?></a>
+                </li>
+            </ul>
+        </div>
+
+        <!--Filter-->
+        <div class="middle_content_cover">
+
+            <div class="search_cover">
+
+                <h1><?php echo $this->__('Find all designs available for your phone!') ?></h1>
+
+                <div class="search_form_cover">
+
+                    <form>
+
+                        <div class="search_wrap">
+
+                            <div class="brands_wrap">
+
+                                <select name="brands" class="brands">
+                                  <option value=""><?php echo $this->__('BRAND') ?></option>
+                                    <?php
+                                        $cat = Mage::getModel('catalog/category')->load($top_parent_id);
+                                        $subcats = $cat->getChildren();
+
+                                            foreach(explode(',',$subcats) as $sub_subCatid)
+                                            {echo $sub_subCatid;echo $top_parent_model_id;echo "<br>";
+                                                $_sub_category = Mage::getModel('catalog/category')->load($sub_subCatid);
+                                                  if($_sub_category->getIsActive()) { ?>
+                                            <option value="<?php echo $sub_subCatid;?>" <?php if($sub_subCatid == $top_parent_model_id){echo "selected";}?>><?php echo $_sub_category->getName();?></option>
+                                                <?php }
+                                             }
+                                    ?>
+                                </select>
+
+                            </div>
+
+                            <div class="models_wrap">
+                                <select name="models" class="models">
+                                  <option value=""><?php echo $this->__('MODEL') ?></option>
+                                    <?php
+                                         $cat = Mage::getModel('catalog/category')->load($top_parent_model_id);
+                                         $subcats = $cat->getChildren();
+
+                                             foreach(explode(',',$subcats) as $sub_subCatid)
+                                             {
+                                                 $_sub_category = Mage::getModel('catalog/category')->load($sub_subCatid);
+                                                   if($_sub_category->getIsActive()) { ?>
+                                                     <option value="<?php echo $_sub_category->getUrl();?>" <?php if($sub_subCatid == $_categoryId){echo "selected";}?>><?php echo $_sub_category->getName();?></option>
+                                                 <?php }
+                                              }
+                                    ?>
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="find_design_wrap">
+                            <input type="submit" class="find_design" value="FIND DESIGN" name="find_design">
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+                <?php $cat_id = Mage::getModel('catalog/layer')->getCurrentCategory()->getId(); ?>
+                <?php $categoryaa = Mage::getModel('catalog/category')->load($cat_id); ?>
+
+                <div class="current-cat">
+                    <img src="<?php echo $this->getSkinUrl('images/mobile-icon-small.png');?>" />
+                    <span><?php echo $categoryaa->getName(); ?><?php //echo $_category->getName();?></span>
+                </div>
+
+                <?php if(!$_productCollection->count()): ?>
+
+                    <p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+
+                <?php else: ?>
+
+                    <div class="category-products">
+
+                        <?php // Grid Mode ?>
+                        <?php $_collectionSize = $_productCollection->count() ?>
+                        <?php $_columnCount = $this->getColumnCount(); ?>
+
+                        <ul class="products-grid" id="<?php echo 'container' . $_categoryId; ?>">
+
+                            <?php $i=0; foreach ($_productCollection as $_product): $i++; ?>
+
+                                <li class="item" id="product_id_<?php echo $_product->getId(); ?>">
+
+                                    <a href="<?php echo $_product->getProductUrl() . $searchString ?>">
+
+                                        <div class="product-image" id="<?php echo 'product_' . $_product->getId(); ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>">
+                                            <img class="item-image" src="<?php echo $this->getSkinUrl('images/homepage/lazyloader_placeholder.png') ?>" data-original="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(256); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                                            <noscript>
+                                                <img class="item-image" src="<?php echo $this->getSkinUrl() . 'images/homepage/lazyloader_placeholder.png' ?>" data-original="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(256); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                                            </noscript>
+                                        </div>
+
+                                        <h2 class="product-name">
+                                                <?php $name = $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>
+                                                <?php $thresholdSize = 20; ?>
+                                                <?php $nameLength = strlen($name); ?>
+                                                <?php $title = 0; ?>
+                                                <?php if($nameLength > $thresholdSize) { $name = substr($name, 0, ($thresholdSize - 1)) . '...'; $title = 1; } ?>
+                                            <span class="product_name_title" <?php if($title == 1): ?>title="<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>"<?php endif; ?>>
+                                                <?php echo $name ?>
+                                            </span>
+                                        </h2>
+                                        <?php echo $this->getPriceHtml($_product, true) ?>
+                                    </a>
+
+                                </li>
+
+                            <?php endforeach; ?>
+
+                        </ul>
+
+                    </div>
+
+                <?php endif; ?>
+                <?php echo $this->getChildHtml('product_list_toolbar');?>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    <?php if($theme != 'iphone'){?>
+        jQuery("select").msDropdown({roundedBorder:false});
+    <?php } ?>
+    // jQuery('.brands option:eq(0)').attr('selected','selected');
+    // jQuery('.brands_wrap .ddTitleText .ddlabel').text(jQuery('.brands option:eq(0)').text());
+    // jQuery('.models option:eq(0)').attr('selected','selected');
+    // jQuery('.models_wrap .ddTitleText .ddlabel').text(jQuery('.models option:eq(0)').text());
+    jQuery('.brands').live('change', function(e){
+        jQuery('#fancybox-loading-overlay').show();
+        //jQuery('#fancybox-loading').show();
+        jQuery('#popup_jacket').show();
+        jQuery('#loading_gif').show();
+        e.preventDefault();
+            jQuery.ajax({
+                url: '<?php echo $this->getUrl('explore/cover/subcategories');?>',
+                type: 'POST',
+                data: 'sub_cat_id=' + jQuery('.brands').val(),
+                success: function(return_data) {
+                    jQuery('#fancybox-loading-overlay').hide();
+                    jQuery('#fancybox-loading').hide();
+                    jQuery('.models_wrap').html(return_data);
+                    jQuery('.models option:eq(1)').attr('selected','selected');
+                    jQuery('.models_wrap .ddTitleText .ddlabel').text(jQuery('.brands option:eq(1)').text());
+                    <?php if($theme != 'iphone'){?>
+                        jQuery("select").msDropdown({roundedBorder:false});
+                    <?php } ?>
+                    jQuery('#popup_jacket').hide();
+                    jQuery('#loading_gif').hide();
+                }
+            });
+    });
+    jQuery('.find_design').click(function(e){
+        e.preventDefault();
+        jQuery('#fancybox-loading-overlay').show();
+       // jQuery('#fancybox-loading').show();
+        window.location = jQuery('.models option:selected').val();
+
+    });
+});
+</script>
+<style>
+    .one_category {margin:0px;}
+    .footer-container {margin-top: 71px;}
+    .footer{margin:0px;}
+    .current-cat span {color: #707070;
+    font-size: 40px;
+    font-family: 'Roboto', arial;
+    font-weight: 100;
+    line-height: 32px;}
+    .current-cat img {float: left;margin-right: 8px;}
+</style>
+<?php } ?>

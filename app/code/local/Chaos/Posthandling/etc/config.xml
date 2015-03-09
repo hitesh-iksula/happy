@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Chaos_Posthandling>
+			<version>1.0.0</version>
+		</Chaos_Posthandling>
+	</modules>
+	<global>
+		<helpers>
+			<posthandling>
+				<class>Chaos_Posthandling_Helper</class>
+			</posthandling>
+		</helpers>
+
+		<models>
+			<posthandling>
+				<class>Chaos_Posthandling_Model</class>
+			</posthandling>
+		</models>
+		
+		<events>
+			<checkout_type_onepage_save_order>
+				<observers>
+					<posthandling_observer>
+						<type>model</type>
+						<class>posthandling/observer</class>
+						<method>updateShippingAmount</method>
+					</posthandling_observer>
+				</observers>
+			</checkout_type_onepage_save_order>
+		</events>
+	</global>
+</config>

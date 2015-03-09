@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Happilyunmarried_Happyhome>
+            <version>0.1.0</version>
+        </Happilyunmarried_Happyhome>
+    </modules>
+    
+    <global>
+        <models>
+            <happyhome>
+                <class>Happilyunmarried_Happyhome_Model</class>
+                <resourceModel>happyhome_mysql4</resourceModel>
+            </happyhome>
+            <happyhome_mysql4>
+                <class>Happilyunmarried_Happyhome_Model_Mysql4</class>
+            </happyhome_mysql4>
+        </models>
+        <blocks>
+            <happyhome>
+                <class>Happilyunmarried_Happyhome_Block</class>
+            </happyhome>
+        </blocks>
+        <helpers>
+            <happyhome>
+                <class>Happilyunmarried_Happyhome_Helper</class>
+            </happyhome>  
+        </helpers>
+    </global>
+    
+    <admin>
+        <routers>
+            <happyhome>
+                <use>admin</use>
+                <args>
+                    <module>Happilyunmarried_Happyhome</module>
+                    <frontName>happyhome</frontName>
+                </args>
+            </happyhome>
+        </routers>
+    </admin>
+    
+    <adminhtml>
+        <translate>
+            <modules>
+                <mage_adminhtml>
+                    <files>
+                        <happyhome>Happilyunmarried_Happyhome.csv</happyhome>
+                    </files>
+                </mage_adminhtml>
+            </modules>
+        </translate>
+        
+        <menu>
+            <happilyunmarried>
+                <children>
+                    <happyhome_adminform translate="title" module="happyhome">
+                        <title>Home Page</title>
+                        <action>happyhome/adminhtml_homepage</action>
+                    </happyhome_adminform>
+                </children>
+            </happilyunmarried>
+        </menu>
+        
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <happilyunmarried>
+                            <title>Happily Unmarried</title>
+                            <children>
+                                <happyhome_adminform>
+                                    <title>Home Page</title>
+                                </happyhome_adminform>
+                            </children>
+                        </happilyunmarried>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        
+        <layout>
+            <updates>
+                <happyhome>
+                    <file>happyhome.xml</file>
+                </happyhome>
+            </updates>
+        </layout>
+    </adminhtml>
+</config>

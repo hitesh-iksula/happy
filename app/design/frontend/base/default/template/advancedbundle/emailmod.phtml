@@ -1,0 +1,40 @@
+<?php
+/**
+ * 
+ * This page is linked with the following block in New Order email template-
+ * {{block type='core/template' area='frontend' template='advancedbundle/emailmod.phtml' order=$order}}
+ * 
+ * This file is used for BSchool Campaign, to hide shipping address in Email if user opted for a delayed delivery
+ * 
+ */
+?>
+
+<?php
+
+$itemsCollection = $this->getData('order')->getAllItems();
+
+$cartHasBundleProduct = 0;
+foreach($itemsCollection as $item) {
+	if($item->getData('product_type') == 'bundle') {
+        $cartHasBundleProduct = 1; break;
+    }
+}
+
+$session = Mage::getSingleton("core/session");
+$shipmentOptionChosen = $session->getData("shipment_option");
+$knowsShippingAddress = $session->getData("know_shipping_address");
+$scheduledDelivery = $session->getData("scheduled_delivery");
+
+// if cart has bundle product, do all the noodling.
+if($cartHasBundleProduct == 1 AND ($shipmentOptionChosen == 1 AND $knowsShippingAddress == 0)) {
+	echo "You will be asked to provide Shipping Address a week prior to delivery";
+} else {
+	echo $this->getData('order')->getShippingAddress()->format('html');
+}
+
+/*if(isset($scheduledDelivery)) {
+	$scheduledDeliveryDate = date("d - M - Y", $scheduledDelivery);
+	echo "<p>Your Scheduled Delivery Date- " . $scheduledDeliveryDate . "</p>";
+}*/
+
+?>

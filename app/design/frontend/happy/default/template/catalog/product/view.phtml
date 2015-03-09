@@ -1,0 +1,458 @@
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+<?php $_category = Mage::getSingleton('catalog/layer')->getCurrentCategory(); ?>
+<script type="text/javascript">
+	var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+
+<script type="text/javascript">
+
+	/*ga('require', 'ec');
+	ga('ec:addProduct', {
+		'id': '<?php echo $_product->getSku(); ?>',
+		'name': '<?php echo str_replace("'", "\\'", $_product->getName()); ?>',
+		'category': '<?php echo $_category->getName(); ?>',
+		'brand': '<?php echo "Happily Unmarried"; ?>',
+		'variant': '<?php "" ?>'
+	});
+
+	ga('ec:setAction', 'detail');
+
+	ga('send', 'pageview');*/
+
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="product-view" itemscope itemtype="http://schema.org/Product">
+	<div class="product-essential">
+
+		<form action="<?php  echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?> onSubmit="return false;">
+
+			<div class="no-display">
+				<input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+				<input type="hidden" name="related_product" id="related-products-field" value="" />
+
+			</div>
+
+			<ul class="messages" style="display:none;clear:left;"></ul>
+
+			<div class="product-img-box">
+				<?php echo $this->getChildHtml('media') ?>
+				<?php if($_product['non_inventory_products'] == 1){ ?>
+					<div class="build-to-non-inventory">This product is made to order. Delivery in 10 days</div>
+				<?php } ?>
+			</div>
+
+			<div class="social-like-thumbnails-area"></div>
+
+			<div class="product-shop">
+
+				<div class="product-description-box<?php if(!count($_product->getUpSellProductCollection()->getItems())): echo ' product-description-box-long'; endif; ?>">
+					<div class="product-name" itemprop="name">
+						<h1 class="product-name-heading-main"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+					</div>
+					<div class="product-short-desc">
+						<?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+					</div>
+
+					<?php echo $this->getTierPriceHtml() ?>
+
+					<div class="product-shop-content-area" id="product-shop-new">
+						<div class="product-desc">
+							<?php if ($_product->getDescription()):?>
+								<div class="short-description">
+									<div class="std">
+										<?php echo $_helper->productAttribute($_product, $_product->getDescription(), 'description'); ?>
+									</div>
+									<?php if($_product->getDesignedBy()): ?>
+										<div class="designed_by"><?php echo $this->__('Designed By: '); echo strip_tags($_product->getDesignedBy()); ?></div>
+									<?php endif; ?>
+									<?php $session = Mage::getSingleton('core/session'); ?>
+								</div>
+							<?php endif;?>
+						</div>
+					</div>
+
+					<div class="product-page-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+						<?php echo str_replace(",", "", $this->getPriceHtml($_product)); ?>
+
+						<?php $_taxHelper  = $this->helper('tax'); ?>
+						<?php $_finalPrice = $_taxHelper->getPrice($_product, $_product->getFinalPrice()); ?>
+						<meta itemprop="priceCurrency" content="INR">
+						<span class="price no-display" itemprop="price"><?php echo $_finalPrice; ?></span>
+					</div>
+
+	                <div class="quantity_dropdown">
+						<input type="text" name="qty" id="qty" title="<?php echo $this->__('Quantity') ?>" class="input-text qty product-qty-input-text" value="01" />
+						<label for="qty" class="qty-dropdown-label"><?php echo $this->__('Quantity') ?></label>
+					</div>
+
+					<?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+
+					<?php echo $this->getChildHtml('other');?>
+
+					<?php if ($_product->isSaleable() && $this->hasOptions()):?>
+						<?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+					<?php endif;?>
+				</div>
+
+			</div>
+
+			<?php if($_product->getBundleForSale()): ?>
+				<div class="no-display"><?php echo $this->getChildHtml('product_type_data') ?></div>
+			<?php endif; ?>
+
+			<div class="clearer"></div>
+
+		</form>
+		<script type="text/javascript">
+		//<![CDATA[
+			var productAddToCartForm = new VarienForm('product_addtocart_form');
+
+			window.addToCart = function addToCart(params, callback) {
+				try {
+					jQuery.ajax({
+						url: params.url,
+						dataType: 'json',
+						type : 'post',
+						data: params.data,
+						async: false,
+						success: function(data){
+							if(data.status == "ERROR"){
+								jQuery('#fancybox-loading-overlay').hide();
+								jQuery('#fancybox-loading').hide();
+								if(jQuery('#add-to-cart-error-message').length > 0) {
+									jQuery('#add-to-cart-error-message').html(data.message);
+									jQuery('#add-to-cart-error-message').show();
+								}
+							} else if(data.status == "SUCCESS") {
+								jQuery('#add-to-cart-error-message').hide();
+
+								window._fbq = window._fbq || [];
+								window._fbq.push(['track', 'PixelInitialized', {}]);
+								window._fbq.push(['track', '6024008684704', {'value':'0.00','currency':'INR'}]);
+
+								if(data.header_cart) {
+									jQuery('#cart-action').html(data.header_cart);
+								}
+
+								if(data.referer == 'cart_modal') {
+									jQuery('.cart-flag').html(data.activitymessage);
+									jQuery('#shopping-cart-totals-table-container').empty().replaceWith(data.carttotals);
+									jQuery('.cart-items').html(data.cartitems);
+									jQuery('.modal_tailbar .carton_logo_and_amount span').html(data.cartitemqty);
+									if(!callback) fadeout_activity_message();
+									show_free_shipping_text();
+								}
+
+								if(callback) {
+									cartActivityMessage = data.activitymessage;
+									callback(showCartModal);
+								} else {
+									showCartModal();
+								}
+							}
+						}
+					});
+				} catch (e) {
+					console.log(e);
+				}
+			}
+
+			productAddToCartForm.submit = function(button, url) {
+				if (this.validator.validate()) {
+					var form = this.form;
+					var oldUrl = form.action;
+
+					if (url) {
+					   form.action = url;
+					}
+					var e = null;
+
+					var stop_activity = false;
+					var choice_count = 0;
+					var label_text = '';
+					jQuery('.super-attribute-select').each(function() {
+						if(!jQuery(this).hasClass('selectboxit')) {
+							if(jQuery(this).val() == '') {
+								jQuery(this).parent().addClass('red_border_medium');
+								jQuery('.configurable_attribute_label', jQuery(this).parent().parent()).addClass('red_label validation-advice');
+								choice_count++;
+								label_text = jQuery('.configurable_attribute_label label', jQuery(this).parent().parent()).text();
+								stop_activity = true;
+							} else {
+								jQuery(this).parent().removeClass('red_border_medium');
+								jQuery('.configurable_attribute_label', jQuery(this).parent().parent()).removeClass('red_label validation-advice');
+							}
+						}
+					});
+					if(stop_activity) {
+						if(choice_count == 1) {
+							alert('Please choose a ' + label_text.toLowerCase());
+						} else {
+							alert('Please choose all options');
+						}
+						return;
+					}
+
+					if(!url){
+						url = jQuery('#product_addtocart_form').attr('action');
+					}
+					var data = jQuery('#product_addtocart_form').serialize();
+					data += '&isAjax=1';
+					data += '&referer=cart_modal';
+					data += '&category_name=<?php echo $_category->getName(); ?>';
+					jQuery('#fancybox-loading-overlay').show();
+					jQuery('#fancybox-loading').show();
+					var params = {
+						url: url,
+						data: data,
+					}
+					if(jQuery('.cart-count-circle').length > 0) {
+						addToCart(params);
+					} else {
+						addToCart(params, loadCartModal);
+					}
+					this.form.action = oldUrl;
+					if (e) {
+						throw e;
+					}
+				}
+			}.bind(productAddToCartForm);
+
+			productAddToCartForm.submitLight = function(button, url){
+				if(this.validator) {
+					var nv = Validation.methods;
+					delete Validation.methods['required-entry'];
+					delete Validation.methods['validate-one-required'];
+					delete Validation.methods['validate-one-required-by-name'];
+					for (var methodName in Validation.methods) {
+						if (methodName.match(/^validate-datetime-.*/i)) {
+							delete Validation.methods[methodName];
+						}
+					}
+
+					if (this.validator.validate()) {
+						if (url) {
+							this.form.action = url;
+						}
+						this.form.submit();
+					}
+					Object.extend(Validation.methods, nv);
+				}
+			}.bind(productAddToCartForm);
+		//]]>
+		</script>
+	</div>
+
+</div>
+
+<link rel="stylesheet" href="<?php echo $this->getSkinUrl('css/jquery.bxslider.css') ?>" />
+<script src="<?php echo $this->getSkinUrl('js/jquery.bxslider.min.js') ?>"></script>
+<?php echo $this->getChildHtml('upsell_products'); ?>
+
+<div class="product-extra-details">
+	<div class="product-extra-details-left">
+		<h3><?php echo $this->__('PRODUCT DETAILS') ?></h3>
+		<div class="invent">
+			<?php $no_details = 'N/A';?>
+			<p>
+				<ul>
+					<li><?php echo $this->__('Dimension :') ?> <?php  $ProInfo1 = ($_product['dimension'] != '' ? $_product['dimension'] : $no_details);echo $ProInfo1;?></li>
+					<li><?php echo $this->__('Material :') ?> <?php  $ProInfo2 = ($_product['material'] != '' ? $_product['material'] : $no_details);echo $ProInfo2;?></li>
+					<li><?php echo $this->__('Other Info :') ?> <?php  $ProInfo3 = ($_product['other_info'] != '' ? $_product['other_info'] : $no_details);echo $ProInfo3;?></li>
+<!-- 					<li><?php //echo $this->__('Field 4 :') ?> <?php  //$ProInfo4 = ($_product['field_4'] != '' ? $_product['field_4'] : $no_details);echo $ProInfo4;?></li> -->
+				</ul>
+			</p>
+		</div>
+	</div>
+
+	<div class="product-extra-details-right">
+		<h3><?php echo $this->__('SHIPPING DETAILS') ?></h3>
+		<?php //echo "<pre>";print_r($_product->getData());echo "</pre>"; ?>
+		<?php if($_product['non_inventory_products'] != 1){ ?>
+		<div class="invent">
+			<p>
+				<ul>
+					<li><?php echo $this->__('Easy return and replacement policy.') ?>
+						<a href="<?php echo $this->getUrl('refund-and-replacement');?>"><?php echo $this->__('Read more') ?></a>
+					</li>
+					<li><?php echo $this->__('Next Day Delivery option available for select pincodes.') ?>
+						<a href="<?php echo $this->getUrl('next-day-delivery');?>"><?php echo $this->__('Read more') ?></a>
+					</li>
+					<li><?php echo $this->__('We can deliver order abroad too.') ?>
+						<a href="<?php echo $this->getUrl('international-shipping');?>"><?php echo $this->__('Read more') ?></a>
+					</li>
+				</ul>
+			</p>
+		</div>
+
+		<?php }else{ ?>
+
+		<div class="non-invent">
+<!-- 			<h6><?php echo $this->__('Build to Order Products:-') ?></h6>
+ -->			<p>
+				<ul>
+					<li><?php echo $this->__('Easy return and replacement policy.') ?>
+						<a href="<?php echo $this->getUrl('refund-and-replacement');?>"><?php echo $this->__('Read more') ?></a>
+					</li>
+					<li><?php echo $this->__('This product would be delivered within 10 days.') ?>
+						<a href="<?php echo $this->getUrl('');?>"><?php echo $this->__('Read more') ?></a>
+					</li>
+					<li><?php echo $this->__('We can deliver order abroad too.') ?>
+						<a href="<?php echo $this->getUrl('international-shipping');?>"><?php echo $this->__('Read more') ?></a>
+					</li>
+				</ul>
+			</p>
+		</div>
+
+		<?php } ?>
+
+	</div>
+	<div class="clear"></div>
+</div>
+
+<?php
+echo $this->getLayout()->createBlock('reports/product_viewed')
+   ->setName('recently_viewed')
+   ->setTemplate('reports/product_viewed_on_product_page.phtml')
+   ->toHtml();
+?>
+
+<script type="text/javascript">
+var options = {};
+var out_of_stock_product_info = {};
+var p_id = "<?php echo $_product->getId(); ?>";
+
+var zoom_status = 0;
+selected_option_label = "<?php echo $this->getRequest()->getParam('option'); ?>";
+
+var mode_of_view = '<?php echo $this->getRequest()->getParam("type"); ?>';
+var cart_url = "<?php echo $this->getUrl('checkout/cart'); ?>";
+
+var pinit_base_url = 'https://pinterest.com/pin/create/button/?url=' + '<?php echo $this->getUrl() ?>' + '&media=';
+var pinit_image_url = '<?php echo $_product->getImageUrl(); ?>';
+var pinit_trailing_url = '&description=Happily%20Unmarried';
+
+var scooso_url = "<?php echo $this->getUrl('scooso/index/prequantity'); ?>";
+var product_image_url = "<?php echo $_product->getImageUrl() ?>";
+var social_share_url = "<?php echo $this->getUrl('explore/cover/getSocialSharingBlock'); ?>";
+var timer;
+
+jQuery(document).ready(function($){
+
+
+	function fadeout_activity_message() {
+		alert('here');
+		clearTimeout(timer);
+		timer = setTimeout(function() {
+			$('.cart-activity-bar').fadeOut();
+		}, 5000);
+	}
+
+	options['pid'] = p_id;
+
+	try {
+		$.ajax({
+			url: scooso_url,
+			dataType: 'json',
+			type : 'get',
+			data: options,
+			success: function(response){
+				options = response;
+				if(options.type == 'bundle') {
+					if(options.inStock) {
+						$('.large-buy-cart-button').show();
+						$('.notify-me-when-available').hide();
+						$('#notify_email_id').removeClass('validate-email, required-entry');
+					} else {
+						$('.large-buy-cart-button').hide();
+						$('.notify-me-when-available').show();
+						$('#notify_email_id').addClass('validate-email, required-entry');
+					}
+				} else {
+					check_stock_status();
+				}
+			}
+		});
+	} catch (e) {
+	}
+
+	try {
+		jQuery.ajax({
+			url: social_share_url,
+			dataType: 'json',
+			type : 'get',
+			data: {'product_image_url' : product_image_url},
+			success: function(response){
+				$('.social-like-thumbnails-area').html(response['html']);
+			}
+		});
+	} catch (e) {
+	}
+
+	$('.notify_me_button').click(function() {
+		var out_of_stock_product_info_options = {};
+		out_of_stock_product_info.id = p_id;
+		out_of_stock_product_info.email_id = $('#notify_email_id').val();
+		$('.super-attribute-select').each(function() {
+			if(!$(this).hasClass('selectboxit')) {
+				out_of_stock_product_info_options[$(this).attr('id')] = $(this).val();
+			}
+		});
+		out_of_stock_product_info.options = out_of_stock_product_info_options;
+		out_of_stock_product_info.label = selected_option_label;
+
+		try {
+			$('#notify_email_id').attr('disabled', 'disabled');
+			$('#notify_email_id').addClass('notify_email_id_is_disabled');
+			jQuery.ajax({
+				url: "<?php echo $this->getUrl() . 'scooso/index/notifyme'; ?>",
+				dataType: 'json',
+				type: 'get',
+				data: out_of_stock_product_info,
+				success: function(response){
+					alert(response.response);
+					$('#notify_email_id').removeAttr('disabled');
+					$('#notify_email_id').removeClass('notify_email_id_is_disabled');
+					if(response.error == 1) {
+						$('#notify_email_id').addClass('validation-failed');
+					} else {
+						$('#notify_email_id').removeClass('validation-failed');
+						$('#notify_email_id').val("Email ID");
+					}
+				}
+			});
+		} catch (e) {
+		}
+	});
+
+	$('.super-attribute-select').change(check_stock_status);
+
+	function check_stock_status() {
+
+		var option_string = '';
+		$('.super-attribute-select').each(function() {
+			if(!$(this).hasClass('selectboxit')) {
+				option_string = option_string + "-" + $(this).val();
+			}
+		});
+		if(option_string) {
+			option_string = option_string.slice(1);
+		}
+
+		if($('.super-attribute-select').length > 0) {
+			if(options[option_string] == 0) {
+				$('.large-buy-cart-button').hide();
+				$('.notify-me-when-available').show();
+				$('#notify_email_id').addClass('validate-email, required-entry');
+			} else {
+				$('.large-buy-cart-button').show();
+				$('.notify-me-when-available').hide();
+				$('#notify_email_id').removeClass('validate-email, required-entry');
+			}
+		}
+
+	}
+});
+
+</script>

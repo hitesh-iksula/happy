@@ -1,0 +1,137 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+
+<div class="one_category homepage_category" id="<?php echo 'category' . $this->getCategoryId(); ?>">
+
+	<?php Mage::getSingleton('core/session')->setCurrentCategory($this->getCategoryId()); ?>
+	<?php echo $this->getChildHtml('category_header'); ?>
+
+	<?php
+		$_productCollection=$this->getLoadedProductCollection();
+		$_helper = $this->helper('catalog/output');
+	?>
+
+	<?php if(!$_productCollection->count()): ?>
+
+		<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+
+	<?php else: ?>
+
+		<div class="category-products">
+
+			<?php // Grid Mode ?>
+			<?php $_collectionSize = $_productCollection->count() ?>
+			<?php $_columnCount = $this->getColumnCount(); ?>
+
+			<ul class="products-grid" id="<?php echo 'container' . $this->getCategoryId(); ?>">
+
+				<?php $i=0; foreach ($_productCollection as $_product): $i++; ?>
+
+					<li class="item<?php if($i % 3 == 2): echo ' middle'; endif; ?>" id="product_id_<?php echo $_product->getId(); ?>">
+
+						<a href="<?php echo $_product->getProductUrl() ?>">
+
+							<div class="product-image" id="<?php echo 'product_' . $_product->getId(); ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>">
+								<img class="item-image" src="<?php echo $this->getSkinUrl() . 'images/homepage/lazyloader_placeholder.png' ?>" data-original="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(256); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+								<noscript>
+									<img class="item-image" src="<?php echo $this->getSkinUrl() . 'images/homepage/lazyloader_placeholder.png' ?>" data-original="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(256); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+								</noscript>
+							</div>
+
+							<?php if($_product->getData('type_id') == 'configurable'): ?>
+								<?php if(Mage::getStoreConfig('solidswatches/solidswatches_group/solidswatches_status', Mage::app()->getStore()) == 1): ?>
+									<!-- Show Color Bubbles If Available -->
+
+									<div class="color_attribute_bubble_container">
+										<?php
+										$productAttributeOptions = $_product->getTypeInstance(true)->getConfigurableAttributesAsArray($_product);
+
+										foreach ($productAttributeOptions as $productAttribute) {
+
+										    foreach ($productAttribute['values'] as $attribute) {
+
+												$swatchModel = Mage::helper('solidswatches')->getItem($attribute['value_index']);
+
+												if($swatchModel->getData()) {
+
+													$whiteClass = '';
+													if($swatchModel["color_1"] == "FFFFFF") {
+														$whiteClass = ' white_attribute_bubble';
+													}
+													echo '<div class="color_attribute_bubble' . $whiteClass . '" id="' . $attribute['value_index'] . '" title="' . $attribute['store_label'] . '" style="background-color:#' . $swatchModel['color_1'] . '"></div>';
+
+												}
+
+										    }
+
+										}
+										?>
+									</div>
+
+								<?php endif; ?>
+							<?php endif; ?>
+
+							<h2 class="product-name">
+									<?php $name = $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>
+									<?php $thresholdSize = 20; ?>
+									<?php $nameLength = strlen($name); ?>
+									<?php $title = 0; ?>
+									<?php if($nameLength > $thresholdSize) { $title = 1; } ?>
+								<span class="product_name_title" <?php if($title == 1): ?>title="<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>"<?php endif; ?>>
+									<?php echo $name ?>
+								</span>
+								<?php echo $this->getPriceHtml($_product, true) ?>
+							</h2>
+							<p class="product-short-desc">
+								<?php echo strip_tags($_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description')) ?>
+							</p>
+
+						</a>
+
+					</li>
+
+				<?php endforeach; ?>
+
+			</ul>
+
+			<?php $categoryModel = Mage::getModel('catalog/category')->load($this->getCategoryId()); ?>
+			<div class="folofo_subcategory_show_more">
+				<a href="<?php echo $categoryModel->getUrl() ?>">Show More</a>
+			</div>
+
+		</div>
+
+	<?php endif; ?>
+
+</div>

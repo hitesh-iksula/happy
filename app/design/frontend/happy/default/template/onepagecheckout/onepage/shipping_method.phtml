@@ -1,0 +1,25 @@
+<?php $has_addr  = $this->customerHasAddresses(); ?>
+<?php if ($this->getQuote()->isVirtual()) : return; endif; ?>
+
+
+<div id="shipping-method" class="onepagecheckout_block<?php if ($has_addr): echo ' logged_in';  else: echo ' address_box'; endif; ?>">
+    <?php /* ?><div class="op_block_title"><?php echo $this->__('Shipping Method') ?></div> <?php */ ?>
+    <!-- <div class="fedex-content">
+        <img class="fedex-logo" src="<?php //echo $this->getSkinUrl('images/fedex.0.jpg');?>"/>
+        <span class="fedex-text">Shipped via FedEx</span>
+        <div class="fedex-text1">(All duties and custome charges, if any, would have to be borne by the customer)</div>
+    </div>
+ -->
+    <h2 class="opc_title"><?php echo $this->__('Delivery Options') ?></h2>
+    <div id="checkout-shipping-method-load">
+        <?php echo $this->getChildHtml('available') ?>
+    </div>
+    <script type="text/javascript">
+    //<![CDATA[
+        var shippingMethod = new ShippingMethod('shipping-method');
+    //]]>
+    </script>
+    <div id="onepage-checkout-shipping-method-additional-load">
+        <?php echo $this->getChildHtml('additional') ?>
+    </div>
+</div>

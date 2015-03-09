@@ -1,0 +1,42 @@
+<?php if ($this->canApplyMsrp()): ?>
+    <div class="cart-msrp-totals"><?php echo $this->__('ORDER TOTAL WILL BE DISPLAYED BEFORE YOU SUBMIT THE ORDER'); ?></div>
+<?php else: ?>
+    <div id="shopping-cart-totals-table-container">
+        <table id="shopping-cart-totals-table" class="shopping-cart-totals-table" cellspacing="0" cellpadding="0">
+            <col />
+            <col width="1" />
+            <!-- <tfoot>
+                <?php //echo $this->renderTotals('footer'); ?>
+            </tfoot> -->
+            <tbody >
+                <div class="shopping-cart-total-table-container-1">
+                    <?php echo $this->renderTotals(); ?>
+                </div>
+            </tbody>
+        </table>
+        <table style="border-bottom: 1px solid #ddd;width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+        
+        <!-- <div class="total-excluding-shipping-absolute"> -->
+        <td class="cart-desc">
+            <div class="total-excluding-pricefg">
+                <div class="total-label">
+                    <div>Total</div>
+                    <span class="exc-shipp">(Excluding Shipping)</span>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="total-amountfg">
+                <?php
+                $totals = $this->getTotals();
+                $quote = Mage::getSingleton('checkout/cart')->getQuote();
+                $totalMinusShipping  = $quote->getData('subtotal_with_discount');
+                ?>
+                <span class="price"><?php echo Mage::helper('core')->currency($totalMinusShipping, true, false); ?></span>
+            </div>
+        </td>
+        </tr>
+        </table>
+    </div>
+<?php endif; ?>

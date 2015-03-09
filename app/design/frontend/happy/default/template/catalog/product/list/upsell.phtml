@@ -1,0 +1,97 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/* Custom Code for the design */
+?>
+<?php if(count($this->getItemCollection()->getItems())): ?>
+<div class="block block-list block-upsell global_upsells_container">
+	<div class="block-title">
+		<strong><span><?php echo $this->__('Similar Cool Products') ?></span></strong>
+	</div>
+	<div class="block-content">
+		<ol id="upsell-items" class="upsell_items">
+			<?php $this->resetItemsIterator() ?>
+			<?php for($_i=0; $_i<$this->getRowCount(); $_i++): ?>
+				<?php for($_j=0; $_j<$this->getColumnCount(); $_j++): ?>
+					<?php if($_item = $this->getIterableItem()): ?>
+						<li class="upsell_item">
+							<a class="up_product" href="<?php echo $this->getProductUrl($_item) ?>">
+								<div class="up_left">
+									<img class="prod-img" src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail', $_item->getImage())->resize(180); ?>" alt="<?php echo $this->htmlEscape($_item->getName()) ?>"/>
+								</div>
+								<div class="up_right">
+									<?php $name = $this->helper('catalog/output')->productAttribute($_item, $_item->getName() , 'name'); ?>
+			                        <?php $thresholdSize = 18; ?>
+			                        <?php $nameLength = strlen($name); ?>
+			                        <?php $title = 0; ?>
+			                        <?php if($nameLength > $thresholdSize) { $name = substr($name, 0, ($thresholdSize - 1)) . '...'; $title = 1; } ?>
+			                        <h4><?php echo $name; ?></h4>
+									<div class="up_price">
+										<?php
+										$productPrice = $_item->getFinalPrice();
+										echo $this->helper('explore')->formatPrice($productPrice);
+										?>
+									</div>
+									<!--a class="upsell_add_to_cart" href="<?php // echo $this->helper('checkout/cart')->getAddUrl($_item) ?>">
+										<div class="upsell_add_button" title="Add To Cart"></div>
+									</a-->
+								</div>
+							</a>
+						</li>
+					<?php endif; ?>
+				<?php endfor; ?>
+			<?php endfor; ?>
+		</ol>
+	</div>
+</div>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	
+	var upsell_slider_list_width = Math.floor($(".global_upsells_container").width()/4);
+	var prod_count = $('#upsell-items li').length;
+    if(prod_count > 5) {
+		$('#upsell-items').bxSlider({
+			pager: false,
+			prev_image: 'images/general/sprite_with_vodka.png',
+			next_image: 'images/general/sprite_with_vodka.png',
+			wrapper_class: 'global_upsells_container',
+			slideWidth : upsell_slider_list_width,
+			// margin: 20,
+			auto: false,
+			auto_controls: false,
+			minSlides: 5,
+			maxSlides: 5,
+			moveSlides: 1
+			
+		});
+	}
+
+});
+</script>
+
+<?php endif; ?>

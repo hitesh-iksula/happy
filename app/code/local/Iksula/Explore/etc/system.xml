@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<tabs>
+		<explore translate="label" module="explore">
+			<label>Explore Page Settings</label>
+			<sort_order>10</sort_order>
+		</explore>
+	</tabs>
+	<sections>
+		<explore translate="label" module="explore">
+			<label>General Settings</label>
+			<tab>explore</tab>
+			<sort_order>100</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+				<explore_group translate="label" module="explore">
+					<label>General Settings</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>100</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<explore_grid_size translate="label">
+							<label>No of Visible Products Per Category: </label>
+							<comment>Enter the number of products per category to be populated on Explore Homepage (Multiples of 3)</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</explore_grid_size>
+						<explore_category translate="label">
+							<label>Parent Category ID: </label>
+							<comment>Enter the ID of the Parent Category whose Child Categories will be populated on Explore Homepage</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</explore_category>
+						<explore_category_single translate="label">
+							<label>Category ID: </label>
+							<comment>Enter the ID of the Category whose products will be shown on homepage</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</explore_category_single>
+						<explore_category_folofo translate="label">
+							<label>Folofo Category ID: </label>
+							<comment>Enter the ID of the Folofo Category</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</explore_category_folofo>
+						<explore_gender translate="label">
+							<label>Gender: </label>
+							<comment>Activate Gender Filter</comment>
+							<frontend_type>select</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+						</explore_gender>
+						<explore_occasion translate="label">
+							<label>Occasion: </label>
+							<comment>Activate Occasion Filter</comment>
+							<frontend_type>select</frontend_type>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+						</explore_occasion>
+						<explore_personality translate="label">
+							<label>Personality: </label>
+							<comment>Activate Personality Filter</comment>
+							<frontend_type>select</frontend_type>
+							<sort_order>50</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+						</explore_personality>
+					</fields>
+				</explore_group>
+				<facebook_cover>
+					<label>Facebook Set As Cover Settings</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>1100</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<app_id translate="label">
+							<label>App ID: </label>
+							<comment>Enter Facebook App ID</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</app_id>
+						<secret_id translate="label">
+							<label>App Secret: </label>
+							<comment>Enter Facebook App Secret ID</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</secret_id>
+						<post_login_url translate="label">
+							<label>Post Login Url: </label>
+							<comment><![CDATA[Enter The Post Login URL. Example: {sitename}/<strong style="color:red;">explore/cover</strong>]]></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</post_login_url>
+						<post_message translate="label">
+							<label>Post With This Message: </label>
+							<comment>Enter The Message You Want To Be Uploaded Along With The Photo></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>50</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</post_message>
+					</fields>
+				</facebook_cover>
+			</groups>
+		</explore>
+	</sections>
+</config>

@@ -1,0 +1,168 @@
+<div class="faq_envelope">
+	<div class="faq_btn">
+		<div class="faq_toggle" id="faq_toggle"></div>
+		<div class="faq_content_area">
+			<div class="faq_qus_area">
+				<div class="faq_title">
+					<hgroup>
+						<h2>Want a helping hand?</h2>
+					</hgroup>
+				</div>
+				<ul id="faq_accordion" class="accordion">
+					<li>
+						<h3>FAQ</h3>
+						<div class="panel loading">
+							<div class="faq-block-scroll">
+								<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('explore_faqs')->toHtml(); ?>
+							</div>
+						</div>
+					</li>
+					<li>
+						<h3>Track Order</h3>
+						<div class="panel loading">
+							<form method="post" name="trackorderform" id="trackorderform" action="<?php echo $this->getUrl().'trackorder';?>" >
+							<input type="text" value="Your Order ID" class="tracker_order required-entry" onfocus="if(this.value == 'Your Order ID') this.value = ''; this.style.color='#333';" name="orderid" id="orderid"/>
+							<label class="validation-advice" id="errormsg"></label>
+							<input type="submit" value="Submit" class="submitbtn" id="trackordersubmitbtn" />
+							</form>
+						</div>
+					</li>
+					<li>
+						<h3>Contact Us</h3>
+						<div class="panel loading">
+							<input type="text" id="faq_name" name="name" value="Name" onfocus="if(this.value == 'Name') this.value = ''; this.style.color='#333';" onblur="if(this.value == '') { this.value = 'Name'; this.style.color='#CCC'; }" class="input-text required-entry tracker_order" />
+							<input type="text" id="faq_email" name="email" value="Email" onfocus="if(this.value == 'Email') this.value = ''; this.style.color='#333';" onblur="if(this.value == '') { this.value = 'Email'; this.style.color='#CCC'; }" class="input-text required-entry validate-email tracker_order" />
+							<textarea name="comment" id="faq_comment" onfocus="if(this.value == 'Message') this.value = ''; this.style.color='#333';" onblur="if(this.value == '') { this.value = 'Message'; this.style.color='#CCC'; }" class="required-entry input-text textAreaSty" >Message</textarea>
+							<input type="submit" value="Submit" class="faq_submit submitbtn"/>
+							<p>
+								You can also call Us!<br/>
+								011 - 41042266<br/>
+								+91 8800896678
+							</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div class="like_us_area">
+				<span>Like Us</span>
+				<a href="http://www.facebook.com/Like.HU" target="_blank">
+					<img src="<?php echo $this->getSkinUrl('images/faq_facebook.jpg')?>" alt="Facebook"/>
+				</a>
+				<a href="https://twitter.com/happlyunmarried" target="_blank">
+					<img src="<?php echo $this->getSkinUrl('images/faq_twitter.jpg')?>" alt="Twitter"/>
+				</a>
+				<a href="http://pinterest.com/happlyunmarried/" target="_blank">
+					<img src="<?php echo $this->getSkinUrl('images/faq_print.jpg')?>" alt="Pinterest"/>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+var faq_offset = 0;
+jQuery(document).ready(function($){
+
+	$('#errormsg').hide();
+
+	$('#faq_accordion').accordion({ heightStyle: "content" });
+
+	$(".loading").removeClass("loading");
+	var faq_status = 'closed';
+	$("#faq_toggle").live('click', function(){
+
+		if(faq_status == 'closed'){
+			$('.faq_envelope').animate({
+				width: '354px',
+				// left: parseInt($('.faq_envelope').offset().left + $('.faq_envelope').width() - 212) + 'px'
+			});
+
+			$('.faq_toggle').toggleClass('faq_toggle_open');
+			faq_status = 'opened';
+
+		} else if(faq_status == 'opened') {
+			$('.faq_envelope').animate({
+				width: '30px',
+				// left: faq_offset
+			}, 400, 'swing', function(){
+				$('.faq_toggle').toggleClass('faq_toggle_open');
+				faq_status = 'closed';
+			});
+		}
+
+		var customScrollbar=$(".faq-block-scroll").find(".mCSB_scrollTools");
+		customScrollbar.css({"opacity":0});
+		$(".faq-block-scroll").mCustomScrollbar("update");
+		customScrollbar.animate({opacity:1},"slow");
+
+	});
+
+	$('.faq_submit').live('click', function(e){
+		e.preventDefault();
+		var name = $('#faq_name').val();
+		var email = $('#faq_email').val();
+		var comment = $('#faq_comment').val();
+		if (name == 'Name') {
+			name = '';
+		}
+		if (email == 'Email') {
+			email = '';
+		}
+		if (comment == 'Message') {
+			comment = '';
+		}
+		$(this).attr('disabled','disabled');
+		$.ajax({
+			url : "<?php echo $this->getBaseUrl() . 'explore/contactus/post'; ?>",
+			type : 'post',
+			data : { 'name' : name, 'email' : email, 'comment' : comment, 'hideit' : '' },
+			success : function(data){
+				$('.faq_submit').removeAttr('disabled');
+				alert(data);
+			}
+		});
+		$('#faq_name').val('Name').css('color','rgb(204, 204, 204)');
+		$('#faq_email').val('Email').css('color','rgb(204, 204, 204)');
+		$('#faq_comment').val('Message').css('color','rgb(204, 204, 204)');
+	});
+
+	$(".faq-block-scroll").mCustomScrollbar({
+		advanced:{
+			updateOnBrowserResize:true,
+			updateOnContentResize:true
+		}
+	});
+
+	$("#trackordersubmitbtn").on('click',function(event) {
+		event.preventDefault();
+		$("#errormsg").hide();
+		if($("#orderid").val() != "" && $("#orderid").val() != 'Your Order ID'){
+				$.ajax({
+					tyep:'post',
+					url:'<?php echo $this->getUrl();?>trackorder/index/orderexistence',
+					data:'orderid='+$("#orderid").val(),
+					success:function(e){
+						if(e == "true"){
+							$("#trackorderform").submit();
+						} else {
+							$("#errormsg").html("Please enter a valid Order ID").show();
+						}
+					},
+					error:function(e){
+						alert(e);
+					}
+				});
+		} else {
+			$("#errormsg").html("Please enter an Order ID").show();
+			event.preventDefault();
+
+		}
+	});
+
+});
+
+//< ![CDATA[
+		var trackorderform= new VarienForm('trackorderform', true);
+	//]]>
+</script>

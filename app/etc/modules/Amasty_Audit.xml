@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+    Copyright (c) 2013 Amasty (http://www.amasty.com) 
+-->
+<config>
+    <modules>
+        <Amasty_Audit>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Directory/>
+            </depends>
+        </Amasty_Audit>
+    </modules>
+</config>
